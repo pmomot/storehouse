@@ -1,0 +1,40 @@
+{
+  "name": "StoreHouse",
+  "version": "0.0.1",
+  "description": "StoreHouse service",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pmomot/storehouse.git"
+  },
+  "authors": [
+    "Petro Momot pmomot@corevalue.net"
+  ],
+  "bugs": {
+    "url": "https://github.com/pmomot/storehouse/issues"
+  },
+  "homepage": "https://github.com/pmomot/storehouse#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "jsonwebtoken": "^5.4.1",
+    "morgan": "^1.6.1",
+    "nodemailer": "^1.8.0",
+    "nodemailer-smtp-transport": "^1.0.3",
+    "pg": "^4.5.1",
+    "pg-hstore": "^2.3.2",
+    "promise": "^7.1.1",
+    "sequelize": "^3.20.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "bower": "^1.7.7",
+    "gulp": "^3.9.0",
+    "gulp-eslint": "^2.0.0",
+    "gulp-sass": "^2.1.0"
+  }
+}

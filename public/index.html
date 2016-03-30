@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>StoreHouse</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+
+    <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.min.css" />
+
+    <script type="text/javascript" src="app/app.module.js"></script>
+    <script type="text/javascript" src="app/app.routes.js"></script>
+
+    <script type="text/javascript" src="app/repositories/accountRepository.js"></script>
+
+    <script type="text/javascript" src="app/services/accountService.js"></script>
+    <script type="text/javascript" src="app/services/httpInterceptor.js"></script>
+
+    <script type="text/javascript" src="app/directives/headerDirective.js"></script>
+
+    <script type="text/javascript" src="app/constants/main.constants.js"></script>
+
+    <script type="text/javascript" src="app/routes/log-in/logInController.js"></script>
+    <script type="text/javascript" src="app/routes/sign-up/signUpController.js"></script>
+    <script type="text/javascript" src="app/routes/change-pass/changePassController.js"></script>
+    <script type="text/javascript" src="app/routes/claims/claimsController.js"></script>
+</head>
+<body ng-app="StoreHouse">
+
+<div class="main-content container" ng-view>
+
+    <div class="starter-template">
+        <h1>This is index.html file</h1>
+        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+    </div>
+
+</div><!-- /.container -->
+
+
+</body>
+</html>
