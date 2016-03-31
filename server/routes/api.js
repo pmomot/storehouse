@@ -7,7 +7,6 @@ var config = require('../config'),
     jsonWebToken = require('jsonwebtoken'),
     secretKey = config.secretKey;
 
-
 module.exports = function (app, express, models) {
     var api = new express.Router(),
         User = models.User,
@@ -17,11 +16,11 @@ module.exports = function (app, express, models) {
     api.post('/user', userApiCalls.signUp);
     api.post('/user/log-in', userApiCalls.logIn);
 
-    //api.use(verifyToken);
+    api.use(verifyToken);
 
-    //api.get('/user', userApiCalls.getUser);
-    //api.post('/user/change-pass', userApiCalls.changePassword);
-    //api.get('/users', userApiCalls.getUsers);
+    api.put('/user/change-pass', userApiCalls.changePassword);
+    api.get('/users', userApiCalls.getUsers);
+    api.get('/user', userApiCalls.getUser);
 
     /**
      * Helper for verifying user token
@@ -37,25 +36,25 @@ module.exports = function (app, express, models) {
                         message: 'Failed to authenticate'
                     });
                 } else {
-                    //User.findOne({_id: decoded.id}, function (error, user) {
-                    //    if (user) {
-                    //        req.decoded = decoded;
-                    //        next();
-                    //    } else {
-                    //        res.status(403).send({
-                    //            status: 403,
-                    //            success: false,
-                    //            message: 'User does not exist'
-                    //        });
-                    //    }
-                    //});
-                    console.log(decoded);
-
-                    res.status(403).send({
-                        status: 403,
-                        success: false,
-                        message: 'User does not exist'
-                    });
+                    User.find({
+                        where: {
+                            uuid: decoded.uuid
+                        }
+                    })
+                        .then(function (user) {
+                            if (user) {
+                                req.decoded = decoded;
+                                next();
+                            } else {
+                                throw new Error('User does not exist');
+                            }
+                        })
+                        .catch(function (error) {
+                            res.status(403).send({
+                                success: false,
+                                message: error.message
+                            });
+                        });
                 }
             });
         } else {

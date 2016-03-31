@@ -19,11 +19,12 @@
 
         vm.errors = [];
         vm.data = {
-            currentPass: '',
-            newPass: '',
-            newPassRepeat: ''
+            currentPassword: '',
+            newPassword: '',
+            repeatPassword: ''
         };
         vm.sendRequest = sendRequest;
+        vm.goBack = goBack;
 
         /**
          * Send user change password request
@@ -31,13 +32,13 @@
         function sendRequest () {
             vm.errors = [];
 
-            if ((vm.data.newPass === vm.data.newPassRepeat) && (vm.data.newPass !== '') && (vm.data.newPassRepeat !== '')) {
-                if (!REGEX.PASS.test(vm.data.newPass) || !REGEX.PASS.test(vm.data.newPassRepeat)) {
-                    vm.errors.push('New password must be at least 4 characters long and not contain spaces.');
+            if ((vm.data.newPassword === vm.data.repeatPassword) && (vm.data.newPassword !== '') && (vm.data.repeatPassword !== '')) {
+                if (!REGEX.PASS.test(vm.data.newPassword) || !REGEX.PASS.test(vm.data.repeatPassword)) {
+                    vm.errors.push('New password must be at least 7 characters long and not contain spaces.');
                 } else {
                     accountService.changePass({
-                        currentPass: vm.data.currentPass,
-                        newPass: vm.data.newPass
+                        currentPass: vm.data.currentPassword,
+                        newPass: vm.data.newPassword
                     })
                         .then(function (data) {
                             vm.errors = [];
@@ -48,10 +49,17 @@
                         });
                 }
             } else {
-                vm.errors.push('New passwords do not match or are empty.');
-
+                vm.errors.push('New passwords do not match.');
             }
+        }
 
+        /**
+         * Return to previous route
+         * @param {Object} $event - event
+         * */
+        function goBack ($event) {
+            $event.preventDefault();
+            $window.history.back();
         }
     }
 })();

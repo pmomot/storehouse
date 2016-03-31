@@ -8,12 +8,12 @@
         .module('StoreHouse.Services')
         .factory('httpInterceptor', httpInterceptor);
 
-    httpInterceptor.$inject = ['$rootScope', '$q', '$window', 'toastr'];
+    httpInterceptor.$inject = ['$rootScope', '$q', '$window', '$location', 'toastr'];
 
     /**
      * Service intercepts all api requests and responses
      * */
-    function httpInterceptor ($rootScope, $q, $window, toastr) {
+    function httpInterceptor ($rootScope, $q, $window, $location, toastr) {
 
         /**
          * Fires every time response is coming
@@ -34,6 +34,9 @@
                 toastr.error(message);
             }
             $rootScope.processing = false;
+            if (payload.status === 403) {
+                $location.hash('#/user/log-in');
+            }
         }
 
         return {

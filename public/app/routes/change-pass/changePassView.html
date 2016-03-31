@@ -1,22 +1,17 @@
-<div id="logUp">
-    <div class="col-10" id="logIn">
-        <h1 class="text-center">Change Password</h1>
-        <form method="post" ng-submit="vm.sendRequest()">
-            <label for="currentPass" class="">Current Password:</label>
-            <input class="rounded" ng-model="vm.data.currentPass" type="password" name="currentPass" id="currentPass" required/>
-            <div class="clr"></div>
-            <label for="newPass">New Password:</label>
-            <input class="rounded" ng-model="vm.data.newPass" type="password" name="password" id="newPass" required/>
-            <div class="clr"></div>
-            <label for="newPassRepeat">Repeat New Password:</label>
-            <input class="rounded" ng-model="vm.data.newPassRepeat" type="password" name="newPassRepeat" id="newPassRepeat" required/>
-            <div class="clr"></div>
-            <input class="rounded" type="submit" value="SUBMIT"/>
-            <div class="clr"></div>
-        </form>
-        <div class="error" ng-show="vm.errors.length > 0">
-            <span ng-repeat="error in vm.errors">{{ error }}</span>
-        </div>
+<form class="user-form" method="post" ng-submit="vm.sendRequest()">
+    <h2 class="user-form-heading">Change Password</h2>
+    <label for="inputCurrentPass" class="sr-only">Current Password:</label>
+    <input type="password" id="inputCurrentPass" class="form-control" placeholder="Current Password"
+           required="" ng-model="vm.data.currentPassword">
+    <label for="inputCurrentPass" class="sr-only">New Password:</label>
+    <input type="password" id="inputNewPass" class="form-control" placeholder="New Password"
+           required="" ng-model="vm.data.newPassword">
+    <label for="inputCurrentPass" class="sr-only">Repeat New Password:</label>
+    <input type="password" id="inputPass" class="form-control" placeholder="Repeat New Password"
+           required="" ng-model="vm.data.repeatPassword">
+    <div class="form-group has-error" ng-show="vm.errors.length > 0">
+        <label class="control-label" ng-repeat="error in vm.errors">{{ error }}</label>
     </div>
-    <div class="clr"></div>
-</div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+    <div class="sign-up-label"><a href="#" ng-click="vm.goBack($event)">← Back</a></div>
+</form>

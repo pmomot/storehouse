@@ -6,7 +6,7 @@
 (function () {
     angular
         .module('StoreHouse.Directives')
-        .directive('clHeader', headerDirective);
+        .directive('shHeader', headerDirective);
 
     headerDirective.$inject = ['$location', 'accountService'];
 
@@ -26,7 +26,10 @@
          * */
         function link ($scope) {
             $scope.userInfo = accountService.getUserInfo();
-            $scope.path = $location.path().substr(8).split('#')[0];
+            $scope.path = $location.path().substr(1).split('#')[0];
+            $scope.doNothing = function ($event) {
+                $event.preventDefault();
+            };
 
             $scope.logout = function () {
                 accountService.logout();

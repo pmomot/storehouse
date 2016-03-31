@@ -19,12 +19,11 @@
     <label for="inputPasswordConfirm" class="sr-only">Confirm Password</label>
     <input type="password" id="inputPasswordConfirm" class="form-control" placeholder="Confirm Password"
            required="" ng-model="vm.data.passwordConfirm">
+    <div class="form-group has-error" ng-show="vm.errors.length > 0">
+        <label class="control-label" ng-repeat="error in vm.errors">{{ error }}</label>
+    </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     <div class="sign-up-label">
         <a href="#user/log-in">Back to Log In</a>
-    </div>
-
-    <div class="error" ng-show="vm.errors.length > 0">
-        <span ng-repeat="error in vm.errors">{{ error }}</span>
     </div>
 </form>

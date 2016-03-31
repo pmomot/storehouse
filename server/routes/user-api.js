@@ -3,25 +3,6 @@
  */
 'use strict';
 
-var config = require('../config'),
-    secretKey = config.secretKey,
-    jsonWebToken = require('jsonwebtoken');
-
-/**
- * Generates token from user params
- * @param {Object} user - userInfo
- * */
-function createToken (user) {
-    return jsonWebToken.sign({
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
-    }, secretKey, {
-        expiresInMinute: 1440
-    });
-}
-
 module.exports = function (User) {
 
     /**
@@ -30,25 +11,8 @@ module.exports = function (User) {
      * @param {Object} res - response
      * */
     function signUp (req, res) {
-        var body = req.body;
-
-        User.find({
-            where: {
-                email: body.email
-            }
-        })
-            .then(function (data) {
-                if (data) {
-                    throw new Error('User with this email already exists');
-                } else {
-                    return User.create({
-                        firstName: body.firstName,
-                        lastName: body.lastName,
-                        password: body.password,
-                        email: body.email
-                    });
-                }
-            })
+        User
+            .signUp(req.body)
             .then(function () {
                 res.send({
                     success: true,
@@ -69,26 +33,15 @@ module.exports = function (User) {
      * @param {Object} res - response
      * */
     function logIn (req, res) {
-        var token;
-
-        User.find({
-            where: {
-                email: req.body.email
-            }
-        })
-            .then(function (user) {
-                if (user) {
-                    // TODO SH compare pass
-                    //console.log(user.comparePassword(req.body.password));
-                    console.log(user.comparePassword(123));
-
-
-                    res.send({
-                        success: false
-                    });
-                } else {
-                    throw new Error('User does not exist');
-                }
+        User
+            .logIn(req.body)
+            .then(function (params) {
+                res.send({
+                    message: 'Successfully logged in',
+                    success: true,
+                    token: params.token,
+                    user: params.user
+                });
             })
             .catch(function (error) {
                 res.send({
@@ -96,46 +49,78 @@ module.exports = function (User) {
                     success: false
                 });
             });
+    }
 
-        return;
-
-        User.findOne({
-            email: req.body.email
-        })
-            .select('password').exec()
-            .then(function (user) {
-                var validPassword;
-
-                if (user) {
-                    validPassword = user.comparePassword(req.body.password);
-
-                    if (validPassword) {
-                        token = createToken(user);
-
-                        return User.findOne({
-                            email: req.body.email
-                        }).lean().exec();
-
-                    } else {
-                        throw new Error('Invalid Password');
-                    }
-                } else {
-                    throw new Error('User does not exist');
-                }
-            })
-            .then(function (u) {
+    /**
+     * Change user password
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function changePassword (req, res) {
+        User
+            .changePassword(req.body)
+            .then(function () {
                 res.send({
-                    message: 'Successfully logged in',
-                    success: true,
-                    token: token,
-                    user: u
+                    message: 'Password has been changed.',
+                    success: true
                 });
             })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
 
+    /**
+     * Get user info
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function getUser (req, res) {
+        User.find({
+            where: {
+                uuid: req.decoded.uuid
+            }
+        })
+            .then(function (user) {
+                res.send(user.getInfo());
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
+    /**
+     * Get users list by query
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function getUsers (req, res) {
+        // TODO SH decide how proceed with possible req.query
+        User.findAll({
+            attributes: ['firstName', 'lastName', 'email']
+        })
+            .then(function (users) {
+                res.send(users);
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
     }
 
     return {
         signUp: signUp,
-        logIn: logIn
+        logIn: logIn,
+        changePassword: changePassword,
+        getUser: getUser,
+        getUsers: getUsers
     };
 };

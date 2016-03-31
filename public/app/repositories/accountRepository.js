@@ -23,7 +23,6 @@
 
             $http.post('/api/user/log-in', params)
                 .then(function (result) {
-
                     if (result.data.success) {
                         deferred.resolve(result.data);
                     } else {
@@ -44,7 +43,31 @@
 
             $http.post('/api/user', params)
                 .then(function (result) {
-                    deferred.resolve(result.data);
+                    if (result.data.success) {
+                        deferred.resolve(result.data);
+                    } else {
+                        deferred.reject(result.data);
+                    }
+                }, function (errors) {
+                    deferred.reject(errors.data);
+                });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Change user password
+         * */
+        function changePass (params) {
+            var deferred = $q.defer();
+
+            $http.put('/api/user/change-pass', params)
+                .then(function (result) {
+                    if (result.data.success) {
+                        deferred.resolve(result.data);
+                    } else {
+                        deferred.reject(result.data);
+                    }
                 }, function (errors) {
                     deferred.reject(errors.data);
                 });
@@ -69,12 +92,12 @@
         }
 
         /**
-         * Change user password
+         * Get users list form api
          * */
-        function changePass (params) {
+        function fetchUsers () {
             var deferred = $q.defer();
 
-            $http.post('/api/user/change-pass', params)
+            $http.get('/api/users')
                 .then(function (result) {
                     deferred.resolve(result.data);
                 }, function (errors) {
@@ -87,8 +110,9 @@
         return {
             login: login,
             signUp: signUp,
+            changePass: changePass,
             loadUserInfo: loadUserInfo,
-            changePass: changePass
+            fetchUsers: fetchUsers
         };
     }
 

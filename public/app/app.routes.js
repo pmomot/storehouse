@@ -32,13 +32,13 @@
                 controller: 'ChangePassController',
                 controllerAs: 'vm'
             })
-            //.when('/claims/:claimType', {
-            //    templateUrl: 'js/routes/claims/claimsView.html',
-            //    controller: 'ClaimsController',
-            //    controllerAs: 'vm'
-            //})
+            .when('/users', {
+                templateUrl: 'app/routes/users/usersView.html',
+                controller: 'UsersController',
+                controllerAs: 'vm'
+            })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/users'
             });
     }
 })();

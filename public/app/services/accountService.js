@@ -14,7 +14,7 @@
      * Accounts processing service
      * */
     function accountService ($q, $window, accountRepository, toastr) {
-        var userInfo = {};
+        var userInfo = {}, users = [];
 
         if (!$window.localStorage.getItem('token')) {
             $window.localStorage.setItem('token', '');
@@ -32,14 +32,10 @@
             })
                 .then(function (data) {
                     $window.localStorage.setItem('token', data.token);
-
-                    //if (data.success) {
-                    data.user.fullName = data.user.firstName + ' ' + data.user.lastName;
                     userInfo = data.user;
 
                     toastr.success(data.message);
                     deferred.resolve(data);
-                    //}
                 });
 
             return deferred.promise;
@@ -53,14 +49,29 @@
 
             accountRepository.signUp(requestData)
                 .then(function (data) {
-                    if (data.success) {
-                        toastr.success(data.message);
-                        deferred.resolve(data);
-                    }
-                    else {
-                        //toastr.error(data.message);
-                        //deferred.reject(data);
-                    }
+                    toastr.success(data.message);
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Change user password
+         * */
+        function changePass (requestData) {
+            var deferred = $q.defer();
+
+            requestData.email = userInfo.email;
+
+            accountRepository.changePass(requestData)
+                .then(function (data) {
+                    toastr.success(data.message);
+                    deferred.resolve(data);
+                })
+                .catch(function (error) {
+                    toastr.error(error.message);
+                    deferred.reject();
                 });
 
             return deferred.promise;
@@ -79,41 +90,23 @@
 
             accountRepository.loadUserInfo()
                 .then(function (data) {
-                    data.fullName = data.firstName + ' ' + data.lastName;
                     userInfo = data;
                     deferred.resolve(data);
-                })
-                .catch(function (error) {
-                    toastr.error(error.message);
-                    deferred.reject();
                 });
 
             return deferred.promise;
         }
 
         /**
-        * Change user password
-        * */
-        function changePass (requestData) {
+         * Get users list form api
+         * */
+        function fetchUsers () {
             var deferred = $q.defer();
 
-            requestData.email = userInfo.email;
-
-            accountRepository.changePass(requestData)
+            accountRepository.fetchUsers()
                 .then(function (data) {
-                    if (data.success) {
-                        $window.localStorage.setItem('token', data.token);
-
-                        toastr.success(data.message);
-                        deferred.resolve(data);
-                    } else {
-                        toastr.error(data.message);
-                        deferred.reject(data);
-                    }
-                })
-                .catch(function (error) {
-                    toastr.error(error.message);
-                    deferred.reject();
+                    users = data;
+                    deferred.resolve(data);
                 });
 
             return deferred.promise;
@@ -125,6 +118,13 @@
          * */
         function logout () {
             $window.localStorage.setItem('token', '');
+        }
+
+        /**
+         * Get current account info
+         * */
+        function getUsers () {
+            return users;
         }
 
         /**
@@ -146,11 +146,14 @@
             login: login,
             signUp: signUp,
             loadUserInfo: loadUserInfo,
+            fetchUsers: fetchUsers,
+
             changePass: changePass,
 
             // service calls
             logout: logout,
             getUserInfo: getUserInfo,
+            getUsers: getUsers,
             hasUserInfo: hasUserInfo
         };
     }

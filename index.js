@@ -20,11 +20,11 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(express.static(__dirname + '/public'));
 
+app.use('/api', api);
+
 app.get('*', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
-
-app.use('/api', api);
 
 app.listen(config.port, function (err) {
     if (err) {
