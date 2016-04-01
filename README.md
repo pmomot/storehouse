@@ -24,7 +24,12 @@ then you can just type
 
 in terminal and be free of restarting server every time after changing 'foo' to 'bar'.
 
-After this you can open http://localhost:3001/ in browser
+Before start you should also build main.css styles using
+> gulp styles
+
+command.
+
+After this you can open http://localhost:3001/ in browser if you set up database correctly.
 
 If you want to change *.scss files (because we write styles in scss), then you need to type
 
@@ -32,9 +37,18 @@ If you want to change *.scss files (because we write styles in scss), then you n
 
 in other Terminal window, to run watcher, which builds css files on the fly.
 
-## DataBase setup info
+## DataBase dev setup info
 
-will be available soon
+Get installation here: http://www.enterprisedb.com/products-services-training/pgdownload </br>
+Installer version: Version 9.2
+
+During installation enter password: AdminUser1** </br>
+Leave port field with value 5432 </br>
+Then in pgAdmin connect to DB server on localhost and create 'storehouse' database </br>
+After this you can uncomment these line in index.js to create (almost) empty tables in db.
+> require('./db_setup/setup')({ ... });
+
+Then run server and immediately comment it back.
 
 ## Useful docs
 
@@ -42,3 +56,20 @@ will be available soon
 2. http://postgresql.ru.net/manual/
 3. https://docs.angularjs.org/guide
 4. https://docs.angularjs.org/api
+
+## GIT
+
+1. Before commit run 'gulp lint' in terminal. Commit only in case of 0 problems in response.
+2. Create new branch for every task from Taiga and name it appropriately
+3. Commit as often as you need (at least once a day)
+4. After finishing task create Pull Request in base branch and assign it to a responsible person
+5. Write useful comments to commit, not just 'some updates', or 'minor fix'. Don't be afraid of long comments.
+6. To be continued...
+
+## General
+
+We are using: </br>
+1. WebStorm for development </br>
+2. ESlint for same coding style. How to setup in WebStorm: http://prntscr.com/amox9y </br>
+3. TODOs comments as " // TODO SH ... " for easing search of project-specific tasks </br>
+4. https://tree.taiga.io/project/olgafedo-foodbox/ as task tracking system </br>

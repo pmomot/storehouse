@@ -34,6 +34,8 @@ app.listen(config.port, function (err) {
     }
 });
 
+// uncomment this only to create (almost) empty tables. Use this ONLY on dev
+// require('./db_setup/setup')({User: User});
 
 //var AmountType = sequelize.define('amountTypes', {
 //    value: {
@@ -80,22 +82,6 @@ app.listen(config.port, function (err) {
 //}, {
 //    freezeTableName: true
 //});
-
-//User.sync({force: true});
-    //.then(function () {
-    //    return User.create({
-    //        firstName: 'ff',
-    //        lastName: 'll',
-    //        email: '123@mm.mm',
-    //        password: 'qweqweqwe'
-    //    });
-    //})
-    //.then(function (data) {
-    //    //console.log('result:', data);
-    //})
-    //.catch(function (error) {
-    //    console.log('error', error);
-    //});
 
 
 //AmountType

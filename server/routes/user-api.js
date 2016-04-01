@@ -102,6 +102,7 @@ module.exports = function (User) {
      * */
     function getUsers (req, res) {
         // TODO SH decide how proceed with possible req.query
+        // TODO SH exclude admins from list
         User.findAll({
             attributes: ['firstName', 'lastName', 'email']
         })
