@@ -10,9 +10,11 @@ var express = require('express'),
     SQLZ = require('sequelize'),
     sqlz = new SQLZ('postgres://postgres:AdminUser1**@localhost:5432/storehouse'),
     User = require('./server/models/user')(sqlz, SQLZ),
+    Product = require('./server/models/product')(sqlz, SQLZ),
     app = express(),
     api = require('./server/routes/api')(app, express, {
-        User: User
+        User: User,
+        Product: Product
     });
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -35,7 +37,7 @@ app.listen(config.port, function (err) {
 });
 
 // uncomment this only to create (almost) empty tables. Use this ONLY on dev
-// require('./db_setup/setup')({User: User});
+// require('./db_setup/setup')({User: User, Product: Product});
 
 //var AmountType = sequelize.define('amountTypes', {
 //    value: {
@@ -52,36 +54,6 @@ app.listen(config.port, function (err) {
 //});
 //
 //
-//var Product = sequelize.define('products', {
-//    name: {
-//        type: Sequelize.STRING
-//    },
-//    description: {
-//        type: Sequelize.TEXT
-//    },
-//    amount: {
-//        type: Sequelize.INTEGER
-//    },
-//    amountType: {
-//        type: Sequelize.INTEGER,
-//        references: {
-//            model: AmountType,
-//            key: 'id',
-//            deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
-//        }
-//    },
-//    minAmount: {
-//        type: Sequelize.INTEGER
-//    },
-//    barCode: {
-//        type: Sequelize.INTEGER
-//    },
-//    dateArrived: {
-//        type: Sequelize.DATE
-//    }
-//}, {
-//    freezeTableName: true
-//});
 
 
 //AmountType
