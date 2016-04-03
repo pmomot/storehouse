@@ -24,7 +24,8 @@ module.exports = function (models) {
                 description: 'Soo fresh and beautiful',
                 amount: 20,
                 minAmount: 5,
-                dateArrived: Date.now()
+                arrivedAt: Date.now(),
+                expiresAt: new Date(Date.now() + 30 * 24 * 3600 * 1000)
             });
         });
 };
