@@ -32,7 +32,8 @@
             $rootScope.$on('$routeChangeStart', function (event, next) {
                 if ($window.localStorage.getItem('token') === '') {
                     if (next.templateUrl !== 'app/routes/log-in/logInView.html' &&
-                        next.templateUrl !== 'app/routes/sign-up/signUpView.html') {
+                        next.templateUrl !== 'app/routes/sign-up/signUpView.html' &&
+                        next.templateUrl !== 'app/routes/forgot-password/forgotPass.html') {
 
                         $location.path('/user/log-in');
                     }
