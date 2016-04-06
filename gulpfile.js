@@ -18,6 +18,12 @@ function buildAll () {
 
 gulp.task('build', buildAll); // TODO add concat and minify to js and css
 
+gulp.task('styles', function () {
+    gulp.src('public/scss/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('public/css'));
+});
+
 // Watch task
 gulp.task('default', function () {
     gulp.watch('public/scss/**/*.scss', ['styles']);

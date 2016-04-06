@@ -37,8 +37,13 @@
                 controller: 'UsersController',
                 controllerAs: 'vm'
             })
+            .when('/products', {
+                templateUrl: 'app/routes/products/productsView.html',
+                controller: 'ProductsController',
+                controllerAs: 'vm'
+            })
             .otherwise({
-                redirectTo: '/users'
+                redirectTo: '/products'
             });
     }
 })();

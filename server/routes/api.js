@@ -10,7 +10,13 @@ var config = require('../config'),
 module.exports = function (app, express, models) {
     var api = new express.Router(),
         User = models.User,
-        userApiCalls = require('./user-api')(User);
+        userApiCalls = require('./user-api')(User),
+        productApiCalls = require('./product-api')(models.Product);
+
+    api.get('/database-reset', function (req, res) { // TODO only for dev needs, remove this on prod
+        require('../../db_setup/setup')(models);
+        res.send('Database reset done');
+    });
 
     // User section
     api.post('/user', userApiCalls.signUp);
@@ -18,9 +24,16 @@ module.exports = function (app, express, models) {
 
     api.use(verifyToken);
 
+    // User section
     api.put('/user/change-pass', userApiCalls.changePassword);
     api.get('/users', userApiCalls.getUsers);
     api.get('/user', userApiCalls.getUser);
+
+    // Product section
+    api.get('/products', productApiCalls.getProducts);
+    api.delete('/products/:id', productApiCalls.deleteProduct);
+
+    // Units of measurement section
 
     /**
      * Helper for verifying user token

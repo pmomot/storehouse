@@ -19,13 +19,20 @@ module.exports = function (models) {
 
     Product.sync({force: true})
         .then(function () {
-            return Product.create({
+            return Product.bulkCreate([{
                 name: 'Water',
                 description: 'Soo fresh and beautiful',
                 amount: 20,
                 minAmount: 5,
                 arrivedAt: Date.now(),
                 expiresAt: new Date(Date.now() + 30 * 24 * 3600 * 1000)
-            });
+            }, {
+                name: 'Potatos',
+                description: 'tasty',
+                amount: 20,
+                minAmount: 5,
+                arrivedAt: Date.now(),
+                expiresAt: new Date(Date.now() + 30 * 24 * 3600 * 1000)
+            }]);
         });
 };

@@ -1,3 +1,25 @@
 .main-content {
     padding: 70px 15px;
 }
+
+.center {
+    text-align: center;
+}
+
+span.glyphicon {
+    cursor: pointer;
+}
+table {
+    
+    td {
+        vertical-align: middle !important;
+    }
+    .alert {
+        margin-bottom: 2px;
+        padding: 5px;
+
+        &.alert-danger {
+            margin-left: 15px;
+        }
+    }
+}

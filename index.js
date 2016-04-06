@@ -38,9 +38,6 @@ app.listen(env.NODE_PORT || config.port, env.NODE_IP || 'localhost', function ()
     console.log('Application worker ' + process.pid + ' started...'); // eslint-disable-line
 });
 
-// uncomment this only to create (almost) empty tables. Use this ONLY on dev
-// require('./db_setup/setup')({User: User, Product: Product});
-
 //var AmountType = sequelize.define('amountTypes', {
 //    value: {
 //        type: Sequelize.STRING
