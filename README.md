@@ -73,3 +73,10 @@ We are using: </br>
 2. ESlint for same coding style. How to setup in WebStorm: http://prntscr.com/amox9y </br>
 3. TODOs comments as " // TODO SH ... " for easing search of project-specific tasks </br>
 4. https://tree.taiga.io/project/olgafedo-foodbox/ as task tracking system </br>
+
+## Account information
+
+Server mail:
+ email - storehousefoodbox@gmail.com
+ password - ael,jrc123
+ 

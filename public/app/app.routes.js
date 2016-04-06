@@ -37,14 +37,12 @@
                 controller: 'UsersController',
                 controllerAs: 'vm'
             })
-            // pahlava
             .when('/forgot-password', {
-                templateUrl: 'app/routes/forgot-password/forgotPass.html',
-                controller: 'ForgotController',
+                templateUrl: 'app/routes/forgot-password/IForgotView.html',
+                controller: 'IForgotController',
                 controllerAs: 'vm'
             })
-
-            // pahlavaubivca
+            
             .otherwise({
                 redirectTo: '/users'
             });
