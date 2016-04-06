@@ -3,8 +3,7 @@
  */
 'use strict';
 
-var bcrypt = require('bcrypt-nodejs'),
-    Promise = require('promise'),
+var CryptoJS = require('crypto-js'),
     config = require('../config'),
     secretKey = config.secretKey,
     jsonWebToken = require('jsonwebtoken');
@@ -51,7 +50,11 @@ module.exports = function (sqlz, SQLZ) {
         password: {
             type: SQLZ.VIRTUAL,
             set: function (val) {
+                var hash;
+
                 this.setDataValue('password', val);
+                hash = CryptoJS.AES.encrypt(val, secretKey);
+                this.setDataValue('passwordHash', hash.toString());
             },
             validate: {
                 isLongEnough: function (val) {
@@ -156,26 +159,10 @@ module.exports = function (sqlz, SQLZ) {
             });
     }
 
-    /**
-     * Hook for updating passwordHash field, called every time on create and update User
-     * @param {Object} user - instance
-     * */
-    function passHashHook (user) { // save passwordHash for user
-        return new Promise(function (fulfill, reject) {
-            bcrypt.hash(user.dataValues.password, null, null, function (err, hash) {
-                if (err) {
-                    reject(err);
-                }
-                user.setDataValue('passwordHash', hash);
-                fulfill();
-            });
-        });
-    }
-
     User = sqlz.define('users', columns, {
         instanceMethods: {
             comparePassword: function (password) {
-                return bcrypt.compareSync(password, this.passwordHash);
+                return CryptoJS.AES.decrypt(this.passwordHash, secretKey).toString(CryptoJS.enc.Utf8) === password;
             },
             getInfo: function () {
                 return {
@@ -192,9 +179,6 @@ module.exports = function (sqlz, SQLZ) {
             changePassword: changePassword
         }
     }, options);
-
-    User.addHook('beforeCreate', passHashHook);
-    User.addHook('beforeUpdate', passHashHook);
 
     return User;
 };

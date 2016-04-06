@@ -20,7 +20,7 @@ You can install it with this command
 
 then you can just type
 
->npm start
+>npm run dev
 
 in terminal and be free of restarting server every time after changing 'foo' to 'bar'.
 
