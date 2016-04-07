@@ -45,10 +45,9 @@ Installer version: Version 9.2
 During installation enter password: AdminUser1** </br>
 Leave port field with value 5432 </br>
 Then in pgAdmin connect to DB server on localhost and create 'storehouse' database </br>
-After this you can uncomment these line in index.js to create (almost) empty tables in db.
-> require('./db_setup/setup')({ ... });
+To reset database, type in browser
 
-Then run server and immediately comment it back.
+> localhost:3001/api/database-reset
 
 ## Useful docs
 

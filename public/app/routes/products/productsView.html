@@ -1,5 +1,9 @@
 <sh-header></sh-header>
 <div class="main-content">
+    <p>
+        <button type="button" class="btn btn-primary"
+                ng-click="vm.showPopup('create')">Add new product</button>
+    </p>
     <div class="table-responsive" ng-if="vm.products().length > 0">
         <table class="table table-striped table-hover">
             <thead>
@@ -10,16 +14,31 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="p in vm.products()">
+            <tr ng-repeat="p in vm.products()" data-id="{{ p.uuid }}">
                 <td>{{ p.name }}</td>
                 <td>{{ p.description }}</td>
                 <td class="center">
-                    <span class="alert alert-info glyphicon glyphicon-edit"></span>
-                    <span class="alert alert-danger glyphicon glyphicon-remove" ng-click="vm.deleteProduct($event, p.uuid)"></span>
+                    <span class="alert alert-info glyphicon glyphicon-edit"
+                          ng-click="vm.showPopup('update', p)"></span>
+                    <span class="alert alert-danger glyphicon glyphicon-remove"
+                          ng-click="vm.showPopup('remove', p)"></span>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
     <div ng-if="vm.products().length === 0">There are no products in storehouse :(</div>
+
+    <sh-modal title="vm.modalTitle" visible="vm.modalShow" ng-if="vm.modalType !== 'remove'"
+            footer="vm.modalButtonsOptions" model="vm.modalItem" type="vm.modalType">
+        <form role="form">
+            Here will be create/edit content
+        </form>
+    </sh-modal>
+    <sh-modal title="vm.modalTitle" visible="vm.modalShow" ng-if="vm.modalType === 'remove'" size="small"
+            footer="vm.modalButtonsOptions" model="vm.modalItem" type="vm.modalType">
+        <form role="form">
+            <p>Are you sure you want to remove product: <b>{{ vm.modalItem.name }}</b> ?</p>
+        </form>
+    </sh-modal>
 </div>

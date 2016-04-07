@@ -35,7 +35,7 @@
             }
             $rootScope.processing = false;
             if (payload.status === 403) {
-                $location.hash('#/user/log-in');
+                $location.path('/user/log-in');
             }
         }
 
