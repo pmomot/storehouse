@@ -31,14 +31,30 @@
 
     <sh-modal title="vm.modalTitle" visible="vm.modalShow" ng-if="vm.modalType !== 'remove'"
             footer="vm.modalButtonsOptions" model="vm.modalItem" type="vm.modalType">
-        <form role="form">
-            Here will be create/edit content
-        </form>
+        <div class="form-group" ng-class="{ 'has-error' : modalForm.name.$invalid && !modalForm.name.$pristine}">
+            <label class="control-label" for="name">Name *</label>
+            <input type="text" class="form-control" id="name" name="name"
+                   ng-model="vm.modalItem.name" ng-minlength="10">
+            <span class="help-block" ng-show="modalForm.name.$error.minlength">Name is empty.</span>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="description">Description *</label>
+            <input type="text" class="form-control" id="description" required
+                   ng-model="vm.modalItem.description">
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="arrivedAt">Date Arrived *</label>
+            <input type="date" class="form-control" id="arrivedAt" required
+                   ng-model="vm.modalItem.arrivedAt">
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="expiresAt">Date Expires *</label>
+            <input type="date" class="form-control" id="expiresAt" required
+                   ng-model="vm.modalItem.expiresAt">
+        </div>
     </sh-modal>
     <sh-modal title="vm.modalTitle" visible="vm.modalShow" ng-if="vm.modalType === 'remove'" size="small"
             footer="vm.modalButtonsOptions" model="vm.modalItem" type="vm.modalType">
-        <form role="form">
-            <p>Are you sure you want to remove product: <b>{{ vm.modalItem.name }}</b> ?</p>
-        </form>
+        <p>Are you sure you want to remove product: <b>{{ vm.modalItem.name }}</b> ?</p>
     </sh-modal>
 </div>

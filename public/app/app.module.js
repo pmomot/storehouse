@@ -7,6 +7,7 @@
     angular.module('StoreHouse',
         [
             'ngRoute',
+            'ngMessages',
             'toastr',
             'StoreHouse.Services',
             'StoreHouse.Repositories',

@@ -33,7 +33,8 @@
                 }
 
                 scope.size = getSizeClass;
-                scope.buttonClick = buttonClick;
+                scope.submit = submit;
+                scope.close = close;
 
                 scope.$watch(attrs.visible, function (value) {
                     angular.element(element).modal(value === true ? 'show' : 'hide');
@@ -45,7 +46,8 @@
 
                 scope.$watch(attrs.footer, function (value) {
                     if (typeof value !== 'undefined') {
-                        scope.buttons = value.buttons;
+                        scope.submitButton = value.submitButton || null;
+                        scope.cancelButton = value.cancelButton;
                         scope.callback = value.callback;
                     }
                 });
@@ -70,16 +72,17 @@
                 }
 
                 /**
-                 * Footer button clicked callback
+                 * Form submit event callback
                  * */
-                function buttonClick ($event) {
+                function submit () {
+                    console.log('submit');
+
+                    // TODO SH add validation here
+                    // TODO SH on iphone required not working
+
                     close();
-
-                    if ($event.target.type !== 'submit') {
-                        return;
-                    }
-
                     if (typeof scope.callback === 'function') {
+                        console.log('run callback');
                         scope.callback(scope.type);
                     }
                 }

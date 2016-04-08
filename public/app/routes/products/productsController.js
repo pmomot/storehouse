@@ -55,32 +55,38 @@
 
             vm.modalType = type;
             vm.modalTitle = 'Product ' + type;
-            vm.modalItem = p || {};
+            vm.modalItem = p || {
+                name: '',
+                description: '',
+                amount: 0,
+                minAmount: 0,
+                arrivedAt: new Date(),
+                expiresAt: new Date()
+            };
 
             if (type === 'remove') {
                 submitButton = {
                     buttonType: 'submit',
-                    caption: 'Yes',
+                    value: 'Yes',
                     class: 'btn-danger'
                 };
             } else {
                 submitButton = {
                     buttonType: 'submit',
-                    caption: 'Submit',
+                    value: 'Submit',
                     class: 'btn-primary'
                 };
             }
 
             vm.modalButtonsOptions = {
-                buttons: [
-                    {
-                        buttonType: 'button',
-                        caption: 'Cancel',
-                        class: 'btn-default'
-                    },
-                    submitButton
-                ],
-                callback: buttonCallback
+                cancelButton: {
+                    buttonType: 'button',
+                    value: 'Cancel',
+                    class: 'btn-default',
+                    callback: 'close'
+                },
+                submitButton: submitButton,
+                callback: submitCallback
             };
             vm.modalShow = true;
         }
@@ -89,11 +95,17 @@
          * Function called from modal in case of submit button click
          * @param {String} type - action type
          * */
-        function buttonCallback (type) {
+        function submitCallback (type) {
 
             switch (type) {
                 case 'remove':
                     deleteProduct(vm.modalItem.uuid);
+                    break;
+                case 'update':
+                    console.log('update', vm.modalItem);
+                    break;
+                case 'create':
+                    console.log('create', vm.modalItem);
                     break;
             }
         }
