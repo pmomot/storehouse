@@ -42,9 +42,13 @@ module.exports = function (sqlz, SQLZ) {
             type: SQLZ.INTEGER,
             field: 'bar_code'
         },
-        dateArrived: {
+        arrivedAt: {
             type: SQLZ.DATE,
-            field: 'date_arrived'
+            field: 'arrived_at'
+        },
+        expiresAt: { // TODO SH maybe store only date, not time
+            type: SQLZ.DATE,
+            field: 'expires_at'
         }
     };
 

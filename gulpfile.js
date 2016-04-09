@@ -1,11 +1,22 @@
 /**
- * Created by petermomot on 3/29/16.
+ * Created by pmomot on 3/29/16.
  */
 'use strict';
 
 var gulp = require('gulp'),
     sass = require('gulp-sass'),
     eslint = require('gulp-eslint');
+
+/**
+ * Build css and js (later) files
+ * */
+function buildAll () {
+    gulp.src('public/scss/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('public/css'));
+}
+
+gulp.task('build', buildAll); // TODO add concat and minify to js and css
 
 gulp.task('styles', function () {
     gulp.src('public/scss/**/*.scss')
@@ -34,3 +45,5 @@ gulp.task('lint', function () {
         // lint error, return the stream and pipe to failAfterError last.
         .pipe(eslint.failAfterError());
 });
+
+module.exports = buildAll;
