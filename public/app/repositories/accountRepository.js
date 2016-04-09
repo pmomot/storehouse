@@ -13,12 +13,12 @@
     /**
      * Account Repository
      * */
-    function accountRepository ($http, $q) {
+    function accountRepository($http, $q) {
 
         /**
          * Log in user to portal
          * */
-        function login (params) {
+        function login(params) {
             var deferred = $q.defer();
 
             $http.post('/api/user/log-in', params)
@@ -38,7 +38,7 @@
         /**
          * Create new user
          * */
-        function signUp (params) {
+        function signUp(params) {
             var deferred = $q.defer();
 
             $http.post('/api/user', params)
@@ -55,10 +55,32 @@
             return deferred.promise;
         }
 
+
+        /**
+         *restore user password
+         * */
+
+        function restorePassword(params) {
+            var deferred = $q.defer();
+            
+            $http.post('/api/user/forgot-password', params)
+                .then(function (result) {
+                    if (result.data.success) {
+                        deferred.resolve(result.data);
+                    } else {
+                        deferred.reject(result.data);
+                    }
+                }, function (errors) {
+                    deferred.reject(errors.data);
+                });
+
+            return deferred.promise;
+        }
+
         /**
          * Change user password
          * */
-        function changePass (params) {
+        function changePass(params) {
             var deferred = $q.defer();
 
             $http.put('/api/user/change-pass', params)
@@ -78,7 +100,7 @@
         /**
          * Get user data form api
          * */
-        function loadUserInfo () {
+        function loadUserInfo() {
             var deferred = $q.defer();
 
             $http.get('/api/user')
@@ -94,7 +116,7 @@
         /**
          * Get users list form api
          * */
-        function fetchUsers () {
+        function fetchUsers() {
             var deferred = $q.defer();
 
             $http.get('/api/users')
@@ -112,7 +134,8 @@
             signUp: signUp,
             changePass: changePass,
             loadUserInfo: loadUserInfo,
-            fetchUsers: fetchUsers
+            fetchUsers: fetchUsers,
+            restorePassword: restorePassword
         };
     }
 

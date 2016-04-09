@@ -10,7 +10,7 @@ module.exports = function (User) {
      * @param {Object} req - request
      * @param {Object} res - response
      * */
-    function signUp (req, res) {
+    function signUp(req, res) {
         User
             .signUp(req.body)
             .then(function () {
@@ -32,7 +32,7 @@ module.exports = function (User) {
      * @param {Object} req - request
      * @param {Object} res - response
      * */
-    function logIn (req, res) {
+    function logIn(req, res) {
         User
             .logIn(req.body)
             .then(function (params) {
@@ -56,7 +56,7 @@ module.exports = function (User) {
      * @param {Object} req - request
      * @param {Object} res - response
      * */
-    function changePassword (req, res) {
+    function changePassword(req, res) {
         User
             .changePassword(req.body)
             .then(function () {
@@ -74,11 +74,34 @@ module.exports = function (User) {
     }
 
     /**
+     * send restore link for password
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function restorePassword(req, res) {
+        User
+            .restorePassword(req.body)
+            .then(function () {
+                res.send({
+                    message: 'send restore link',
+                    success: true
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+    
+
+    /**
      * Get user info
      * @param {Object} req - request
      * @param {Object} res - response
      * */
-    function getUser (req, res) {
+    function getUser(req, res) {
         User.find({
             where: {
                 uuid: req.decoded.uuid
@@ -100,7 +123,7 @@ module.exports = function (User) {
      * @param {Object} req - request
      * @param {Object} res - response
      * */
-    function getUsers (req, res) {
+    function getUsers(req, res) {
         // TODO SH decide how proceed with possible req.query
         // TODO SH exclude admins from list
         User.findAll({
@@ -122,6 +145,7 @@ module.exports = function (User) {
         logIn: logIn,
         changePassword: changePassword,
         getUser: getUser,
-        getUsers: getUsers
+        getUsers: getUsers,
+        restorePassword: restorePassword
     };
 };

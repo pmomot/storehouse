@@ -13,7 +13,7 @@
     /**
      * Accounts processing service
      * */
-    function accountService ($q, $window, accountRepository, toastr) {
+    function accountService($q, $window, accountRepository, toastr) {
         var userInfo = {}, users = [];
 
         if (!$window.localStorage.getItem('token')) {
@@ -23,7 +23,7 @@
         /**
          * Log in user to portal
          * */
-        function login (email, password) {
+        function login(email, password) {
             var deferred = $q.defer();
 
             accountRepository.login({
@@ -44,7 +44,7 @@
         /**
          * Create new user
          * */
-        function signUp (requestData) {
+        function signUp(requestData) {
             var deferred = $q.defer();
 
             accountRepository.signUp(requestData)
@@ -59,7 +59,7 @@
         /**
          * Change user password
          * */
-        function changePass (requestData) {
+        function changePass(requestData) {
             var deferred = $q.defer();
 
             requestData.email = userInfo.email;
@@ -78,9 +78,27 @@
         }
 
         /**
+         * restore user password
+         * */
+        function restorePassword(requestData) {
+            var deferred = $q.defer();
+            accountRepository.restorePassword(requestData)
+                .then(function (data) {
+                    toastr.success(data.message);
+                    deferred.resolve(data);
+                })
+                .catch(function (error) {
+                    toastr.error(error.message);
+                    deferred.reject();
+                });
+
+            return deferred.promise;
+        }
+
+        /**
          * Get user data form api
          * */
-        function loadUserInfo () {
+        function loadUserInfo() {
             var deferred = $q.defer();
 
             if ($window.localStorage.getItem('token') === '') {
@@ -100,7 +118,7 @@
         /**
          * Get users list form api
          * */
-        function fetchUsers () {
+        function fetchUsers() {
             var deferred = $q.defer();
 
             accountRepository.fetchUsers()
@@ -116,28 +134,28 @@
         /**
          * Log out of portal
          * */
-        function logout () {
+        function logout() {
             $window.localStorage.setItem('token', '');
         }
 
         /**
          * Get current account info
          * */
-        function getUsers () {
+        function getUsers() {
             return users;
         }
 
         /**
          * Get current account info
          * */
-        function getUserInfo () {
+        function getUserInfo() {
             return userInfo;
         }
 
         /**
          * Verify that service has user info saved
          * */
-        function hasUserInfo () {
+        function hasUserInfo() {
             return Object.keys(userInfo).length > 0;
         }
 
@@ -147,6 +165,8 @@
             signUp: signUp,
             loadUserInfo: loadUserInfo,
             fetchUsers: fetchUsers,
+
+            restorePassword: restorePassword,
 
             changePass: changePass,
 

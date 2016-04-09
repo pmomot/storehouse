@@ -16,7 +16,8 @@ if (production) {
     config = {
         port: 3001,
         secretKey: 'LoremIpsumDolorSitAmet',
-        dbConnection: 'postgres://postgres:AdminUser1**@localhost:5432/storehouse'
+        dbConnection: 'postgres://postgres:AdminUser1**@localhost:5432/storehouse',
+        mail: 'storehousefoodbox@gmail.com' // mail box with of send mail for user
     };
 }
 

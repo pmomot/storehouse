@@ -12,7 +12,7 @@ module.exports = function (app, express, models) {
         User = models.User,
         userApiCalls = require('./user-api')(User),
         productApiCalls = require('./product-api')(models.Product);
-
+  
     api.get('/database-reset', function (req, res) { // TODO only for dev needs, remove this on prod
         require('../../db_setup/setup')(models);
         res.send('Database reset done');
@@ -21,6 +21,7 @@ module.exports = function (app, express, models) {
     // User section
     api.post('/user', userApiCalls.signUp);
     api.post('/user/log-in', userApiCalls.logIn);
+    api.post('/user/forgot-password', userApiCalls.restorePassword);
 
     api.use(verifyToken);
 
@@ -32,7 +33,7 @@ module.exports = function (app, express, models) {
     // Product section
     api.get('/products', productApiCalls.getProducts);
     api.delete('/products/:id', productApiCalls.deleteProduct);
-
+    
     // Units of measurement section
 
     /**

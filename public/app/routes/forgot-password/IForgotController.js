@@ -12,24 +12,22 @@
     IForgotController.$inject = ['$location', 'accountService'];
 
     /**
-     * User Log In Controller
+     * User forgot Controller
      * */
-    function IForgotController ($location, accountService) {
+    function IForgotController($location, accountService) {
         var vm = this;
-
-      /*  vm.data = {};
+        
+        vm.data = {};
         vm.sendRequest = sendRequest;
 
-        /!**
-         * Send user log in request
-         * *!/
         function sendRequest() {
-            accountService.login(vm.data.email, vm.data.password)
+            accountService.restorePassword(vm.data)
+                
                 .then(function () {
                     $location.path('/');
                 }
             );
-        }*/
+        }
     }
 
 })();
