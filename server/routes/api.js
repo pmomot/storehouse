@@ -11,7 +11,8 @@ module.exports = function (app, express, models) {
     var api = new express.Router(),
         User = models.User,
         userApiCalls = require('./user-api')(User),
-        productApiCalls = require('./product-api')(models.Product);
+        productApiCalls = require('./product-api')(models.Product),
+        unitApiCalls = require('./unit-api')(models.Unit);
 
     api.get('/database-reset', function (req, res) { // TODO only for dev needs, remove this on prod
         require('../../db_setup/setup')(models);
@@ -32,6 +33,12 @@ module.exports = function (app, express, models) {
     // Product section
     api.get('/products', productApiCalls.getProducts);
     api.delete('/products/:id', productApiCalls.deleteProduct);
+
+    // Units section
+    api.get('/units', unitApiCalls.getUnits);
+    api.post('/units', unitApiCalls.createUnit);
+    api.put('/units/:id', unitApiCalls.updateUnit);
+    api.delete('/units/:id', unitApiCalls.deleteUnit);
 
     // Units of measurement section
 
