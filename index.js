@@ -32,6 +32,8 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+// TODO SH create password restoration page
+
 app.use('/api', api);
 
 app.listen(env.NODE_PORT || config.port, env.NODE_IP || '0.0.0.0', function () {

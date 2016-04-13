@@ -7,7 +7,6 @@ var CryptoJS = require('crypto-js'),
     config = require('../config'),
     secretKey = config.secretKey,
     jsonWebToken = require('jsonwebtoken'),
-
     nodemailer = require('nodemailer');
 
 /**
@@ -26,16 +25,14 @@ function createToken (user) { // TODO SH check if key expires
 }
 
 /**
- * Generate token from restore user password
+ * Generate token for user password restoration
  * @param {Object} user - user info
 * */
 function createRestoreToken (user) {
-    return jsonWebToken.sign({
+    return encodeURIComponent(CryptoJS.AES.encrypt(JSON.stringify({
         uuid: user.uuid,
-        expireTime: new Date().getTime()
-    }, secretKey, {
-        expiresInMinute: 720
-    });
+        expiresAt: new Date(Date.now() + config.passwordRestorationTime).getTime()
+    }), secretKey).toString());
 }
 
 module.exports = function (sqlz, SQLZ) {
@@ -176,11 +173,13 @@ module.exports = function (sqlz, SQLZ) {
     }
 
     /**
-     * send to user email message
-     * @param {Object} body - user email
+     * Send password restoration link via email
+     * @param {Object} body - request body with user email
+     * @param {String} hostUrl - base url to server
      * */
-    function restorePassword (body) {
-        var self = this; // eslint-disable-line no-invalid-this
+    function forgotPassword (body, hostUrl) {
+        var self = this, // eslint-disable-line no-invalid-this
+            transporter, mailOptions, html;
 
         return self.find({
             where: {
@@ -189,32 +188,59 @@ module.exports = function (sqlz, SQLZ) {
         })
             .then(function (data) {
                 if (data) {
-                    var transporter = nodemailer.createTransport(config.transporterNodemail),
-                    // create reusable transporter object using the default SMTP transport
-                    // setup e-mail data with unicode symbols
-                        mailOptions = {
-                            from: '"foodbox&storehouse"<storehousefoodbox@gmail.com>', // sender address
-                            to: '"' + data.email + '"', // list of receivers
-                            subject: 'Hell', // Subject line
-                            //text: 'Hell world<br> http://localhost:3001/#/forgot-password?token=' + createRestoreToken(data), // plaintext body
-                            text: 'Hell world<br> http://localhost:3001/app/routes/forgot-password/forpass.html?token=' + createRestoreToken(data), // plaintext body
-                            tml: '<b>Hell world</b>' // html body
-                        };
+                    transporter = nodemailer.createTransport(config.transporterNodemail);
 
-                    // send mail with defined transport object
-                    return transporter.sendMail(mailOptions, function (error,info) {
-                        if(error){
-                            return console.log(error);
-                        }
-                        console.log('Message sent: ' + info.response);
-                    });
+                    html = 'Hi! To restore password, please click <a href="';
+                    html += hostUrl + '/api/user/restore-password?token=' + createRestoreToken(data) + '"';
+                    html += '>this link</a>';
+
+                    mailOptions = {
+                        from: '"foodbox&storehouse"<storehousefoodbox@gmail.com>',
+                        to: '"' + data.email + '"',
+                        subject: 'Store House restore password',
+                        html: html
+                    };
+
+                    return transporter.sendMail(mailOptions, function () {});
                 } else {
-                    throw new Error('Account with this mail is absent');
+                    throw new Error('Account with this mail does not exist');
                 }
             });
-
     }
 
+    /**
+     * Verifying token from restore link
+     * @param {String} token - encrypted token with user id and expiresAt time
+     * */
+    function verifyRestorationToken (token) {
+        var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
+
+        decrypted = JSON.parse(decrypted);
+
+        return User.find({
+            where: {
+                uuid: decrypted.uuid
+            }
+        })
+            .then(function (user) {
+                if (user) {
+                    if (decrypted.expiresAt - Date.now() >= 0) {
+                        return 'Everything ok!';
+                    } else {
+                        throw new Error('Password restoration link has been expired');
+                    }
+                } else {
+                    throw new Error('User does not exist');
+                }
+            });
+    }
+
+    /**
+     * Create new (restore) password
+     * */
+    function restorePassword () {
+        // TODO SH to be developed
+    }
 
     User = sqlz.define('users', columns, {
         instanceMethods: {
@@ -234,6 +260,8 @@ module.exports = function (sqlz, SQLZ) {
             signUp: signUp,
             logIn: logIn,
             changePassword: changePassword,
+            forgotPassword: forgotPassword,
+            verifyRestorationToken: verifyRestorationToken,
             restorePassword: restorePassword
         }
     }, options);

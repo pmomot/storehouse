@@ -23,11 +23,10 @@ module.exports = function (app, express, models) {
     
     api.post('/user', userApiCalls.signUp);
     api.post('/user/log-in', userApiCalls.logIn);
-    api.post('/user/forgot-password', userApiCalls.restorePassword);
-    app.get('/app/routes/forgot-password/forpass.html', userApiCalls.verifyRestoreToken);//app - becose api kaka, not work with my request and not call
-    // verifyRestoreToken function
-   
-    
+    api.post('/user/forgot-password', userApiCalls.forgotPassword);
+    api.get('/user/restore-password', userApiCalls.verifyRestorationToken);
+    api.post('/user/restore-password', userApiCalls.restorePassword);
+
     api.use(verifyToken);
     
     // User section

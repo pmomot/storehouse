@@ -73,16 +73,16 @@ module.exports = function (User) {
     }
 
     /**
-     * send restore link for password
+     * Send password restoration link via email
      * @param {Object} req - request
      * @param {Object} res - response
      * */
-    function restorePassword (req, res) {
+    function forgotPassword (req, res) {
         User
-            .restorePassword(req.body)
+            .forgotPassword(req.body, req.protocol + '://' + req.get('host'))
             .then(function () {
                 res.send({
-                    message: 'send restore link',
+                    message: 'Restoration link has been sent',
                     success: true
                 });
             })
@@ -95,62 +95,46 @@ module.exports = function (User) {
     }
     
     /**
-     * verifing token from restore link
+     * Verifying token from restore link
      * @param {Object} req - request
      * @param {Object} res - response
-    * */
-    function verifyRestoreToken (req, res) {
-        var config = require('../config'),
-            jsonWebToken = require('jsonwebtoken'),
-            secretKey = config.secretKey,
-            token = req.query.token,
-            diffTime = 0, // time between current and expire time token
-            currentTime = new Date().getTime();
+     * */
+    function verifyRestorationToken (req, res) {
+        var token = req.query.token;
 
         if (token) {
-            jsonWebToken.verify(token, secretKey, function (err, decoded) {
-                if (err) {
-                    res.status(403).send({
-                        success: false,
-                        message: 'Failed to authenticate'
+            User.verifyRestorationToken(token)
+                .then(function () {
+                    res.send({
+                        success: true,
+                        message: 'Now you can type new password'
                     });
-                } else {
-                    User.find({
-                        where: {
-                            uuid: decoded.uuid
-                        }
-                    })
-                        .then(function (user) {
-                            if (user) {
-                                diffTime = currentTime - decoded.expireTime;
-                                if (diffTime < 60000) { // for test setup 60 second delay 
-                                    req.decoded = decoded;
-                                    res.send({
-                                        message: 'OK',
-                                        success: true
-                                    });
-                                } else {
-                                    throw new Error('duration of the restoration link passed');
-                                }
-                            } else {
-                                throw new Error('User does not exist');
-                            }
-                        })
-                        .catch(function (error) {
-                            res.status(403).send({
-                                success: false,
-                                message: error.message
-                            });
-                        });
-                }
-            });
+                })
+                .catch(function (error) {
+                    res.send({
+                        success: false,
+                        message: error.message
+                    });
+                });
         } else {
-            res.status(403).send({
+            res.send({
                 success: false,
                 message: 'No token provided'
             });
         }
+    }
 
+    /**
+     * Set new password for user
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function restorePassword (req, res) {
+        // TODO SH dev this functionality
+        res.send({
+            message: 'Password has been restored',
+            success: true
+        });
     }
 
     /**
@@ -201,9 +185,10 @@ module.exports = function (User) {
         signUp: signUp,
         logIn: logIn,
         changePassword: changePassword,
-        getUser: getUser,
-        getUsers: getUsers,
+        forgotPassword: forgotPassword,
+        verifyRestorationToken: verifyRestorationToken,
         restorePassword: restorePassword,
-        verifyRestoreToken: verifyRestoreToken
+        getUser: getUser,
+        getUsers: getUsers
     };
 };
