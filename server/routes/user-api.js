@@ -77,8 +77,12 @@ module.exports = function (User) {
      * @param {Object} req - request
      * @param {Object} res - response
      * */
+   
+
     function forgotPassword (req, res) {
         User
+            .restorePassword(req.body)
+
             .forgotPassword(req.body, req.protocol + '://' + req.get('host'))
             .then(function () {
                 res.send({
