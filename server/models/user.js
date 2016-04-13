@@ -8,16 +8,13 @@ var CryptoJS = require('crypto-js'),
     secretKey = config.secretKey,
     jsonWebToken = require('jsonwebtoken'),
 
-    nodemailer = require('nodemailer'),
-    mailConfig = config.mail,
-    smtpTransport = require('nodemailer-smtp-transport');
-//chromelogger = require('chromelogger');//trying debuggs backend
+    nodemailer = require('nodemailer');
 
 /**
  * Generates token from user params
  * @param {Object} user - userInfo
  * */
-function createToken(user) { // TODO SH check if key expires
+function createToken (user) { // TODO SH check if key expires
     return jsonWebToken.sign({
         uuid: user.uuid,
         firstName: user.firstName,
@@ -25,6 +22,19 @@ function createToken(user) { // TODO SH check if key expires
         email: user.email
     }, secretKey, {
         expiresInMinute: 1440
+    });
+}
+
+/**
+ * Generate token from restore user password
+ * @param {Object} user - user info
+* */
+function createRestoreToken (user) {
+    return jsonWebToken.sign({
+        uuid: user.uuid,
+        expireTime: new Date().getTime()
+    }, secretKey, {
+        expiresInMinute: 720
     });
 }
 
@@ -79,7 +89,7 @@ module.exports = function (sqlz, SQLZ) {
      * Sign Up in service
      * @param {Object} body - new user info
      * */
-    function signUp(body) {
+    function signUp (body) {
         var self = this; // eslint-disable-line no-invalid-this
 
         return self.find({
@@ -105,7 +115,7 @@ module.exports = function (sqlz, SQLZ) {
      * Log into system
      * @param {Object} body - user email and pass
      * */
-    function logIn(body) {
+    function logIn (body) {
         var self = this; // eslint-disable-line no-invalid-this
 
         return self.find({
@@ -138,7 +148,7 @@ module.exports = function (sqlz, SQLZ) {
      * Change user password
      * @param {Object} body - user email, old pass and new pass
      * */
-    function changePassword(body) {
+    function changePassword (body) {
         var self = this; // eslint-disable-line no-invalid-this
 
         return self.find({
@@ -166,10 +176,10 @@ module.exports = function (sqlz, SQLZ) {
     }
 
     /**
-     * send to user email message 
+     * send to user email message
      * @param {Object} body - user email
      * */
-    function restorePassword(body) {
+    function restorePassword (body) {
         var self = this; // eslint-disable-line no-invalid-this
 
         return self.find({
@@ -179,28 +189,27 @@ module.exports = function (sqlz, SQLZ) {
         })
             .then(function (data) {
                 if (data) {
-                    // var transporter = nodemailer.createTransport(smtpTransport(mailConfig));
-                    var transporter = nodemailer.createTransport('smtps://storehousefoodbox%40gmail.com:ael,jrc123@smtp.gmail.com');
+                    var transporter = nodemailer.createTransport(config.transporterNodemail),
                     // create reusable transporter object using the default SMTP transport
-
                     // setup e-mail data with unicode symbols
-                    var mailOptions = {
-                        from: '"foodbox&storehouse"<storehousefoodbox@gmail.com>', // sender address
-                        to: '"' + data.email + '"', // list of receivers
-                        subject: 'Hell', // Subject line
-                        text: 'Hell world', // plaintext body
-                        tml: '<b>Hell world</b>' // html body
-                    };
+                        mailOptions = {
+                            from: '"foodbox&storehouse"<storehousefoodbox@gmail.com>', // sender address
+                            to: '"' + data.email + '"', // list of receivers
+                            subject: 'Hell', // Subject line
+                            //text: 'Hell world<br> http://localhost:3001/#/forgot-password?token=' + createRestoreToken(data), // plaintext body
+                            text: 'Hell world<br> http://localhost:3001/app/routes/forgot-password/forpass.html?token=' + createRestoreToken(data), // plaintext body
+                            tml: '<b>Hell world</b>' // html body
+                        };
 
                     // send mail with defined transport object
-                    transporter.sendMail(mailOptions, function (error, info) {
-                        if (error) {
+                    return transporter.sendMail(mailOptions, function (error,info) {
+                        if(error){
                             return console.log(error);
                         }
                         console.log('Message sent: ' + info.response);
                     });
                 } else {
-                    return;
+                    throw new Error('Account with this mail is absent');
                 }
             });
 

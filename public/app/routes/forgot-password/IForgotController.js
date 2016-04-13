@@ -14,13 +14,16 @@
     /**
      * User forgot Controller
      * */
-    function IForgotController($location, accountService) {
+    function IForgotController ($location, accountService) {
         var vm = this;
         
         vm.data = {};
         vm.sendRequest = sendRequest;
-
-        function sendRequest() {
+        
+        /**
+         * submit function send mail data from input
+         * */
+        function sendRequest () {
             accountService.restorePassword(vm.data)
                 
                 .then(function () {

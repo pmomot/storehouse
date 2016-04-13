@@ -17,7 +17,7 @@ if (production) {
         port: 3001,
         secretKey: 'LoremIpsumDolorSitAmet',
         dbConnection: 'postgres://postgres:AdminUser1**@localhost:5432/storehouse',
-        mail: 'storehousefoodbox@gmail.com' // mail box with of send mail for user
+        transporterNodemail: 'smtps://storehousefoodbox%40gmail.com:ael,jrc123@smtp.gmail.com'
     };
 }
 

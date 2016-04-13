@@ -6,6 +6,7 @@
 var config = require('../config'),
     jsonWebToken = require('jsonwebtoken'),
     secretKey = config.secretKey;
+   
 
 module.exports = function (app, express, models) {
     var api = new express.Router(),
@@ -19,12 +20,16 @@ module.exports = function (app, express, models) {
     });
 
     // User section
+    
     api.post('/user', userApiCalls.signUp);
     api.post('/user/log-in', userApiCalls.logIn);
     api.post('/user/forgot-password', userApiCalls.restorePassword);
-
+    app.get('/app/routes/forgot-password/forpass.html', userApiCalls.verifyRestoreToken);//app - becose api kaka, not work with my request and not call
+    // verifyRestoreToken function
+   
+    
     api.use(verifyToken);
-
+    
     // User section
     api.put('/user/change-pass', userApiCalls.changePassword);
     api.get('/users', userApiCalls.getUsers);
