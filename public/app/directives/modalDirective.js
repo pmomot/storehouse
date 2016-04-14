@@ -9,6 +9,7 @@
         .directive('shModal', modal);
 
     modal.$inject = ['productService'];
+    // TODO SH rewrite this, and update all corresponding controllers
 
     /**
      * General Modal Directive
@@ -75,14 +76,11 @@
                  * Form submit event callback
                  * */
                 function submit () {
-                    console.log('submit');
-
                     // TODO SH add validation here
                     // TODO SH on iphone required not working
 
                     close();
                     if (typeof scope.callback === 'function') {
-                        console.log('run callback');
                         scope.callback(scope.type);
                     }
                 }

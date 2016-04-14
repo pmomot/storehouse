@@ -5,7 +5,8 @@
 
 module.exports = function (models) {
     var User = models.User,
-        Product = models.Product;
+        Product = models.Product,
+        Unit = models.Unit;
 
     User.sync({force: true})
         .then(function () {
@@ -15,6 +16,20 @@ module.exports = function (models) {
                 email: 'root@admin.mail',
                 password: 'rootpass'
             });
+        });
+
+    Unit.sync({force: true})
+        .then(function () {
+            return Unit.bulkCreate([{
+                name: 'pcs',
+                description: 'pieces'
+            }, {
+                name: 'bot',
+                description: 'bottles'
+            }, {
+                name: 'kg',
+                description: 'kilograms'
+            }]);
         });
 
     Product.sync({force: true})

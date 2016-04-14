@@ -11,10 +11,12 @@ var express = require('express'),
     sqlz = new SQLZ(config.dbConnection),
     User = require('./server/models/user')(sqlz, SQLZ),
     Product = require('./server/models/product')(sqlz, SQLZ),
+    Unit = require('./server/models/unit')(sqlz, SQLZ),
     app = express(),
     api = require('./server/routes/api')(app, express, {
         User: User,
-        Product: Product
+        Product: Product,
+        Unit: Unit
     }),
     env = process.env;
 
@@ -37,26 +39,3 @@ app.use('/api', api);
 app.listen(env.NODE_PORT || config.port, env.NODE_IP || '0.0.0.0', function () {
     console.log('Application worker ' + process.pid + ' started...'); // eslint-disable-line
 });
-
-//var AmountType = sequelize.define('amountTypes', {
-//    value: {
-//        type: Sequelize.STRING
-//    },
-//    uaName: {
-//        type: Sequelize.STRING
-//    },
-//    engName: {
-//        type: Sequelize.STRING
-//    }
-//}, {
-//    freezeTableName: true
-//});
-//
-//
-
-
-//AmountType
-//    .sync({force: true})
-//    .then(function () {
-//        return Product.sync({force: true})
-//    });

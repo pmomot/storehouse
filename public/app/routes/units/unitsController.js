@@ -1,5 +1,5 @@
 /**
- * Created by pmomot on 4/6/16.
+ * Created by pmomot on 4/13/16.
  */
 'use strict';
 
@@ -7,69 +7,50 @@
 
     angular
         .module('StoreHouse')
-        .controller('ProductsController', ProductsController);
+        .controller('UnitsController', UnitsController);
 
-    ProductsController.$inject = ['productService'];
+    UnitsController.$inject = ['unitService'];
 
     /**
-     * Products Controller
+     * Units Controller
      * */
-    function ProductsController (productService) {
+    function UnitsController (unitService) {
         var vm = this;
 
-        vm.deleteProduct = deleteProduct;
-
-        vm.modalItem = {
-            name: '123'
-        };
         vm.modalShow = false;
-        vm.modalTitle = 'Product form';
+        vm.modalTitle = 'Unit form';
 
         vm.listSettings = {
-            addNewLabel: 'Add new product',
-            emptyLabel: 'There are no products in storehouse yet :(',
+            addNewLabel: 'Add new unit of measurement',
+            emptyLabel: 'There are no units of measurement in storehouse yet :(',
             showPopup: showPopup,
-            list: productService.getProducts,
+            list: unitService.getUnits,
             header: ['Name', 'Description'],
             fields: ['name', 'description']
         };
 
-        productService.fetchProducts();
+        unitService.fetchUnits();
 
         /**
-         * Send request to delete product
-         * @param {String} id - product uuid
-         * */
-        function deleteProduct (id) {
-            productService
-                .deleteProduct(id)
-                .then(function () {
-                    if (vm.products().length === 1) { // amount doesn't change TODO SH think about this
-                        productService.fetchProducts();
-                    } else {
-                        angular.element('[data-id="' + id + '"').remove();
-                    }
-                });
-        }
-
-        /**
-         * Show create/update/remove popup for product
+         * Show create/update/remove popup for unit
          * @param {String} type - popup type
-         * @param {Object} p - product
+         * @param {Object} p - unit
          * */
         function showPopup (type, p) {
             var submitButton;
 
+            if (p) {
+                p = JSON.parse(JSON.stringify(p));
+            } else {
+                p = {
+                    name: '',
+                    description: ''
+                };
+            }
+
             vm.modalType = type;
-            vm.modalTitle = 'Product ' + type;
-            vm.modalItem = p || {
-                name: '',
-                description: '',
-                amount: 0,
-                minAmount: 0,
-                arrivedAt: new Date(),
-                expiresAt: new Date()
-            };
+            vm.modalTitle = 'Unit ' + type;
+            vm.modalItem = p;
 
             if (type === 'remove') {
                 submitButton = {
@@ -106,13 +87,17 @@
 
             switch (type) {
                 case 'remove':
-                    deleteProduct(vm.modalItem.uuid);
+                    unitService
+                        .deleteUnit(vm.modalItem.uuid)
+                        .then(function () {
+                            angular.element('[data-id="' + vm.modalItem.uuid + '"').remove();
+                        });
                     break;
                 case 'update':
-                    console.log('update', vm.modalItem);
+                    unitService.updateUnit(vm.modalItem);
                     break;
                 case 'create':
-                    console.log('create', vm.modalItem);
+                    unitService.createUnit(vm.modalItem);
                     break;
             }
         }

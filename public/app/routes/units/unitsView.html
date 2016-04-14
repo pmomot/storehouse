@@ -1,0 +1,24 @@
+<sh-header></sh-header>
+<div class="main-content">
+
+    <sh-list settings="vm.listSettings"></sh-list>
+
+    <sh-modal title="vm.modalTitle" visible="vm.modalShow" ng-if="vm.modalType !== 'remove'"
+              footer="vm.modalButtonsOptions" model="vm.modalItem" type="vm.modalType">
+        <div class="form-group">
+            <label class="control-label" for="name">Name *</label>
+            <input type="text" class="form-control" id="name" name="name" required
+                   ng-model="vm.modalItem.name">
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="description">Description *</label>
+            <input type="text" class="form-control" id="description" required
+                   ng-model="vm.modalItem.description">
+        </div>
+    </sh-modal>
+
+    <sh-modal title="vm.modalTitle" visible="vm.modalShow" ng-if="vm.modalType === 'remove'" size="small"
+              footer="vm.modalButtonsOptions" model="vm.modalItem" type="vm.modalType">
+        <p>Are you sure you want to remove unit of measurement: <b>{{ vm.modalItem.name }}</b> ?</p>
+    </sh-modal>
+</div>
