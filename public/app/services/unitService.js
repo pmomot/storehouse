@@ -32,6 +32,23 @@
         }
 
         /**
+         * Create unit
+         * @param {Object} unit - new unit of measurement
+         * */
+        function createUnit (unit) {
+            var deferred = $q.defer();
+
+            unitRepository.createUnit(unit)
+                .then(function (data) {
+                    toastr.success(data.message);
+                    deferred.resolve(data);
+                    fetchUnits();
+                });
+
+            return deferred.promise;
+        }
+
+        /**
          * Delete unit by id
          * @param {String} id - unit id
          * */
@@ -42,6 +59,24 @@
                 .then(function (data) {
                     toastr.success(data.message);
                     deferred.resolve(data);
+                    fetchUnits();
+                });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Update unit
+         * @param {Object} unit - object to update
+         * */
+        function updateUnit (unit) {
+            var deferred = $q.defer();
+
+            unitRepository.updateUnit(unit)
+                .then(function (data) {
+                    toastr.success(data.message);
+                    deferred.resolve(data);
+                    fetchUnits();
                 });
 
             return deferred.promise;
@@ -56,7 +91,9 @@
 
         return {
             fetchUnits: fetchUnits,
+            createUnit: createUnit,
             deleteUnit: deleteUnit,
+            updateUnit: updateUnit,
 
             getUnits: getUnits
         };

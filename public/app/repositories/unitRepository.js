@@ -73,10 +73,32 @@
             return deferred.promise;
         }
 
+        /**
+         * Update unit
+         * @param {Object} unit - object to update
+         * */
+        function updateUnit (unit) {
+            var deferred = $q.defer();
+
+            $http.put('/api/units/' + unit.uuid, unit)
+                .then(function (result) {
+                    if (result.data.success) {
+                        deferred.resolve(result.data);
+                    } else {
+                        deferred.reject(result.data);
+                    }
+                }, function (errors) {
+                    deferred.reject(errors.data);
+                });
+
+            return deferred.promise;
+        }
+
         return {
             fetchUnits: fetchUnits,
             createUnit: createUnit,
-            deleteUnit: deleteUnit
+            deleteUnit: deleteUnit,
+            updateUnit: updateUnit
         };
     }
 

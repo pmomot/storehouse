@@ -14,7 +14,7 @@ module.exports = function (app, express, models) {
         productApiCalls = require('./product-api')(models.Product),
         unitApiCalls = require('./unit-api')(models.Unit);
 
-    api.get('/database-reset', function (req, res) { // TODO only for dev needs, remove this on prod
+    api.get('/database-reset', function (req, res) { // TODO SH only for dev needs, remove this on prod
         require('../../db_setup/setup')(models);
         res.send('Database reset done');
     });

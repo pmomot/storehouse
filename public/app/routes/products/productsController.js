@@ -17,15 +17,22 @@
     function ProductsController (productService) {
         var vm = this;
 
-        vm.products = productService.getProducts;
         vm.deleteProduct = deleteProduct;
-        vm.showPopup = showPopup;
 
         vm.modalItem = {
             name: '123'
         };
         vm.modalShow = false;
         vm.modalTitle = 'Product form';
+
+        vm.listSettings = {
+            addNewLabel: 'Add new product',
+            emptyLabel: 'There are no products in storehouse yet :(',
+            showPopup: showPopup,
+            list: productService.getProducts,
+            header: ['Name', 'Description'],
+            fields: ['name', 'description']
+        };
 
         productService.fetchProducts();
 

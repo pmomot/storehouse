@@ -42,6 +42,11 @@
                 controller: 'ProductsController',
                 controllerAs: 'vm'
             })
+            .when('/units', {
+                templateUrl: 'app/routes/units/unitsView.html',
+                controller: 'UnitsController',
+                controllerAs: 'vm'
+            })
             .otherwise({
                 redirectTo: '/products'
             });

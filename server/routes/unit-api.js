@@ -39,7 +39,7 @@ module.exports = function (Unit) {
         })
             .then(function () {
                 res.send({
-                    message: 'Unit deleted',
+                    message: 'Unit of measurement deleted',
                     success: true
                 });
             })
@@ -57,13 +57,10 @@ module.exports = function (Unit) {
      * @param {Object} res - response
      * */
     function createUnit (req, res) {
-
-        Unit.create({
-
-        })
+        Unit.create(req.body)
             .then(function () {
                 res.send({
-                    message: 'Unit created',
+                    message: 'Unit of measurement created',
                     success: true
                 });
             })
@@ -81,19 +78,25 @@ module.exports = function (Unit) {
      * @param {Object} res - response
      * */
     function updateUnit (req, res) {
+        var u = req.body;
 
         Unit.find({
             where: {
                 uuid: req.body.uuid
             }
         })
-            .then(function (u) {
-                //if (u) {
-                //    u.
-                //    return u.save()
-                //}
+            .then(function (unit) {
+                if (unit) {
+                    unit.name = u.name;
+                    unit.description = u.description;
+                    return unit.save();
+                } else {
+                    throw new Error('Unit of measurement does not exists');
+                }
+            })
+            .then(function () {
                 res.send({
-                    message: 'Unit updated',
+                    message: 'Unit of measurement updated',
                     success: true
                 });
             })

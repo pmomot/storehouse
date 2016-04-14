@@ -20,10 +20,16 @@ module.exports = function (models) {
 
     Unit.sync({force: true})
         .then(function () {
-            return Unit.create({
+            return Unit.bulkCreate([{
                 name: 'pcs',
                 description: 'pieces'
-            });
+            }, {
+                name: 'bot',
+                description: 'bottles'
+            }, {
+                name: 'kg',
+                description: 'kilograms'
+            }]);
         });
 
     Product.sync({force: true})
