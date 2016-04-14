@@ -6,7 +6,8 @@
 module.exports = function (models) {
     var User = models.User,
         Product = models.Product,
-        Unit = models.Unit;
+        Unit = models.Unit,
+        ProductGroup = models.ProductGroup;
 
     User.sync({force: true})
         .then(function () {
@@ -48,6 +49,14 @@ module.exports = function (models) {
                 minAmount: 5,
                 arrivedAt: Date.now(),
                 expiresAt: new Date(Date.now() + 30 * 24 * 3600 * 1000)
+            }]);
+        });
+
+    ProductGroup.sync({force: true})
+        .then(function () {
+            return ProductGroup.bulkCreate([{
+                name: 'Chemicals',
+                description: 'Every one needs them'
             }]);
         });
 };

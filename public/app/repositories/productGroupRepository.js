@@ -6,23 +6,22 @@
 (function () {
     angular
         .module('StoreHouse.Repositories')
-        .factory('unitRepository', unitRepository);
+        .factory('productGroup', productGroup);
 
-    unitRepository.$inject = ['$http', '$q'];
-    // TODO SH remove 'Unit' from methods
+    productGroup.$inject = ['$http', '$q'];
 
     /**
-     * Units Repository
+     * Product Groups Repository
      * */
-    function unitRepository ($http, $q) {
+    function productGroup ($http, $q) {
 
         /**
-         * Get units list form api
+         * Get product groups list form api
          * */
-        function fetchUnits () {
+        function fetch () {
             var deferred = $q.defer();
 
-            $http.get('/api/units')
+            $http.get('/api/product-groups')
                 .then(function (result) {
                     deferred.resolve(result.data);
                 }, function (errors) {
@@ -34,12 +33,12 @@
 
         /**
          * Create new unit
-         * @param {Object} unit - new unit of measurement
+         * @param {Object} group - new product group
          * */
-        function createUnit (unit) {
+        function create (group) {
             var deferred = $q.defer();
 
-            $http.post('/api/units/', unit)
+            $http.post('/api/product-groups/', group)
                 .then(function (result) {
                     if (result.data.success) {
                         deferred.resolve(result.data);
@@ -54,13 +53,13 @@
         }
 
         /**
-         * Delete unit by id
+         * Delete group by id
          * @param {String} id - unit id
          * */
-        function deleteUnit (id) {
+        function drop (id) {
             var deferred = $q.defer();
 
-            $http.delete('/api/units/' + id)
+            $http.delete('/api/product-groups/' + id)
                 .then(function (result) {
                     if (result.data.success) {
                         deferred.resolve(result.data);
@@ -75,13 +74,13 @@
         }
 
         /**
-         * Update unit
-         * @param {Object} unit - object to update
+         * Update group
+         * @param {Object} group - object to update
          * */
-        function updateUnit (unit) {
+        function update (group) {
             var deferred = $q.defer();
 
-            $http.put('/api/units/' + unit.uuid, unit)
+            $http.put('/api/product-groups/' + group.uuid, group)
                 .then(function (result) {
                     if (result.data.success) {
                         deferred.resolve(result.data);
@@ -96,10 +95,10 @@
         }
 
         return {
-            fetchUnits: fetchUnits,
-            createUnit: createUnit,
-            deleteUnit: deleteUnit,
-            updateUnit: updateUnit
+            fetch: fetch,
+            create: create,
+            drop: drop,
+            update: update
         };
     }
 
