@@ -27,9 +27,7 @@
         /**
          * Link function
          * */
-        function link (scope) {
-            console.log(scope);
-            console.log(scope.settings);
+        function link () {
         }
     }
 })();

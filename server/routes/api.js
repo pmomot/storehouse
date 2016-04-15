@@ -12,7 +12,8 @@ module.exports = function (app, express, models) {
         User = models.User,
         userApiCalls = require('./user-api')(User),
         productApiCalls = require('./product-api')(models.Product),
-        unitApiCalls = require('./unit-api')(models.Unit);
+        unitApiCalls = require('./unit-api')(models.Unit),
+        pGroupApiCalls = require('./product-group-api')(models.ProductGroup);
 
     api.get('/database-reset', function (req, res) { // TODO SH only for dev needs, remove this on prod
         require('../../db_setup/setup')(models);
@@ -40,7 +41,11 @@ module.exports = function (app, express, models) {
     api.put('/units/:id', unitApiCalls.updateUnit);
     api.delete('/units/:id', unitApiCalls.deleteUnit);
 
-    // Units of measurement section
+    // Product groups section
+    api.get('/product-groups', pGroupApiCalls.getProductGroups);
+    api.post('/product-groups', pGroupApiCalls.createProductGroup);
+    api.put('/product-groups/:id', pGroupApiCalls.updateProductGroup);
+    api.delete('/product-groups/:id', pGroupApiCalls.deleteProductGroup);
 
     /**
      * Helper for verifying user token
