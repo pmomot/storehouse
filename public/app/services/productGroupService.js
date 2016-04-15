@@ -49,13 +49,13 @@
         }
 
         /**
-         * Delete product group by id
+         * Remove product group by id
          * @param {String} id - product group id
          * */
-        function drop (id) {
+        function remove (id) {
             var deferred = $q.defer();
 
-            productGroupRepository.drop(id)
+            productGroupRepository.remove(id)
                 .then(function (data) {
                     toastr.success(data.message);
                     deferred.resolve(data);
@@ -92,7 +92,7 @@
         return {
             fetch: fetch,
             create: create,
-            drop: drop,
+            remove: remove,
             update: update,
 
             getGroups: getGroups

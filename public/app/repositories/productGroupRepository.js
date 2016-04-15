@@ -6,7 +6,7 @@
 (function () {
     angular
         .module('StoreHouse.Repositories')
-        .factory('productGroup', productGroup);
+        .factory('productGroupRepository', productGroup);
 
     productGroup.$inject = ['$http', '$q'];
 
@@ -53,10 +53,10 @@
         }
 
         /**
-         * Delete group by id
+         * Remove group by id
          * @param {String} id - unit id
          * */
-        function drop (id) {
+        function remove (id) {
             var deferred = $q.defer();
 
             $http.delete('/api/product-groups/' + id)
@@ -97,7 +97,7 @@
         return {
             fetch: fetch,
             create: create,
-            drop: drop,
+            remove: remove,
             update: update
         };
     }

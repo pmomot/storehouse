@@ -79,7 +79,10 @@
                     // TODO SH add validation here
                     // TODO SH on iphone required not working
 
-                    close();
+                    //if (scope.type === 'remove') {
+                    //    close();
+                    //}
+
                     if (typeof scope.callback === 'function') {
                         scope.callback(scope.type);
                     }

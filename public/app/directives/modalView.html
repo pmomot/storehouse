@@ -11,8 +11,8 @@
                     <button type="{{ cancelButton.buttonType }}"
                             class="btn {{ cancelButton.class }}" ng-click="close()"
                             >{{ cancelButton.value }}</button>
-                    <input ng-if="submitButton" ng-disabled="modalForm.$invalid" class="btn {{ submitButton.class }}"
-                           type="submit" value="{{ submitButton.value }}"/>
+                    <input id="modal-submit" ng-if="submitButton" class="btn {{ submitButton.class }}"
+                           type="submit" value="{{ submitButton.value }}" ng-disabled="modalForm.$invalid" />
                 </div>
             </form>
         </div>
