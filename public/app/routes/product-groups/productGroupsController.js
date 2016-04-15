@@ -9,15 +9,13 @@
         .module('StoreHouse')
         .controller('ProductGroupsController', ProductGroupsController);
 
-    ProductGroupsController.$inject = ['productGroupService', 'MODAL_BUTTONS'];
+    ProductGroupsController.$inject = ['productGroupService', 'MODAL_SETTINGS', 'MODAL_BUTTONS'];
 
     /**
      * Product Groups Controller
      * */
-    function ProductGroupsController (productGroupService, MODAL_BUTTONS) {
+    function ProductGroupsController (productGroupService, MODAL_SETTINGS, MODAL_BUTTONS) {
         var vm = this;
-
-        vm.modalShow = false;
 
         vm.listSettings = {
             addNewLabel: 'Add new product group',
@@ -27,59 +25,63 @@
             header: ['Name', 'Description'],
             fields: ['name', 'description']
         };
+        vm.modalSettings = angular.extend(MODAL_SETTINGS, {
+            buttonsOptions: {
+                cancelButton: MODAL_BUTTONS.CANCEL,
+                callback: submitCallback,
+                submitButton: {}
+            }
+        });
 
         productGroupService.fetch();
 
         /**
          * Show create/update/remove popup for product group
          * @param {String} type - popup type
-         * @param {Object} g - group
+         * @param {Object} item - group
          * */
-        function showPopup (type, g) {
+        function showPopup (type, item) {
             var submitButton = type === 'remove' ? MODAL_BUTTONS.REMOVE : MODAL_BUTTONS.SUBMIT;
 
-            if (g) {
-                g = JSON.parse(JSON.stringify(g));
+            if (item) {
+                item = JSON.parse(JSON.stringify(item));
             } else {
-                g = {
+                item = {
                     name: '',
                     description: ''
                 };
             }
 
-            vm.modalType = type;
-            vm.modalTitle = 'Product Group ' + type;
-            vm.modalItem = g;
-
-            vm.modalButtonsOptions = {
-                cancelButton: MODAL_BUTTONS.CANCEL,
-                submitButton: submitButton,
-                callback: submitCallback
-            };
-            vm.modalShow = true;
+            angular.extend(vm.modalSettings, {
+                type: type,
+                title: 'Product Group ' + type,
+                item: item,
+                size: type === 'remove' ? 'small' : '',
+                buttonsOptions: angular.extend(vm.modalSettings.buttonsOptions, {
+                    submitButton: submitButton
+                })
+            });
         }
 
         /**
          * Function called from modal in case of submit button click
-         * @param {String} type - action type
+         * @param {Object} modalElement - modal dom el
          * */
-        function submitCallback (type) {
-            var ajaxParam = vm.modalItem,
-                actionCallback = function () {
-                    vm.modalShow = false;
-                };
+        function submitCallback (modalElement) {
+            var type = vm.modalSettings.type, // action type
+                ajaxParam = vm.modalSettings.item;
 
             if (type === 'remove') {
-                vm.modalShow = false;
-                ajaxParam = vm.modalItem.uuid;
-
-                actionCallback = function () {
-                    angular.element('[data-id="' + vm.modalItem.uuid + '"').remove();
-                };
+                ajaxParam = vm.modalSettings.item.uuid;
             }
 
             productGroupService[type](ajaxParam) // call remove, update or create method
-                .then(actionCallback);
+                .then(function () {
+                    if (type === 'remove') {
+                        angular.element('[data-id="' + vm.modalSettings.item.uuid + '"').remove();
+                    }
+                    angular.element(modalElement).modal('hide');
+                });
         }
     }
 

@@ -9,16 +9,13 @@
         .module('StoreHouse')
         .controller('UnitsController', UnitsController);
 
-    UnitsController.$inject = ['unitService'];
+    UnitsController.$inject = ['unitService', 'MODAL_SETTINGS', 'MODAL_BUTTONS'];
 
     /**
      * Units Controller
      * */
-    function UnitsController (unitService) {
+    function UnitsController (unitService, MODAL_SETTINGS, MODAL_BUTTONS) {
         var vm = this;
-
-        vm.modalShow = false;
-        vm.modalTitle = 'Unit form';
 
         vm.listSettings = {
             addNewLabel: 'Add new unit of measurement',
@@ -28,78 +25,63 @@
             header: ['Name', 'Description'],
             fields: ['name', 'description']
         };
+        vm.modalSettings = angular.extend(MODAL_SETTINGS, {
+            buttonsOptions: {
+                cancelButton: MODAL_BUTTONS.CANCEL,
+                callback: submitCallback,
+                submitButton: {}
+            }
+        });
 
-        unitService.fetchUnits();
+        unitService.fetch();
 
         /**
          * Show create/update/remove popup for unit
          * @param {String} type - popup type
-         * @param {Object} p - unit
+         * @param {Object} item - unit
          * */
-        function showPopup (type, p) {
-            var submitButton;
+        function showPopup (type, item) {
+            var submitButton = type === 'remove' ? MODAL_BUTTONS.REMOVE : MODAL_BUTTONS.SUBMIT;
 
-            if (p) {
-                p = JSON.parse(JSON.stringify(p));
+            if (item) {
+                item = JSON.parse(JSON.stringify(item));
             } else {
-                p = {
+                item = {
                     name: '',
                     description: ''
                 };
             }
 
-            vm.modalType = type;
-            vm.modalTitle = 'Unit ' + type;
-            vm.modalItem = p;
-
-            if (type === 'remove') {
-                submitButton = {
-                    buttonType: 'submit',
-                    value: 'Yes',
-                    class: 'btn-danger'
-                };
-            } else {
-                submitButton = {
-                    buttonType: 'submit',
-                    value: 'Submit',
-                    class: 'btn-primary'
-                };
-            }
-
-            vm.modalButtonsOptions = {
-                cancelButton: {
-                    buttonType: 'button',
-                    value: 'Cancel',
-                    class: 'btn-default',
-                    callback: 'close'
-                },
-                submitButton: submitButton,
-                callback: submitCallback
-            };
-            vm.modalShow = true;
+            angular.extend(vm.modalSettings, {
+                type: type,
+                title: 'Unit ' + type,
+                item: item,
+                size: type === 'remove' ? 'small' : '',
+                buttonsOptions: angular.extend(vm.modalSettings.buttonsOptions, {
+                    submitButton: submitButton
+                })
+            });
         }
 
         /**
          * Function called from modal in case of submit button click
-         * @param {String} type - action type
+         * @param {Object} modalElement - modal dom el
          * */
-        function submitCallback (type) {
+        function submitCallback (modalElement) {
+            var type = vm.modalSettings.type, // action type
+                ajaxParam = vm.modalSettings.item;
 
-            switch (type) {
-                case 'remove':
-                    unitService
-                        .deleteUnit(vm.modalItem.uuid)
-                        .then(function () {
-                            angular.element('[data-id="' + vm.modalItem.uuid + '"').remove();
-                        });
-                    break;
-                case 'update':
-                    unitService.updateUnit(vm.modalItem);
-                    break;
-                case 'create':
-                    unitService.createUnit(vm.modalItem);
-                    break;
+            if (type === 'remove') {
+                ajaxParam = vm.modalSettings.item.uuid;
             }
+
+            unitService[type](ajaxParam) // call remove, update or create method
+                .then(function () {
+                    if (type === 'remove') {
+                        angular.element('[data-id="' + vm.modalSettings.item.uuid + '"').remove();
+                    }
+                    angular.element(modalElement).modal('hide');
+                });
         }
     }
 

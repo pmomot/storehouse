@@ -29,6 +29,12 @@
                 class: 'btn-default',
                 callback: 'close'
             }
+        })
+        .constant('MODAL_SETTINGS', {
+            item: {},
+            type: '',
+            title: '',
+            size: ''
         });
 
 })();

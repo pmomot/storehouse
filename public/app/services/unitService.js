@@ -19,10 +19,10 @@
         /**
          * Get units list from server
          * */
-        function fetchUnits () {
+        function fetch () {
             var deferred = $q.defer();
 
-            unitRepository.fetchUnits({})
+            unitRepository.fetch({})
                 .then(function (data) {
                     units = data;
                     deferred.resolve(data);
@@ -35,14 +35,14 @@
          * Create unit
          * @param {Object} unit - new unit of measurement
          * */
-        function createUnit (unit) {
+        function create (unit) {
             var deferred = $q.defer();
 
-            unitRepository.createUnit(unit)
+            unitRepository.create(unit)
                 .then(function (data) {
                     toastr.success(data.message);
                     deferred.resolve(data);
-                    fetchUnits();
+                    fetch();
                 });
 
             return deferred.promise;
@@ -52,14 +52,14 @@
          * Delete unit by id
          * @param {String} id - unit id
          * */
-        function deleteUnit (id) {
+        function remove (id) {
             var deferred = $q.defer();
 
-            unitRepository.deleteUnit(id)
+            unitRepository.remove(id)
                 .then(function (data) {
                     toastr.success(data.message);
                     deferred.resolve(data);
-                    fetchUnits();
+                    fetch();
                 });
 
             return deferred.promise;
@@ -69,14 +69,14 @@
          * Update unit
          * @param {Object} unit - object to update
          * */
-        function updateUnit (unit) {
+        function update (unit) {
             var deferred = $q.defer();
 
-            unitRepository.updateUnit(unit)
+            unitRepository.update(unit)
                 .then(function (data) {
                     toastr.success(data.message);
                     deferred.resolve(data);
-                    fetchUnits();
+                    fetch();
                 });
 
             return deferred.promise;
@@ -90,10 +90,10 @@
         }
 
         return {
-            fetchUnits: fetchUnits,
-            createUnit: createUnit,
-            deleteUnit: deleteUnit,
-            updateUnit: updateUnit,
+            fetch: fetch,
+            create: create,
+            remove: remove,
+            update: update,
 
             getUnits: getUnits
         };

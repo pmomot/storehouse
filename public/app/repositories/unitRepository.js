@@ -9,7 +9,6 @@
         .factory('unitRepository', unitRepository);
 
     unitRepository.$inject = ['$http', '$q'];
-    // TODO SH remove 'Unit' from methods
 
     /**
      * Units Repository
@@ -19,7 +18,7 @@
         /**
          * Get units list form api
          * */
-        function fetchUnits () {
+        function fetch () {
             var deferred = $q.defer();
 
             $http.get('/api/units')
@@ -36,7 +35,7 @@
          * Create new unit
          * @param {Object} unit - new unit of measurement
          * */
-        function createUnit (unit) {
+        function create (unit) {
             var deferred = $q.defer();
 
             $http.post('/api/units/', unit)
@@ -57,7 +56,7 @@
          * Delete unit by id
          * @param {String} id - unit id
          * */
-        function deleteUnit (id) {
+        function remove (id) {
             var deferred = $q.defer();
 
             $http.delete('/api/units/' + id)
@@ -78,7 +77,7 @@
          * Update unit
          * @param {Object} unit - object to update
          * */
-        function updateUnit (unit) {
+        function update (unit) {
             var deferred = $q.defer();
 
             $http.put('/api/units/' + unit.uuid, unit)
@@ -96,10 +95,10 @@
         }
 
         return {
-            fetchUnits: fetchUnits,
-            createUnit: createUnit,
-            deleteUnit: deleteUnit,
-            updateUnit: updateUnit
+            fetch: fetch,
+            create: create,
+            remove: remove,
+            update: update
         };
     }
 

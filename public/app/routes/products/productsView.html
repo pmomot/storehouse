@@ -2,32 +2,31 @@
 <div class="main-content">
     <sh-list settings="vm.listSettings"></sh-list>
 
-    <sh-modal title="vm.modalTitle" visible="vm.modalShow" ng-if="vm.modalType !== 'remove'"
-            footer="vm.modalButtonsOptions" model="vm.modalItem" type="vm.modalType">
+    <sh-modal settings="vm.modalSettings"
+              ng-if="vm.modalSettings.type === 'create' || vm.modalSettings.type === 'update'">
         <div class="form-group" ng-class="{ 'has-error' : modalForm.name.$invalid && !modalForm.name.$pristine}">
             <label class="control-label" for="name">Name *</label>
             <input type="text" class="form-control" id="name" name="name"
-                   ng-model="vm.modalItem.name" ng-minlength="10" ng-maxlength="255">
+                   ng-model="vm.modalSettings.item.name" ng-minlength="10" ng-maxlength="255">
             <span class="help-block" ng-show="modalForm.name.$error.minlength">Name is empty.</span>
         </div>
         <div class="form-group">
             <label class="control-label" for="description">Description *</label>
             <input type="text" class="form-control" id="description" required
-                   ng-model="vm.modalItem.description" ng-maxlength="255">
+                   ng-model="vm.modalSettings.item.description" ng-maxlength="255">
         </div>
         <div class="form-group">
             <label class="control-label" for="arrivedAt">Date Arrived *</label>
             <input type="date" class="form-control" id="arrivedAt" required
-                   ng-model="vm.modalItem.arrivedAt">
+                   ng-model="vm.modalSettings.item.arrivedAt">
         </div>
         <div class="form-group">
             <label class="control-label" for="expiresAt">Date Expires *</label>
             <input type="date" class="form-control" id="expiresAt" required
-                   ng-model="vm.modalItem.expiresAt">
+                   ng-model="vm.modalSettings.item.expiresAt">
         </div>
     </sh-modal>
-    <sh-modal title="vm.modalTitle" visible="vm.modalShow" ng-if="vm.modalType === 'remove'" size="small"
-            footer="vm.modalButtonsOptions" model="vm.modalItem" type="vm.modalType">
-        <p>Are you sure you want to remove product: <b>{{ vm.modalItem.name }}</b> ?</p>
+    <sh-modal settings="vm.modalSettings" ng-if="vm.modalSettings.type === 'remove'">
+        <p>Are you sure you want to remove product: <b>{{ vm.modalSettings.item.name }}</b> ?</p>
     </sh-modal>
 </div>
