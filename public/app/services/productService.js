@@ -19,10 +19,10 @@
         /**
          * Get products list from server
          * */
-        function fetchProducts () {
+        function fetch () {
             var deferred = $q.defer();
 
-            productRepository.fetchProducts({})
+            productRepository.fetch({})
                 .then(function (data) {
                     products = data;
                     deferred.resolve(data);
@@ -32,16 +32,50 @@
         }
 
         /**
-         * Delete product by id
-         * @param {String} id - product id
+         * Create product
+         * @param {Object} product - new product
          * */
-        function deleteProduct (id) {
+        function create (product) {
             var deferred = $q.defer();
 
-            productRepository.deleteProduct(id)
+            productRepository.create(product)
                 .then(function (data) {
                     toastr.success(data.message);
                     deferred.resolve(data);
+                    fetch();
+                });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Delete product by id
+         * @param {String} id - product id
+         * */
+        function remove (id) {
+            var deferred = $q.defer();
+
+            productRepository.remove(id)
+                .then(function (data) {
+                    toastr.success(data.message);
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Update product
+         * @param {Object} product - object to update
+         * */
+        function update (product) {
+            var deferred = $q.defer();
+
+            productRepository.update(product)
+                .then(function (data) {
+                    toastr.success(data.message);
+                    deferred.resolve(data);
+                    fetch();
                 });
 
             return deferred.promise;
@@ -55,8 +89,10 @@
         }
 
         return {
-            fetchProducts: fetchProducts,
-            deleteProduct: deleteProduct,
+            fetch: fetch,
+            create: create,
+            remove: remove,
+            update: update,
 
             getProducts: getProducts
         };

@@ -9,13 +9,18 @@
         .module('StoreHouse')
         .controller('ProductsController', ProductsController);
 
-    ProductsController.$inject = ['productService', 'MODAL_SETTINGS', 'MODAL_BUTTONS'];
+    ProductsController.$inject = ['productService', 'MODAL_SETTINGS', 'MODAL_BUTTONS',
+        'unitService', 'productGroupService'];
 
     /**
      * Products Controller
      * */
-    function ProductsController (productService, MODAL_SETTINGS, MODAL_BUTTONS) {
+    function ProductsController (productService, MODAL_SETTINGS, MODAL_BUTTONS, unitService, productGroupService) {
         var vm = this;
+
+        vm.units = unitService.getUnits;
+        vm.unitById = unitService.getUnitById;
+        vm.productGroups = productGroupService.getGroups;
 
         vm.listSettings = {
             addNewLabel: 'Add new product',
@@ -31,37 +36,30 @@
                 cancelButton: MODAL_BUTTONS.CANCEL,
                 callback: submitCallback,
                 submitButton: {}
-            }
+            },
+            units: vm.units,
+            productGroups: vm.productGroups
         });
 
-        productService.fetchProducts();
+        productService.fetch();
+        unitService.fetch(); // TODO SH move this to pre loaded functionality
+        productGroupService.fetch(); // TODO SH move this to pre loaded functionality
 
-        /**
-         * Send request to delete product
-         * @param {String} id - product uuid
-         * */
-        function deleteProduct (id) {
-            return productService
-                .deleteProduct(id)
-                .then(function () {
-                    if (vm.products().length === 1) { // amount doesn't change TODO SH think about this
-                        productService.fetchProducts();
-                    } else {
-                        angular.element('[data-id="' + id + '"').remove();
-                    }
-                });
-        }
+        // TODO SH do same relation work with groups
 
         /**
          * Show create/update/remove popup for product
          * @param {String} type - popup type
-         * @param {Object} p - product
+         * @param {Object} item - product
          * */
         function showPopup (type, item) {
             var submitButton = type === 'remove' ? MODAL_BUTTONS.REMOVE : MODAL_BUTTONS.SUBMIT;
 
             if (item) {
                 item = JSON.parse(JSON.stringify(item));
+                item.arrivedAt = new Date(item.arrivedAt);
+                item.expiresAt = new Date(item.expiresAt);
+                item.unit = vm.unitById(item.unit.uuid);
             } else {
                 item = {
                     name: '',
@@ -69,7 +67,9 @@
                     amount: 0,
                     minAmount: 0,
                     arrivedAt: new Date(),
-                    expiresAt: new Date()
+                    expiresAt: new Date(),
+                    unit: vm.units()[0],
+                    productGroups: vm.productGroups()[0]
                 };
             }
 
@@ -92,22 +92,18 @@
             var type = vm.modalSettings.type, // action type
                 ajaxParam = vm.modalSettings.item;
 
-            // TODO SH complete this
-
-            switch (type) {
-                case 'remove':
-                    deleteProduct(vm.modalItem.uuid)
-                        .then(function () {
-                            angular.element(modalElement).modal('hide');
-                        });
-                    break;
-                case 'update':
-                    console.log('update', ajaxParam);
-                    break;
-                case 'create':
-                    console.log('create', ajaxParam);
-                    break;
+            if (type === 'remove') {
+                ajaxParam = vm.modalSettings.item.uuid;
             }
+
+
+            productService[type](ajaxParam)
+                .then(function () {
+                    if (type === 'remove') {
+                        angular.element('[data-id="' + vm.modalSettings.item.uuid + '"').remove();
+                    }
+                    angular.element(modalElement).modal('hide');
+                });
         }
     }
 

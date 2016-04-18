@@ -3,7 +3,7 @@
  */
 'use strict';
 
-module.exports = function (Product) {
+module.exports = function (Product, Unit) {
 
     /**
      * Get products list by query
@@ -12,10 +12,63 @@ module.exports = function (Product) {
      * */
     function getProducts (req, res) {
         Product.findAll({
-            attributes: ['uuid', 'name', 'description']
+            attributes: {
+                exclude: ['createdAt', 'updatedAt', 'unitUuid']
+
+            },
+            include: {
+                model: Unit,
+                as: 'unit',
+                attributes: ['uuid']
+            }
         })
             .then(function (products) {
                 res.send(products);
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
+    /**
+     * Create new product
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function createProduct (req, res) {
+        Product
+            .createNew(req.body)
+            .then(function () {
+                res.send({
+                    message: 'Product created',
+                    success: true
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
+    /**
+     * Update product
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function updateProduct (req, res) {
+
+        Product
+            .updateExisting(req.body)
+            .then(function () {
+                res.send({
+                    message: 'Product updated',
+                    success: true
+                });
             })
             .catch(function (error) {
                 res.send({
@@ -53,6 +106,8 @@ module.exports = function (Product) {
 
     return {
         getProducts: getProducts,
+        createProduct: createProduct,
+        updateProduct: updateProduct,
         deleteProduct: deleteProduct
     };
 };

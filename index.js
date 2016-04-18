@@ -7,19 +7,9 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     morgan = require('morgan'),
     config = require('./server/config'),
-    SQLZ = require('sequelize'),
-    sqlz = new SQLZ(config.dbConnection),
-    User = require('./server/models/user')(sqlz, SQLZ),
-    Product = require('./server/models/product')(sqlz, SQLZ),
-    Unit = require('./server/models/unit')(sqlz, SQLZ),
-    ProductGroup = require('./server/models/product-group')(sqlz, SQLZ),
     app = express(),
-    api = require('./server/routes/api')(app, express, {
-        User: User,
-        Product: Product,
-        Unit: Unit,
-        ProductGroup: ProductGroup
-    }),
+    tables = require('./server/tables')(config),
+    api = require('./server/routes/api')(app, express, tables),
     env = process.env;
 
 app.use(bodyParser.urlencoded({extended: true}));

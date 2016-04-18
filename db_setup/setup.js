@@ -11,52 +11,63 @@ module.exports = function (models) {
 
     User.sync({force: true})
         .then(function () {
-            return User.create({
+            User.create({
                 firstName: 'root',
                 lastName: 'admin',
                 email: 'root@admin.mail',
                 password: 'rootpass'
             });
-        });
-
-    Unit.sync({force: true})
+            return Unit.sync({force: true});
+        })
         .then(function () {
-            return Unit.bulkCreate([{
-                name: 'pcs',
-                description: 'pieces'
-            }, {
+            Unit.bulkCreate([{
                 name: 'bot',
                 description: 'bottles'
             }, {
                 name: 'kg',
                 description: 'kilograms'
             }]);
-        });
 
-    Product.sync({force: true})
+            return ProductGroup.sync({force: true});
+        })
         .then(function () {
-            return Product.bulkCreate([{
-                name: 'Water',
-                description: 'Soo fresh and beautiful',
-                amount: 20,
-                minAmount: 5,
-                arrivedAt: Date.now(),
-                expiresAt: new Date(Date.now() + 30 * 24 * 3600 * 1000)
-            }, {
-                name: 'Potatos',
-                description: 'tasty',
-                amount: 20,
-                minAmount: 5,
-                arrivedAt: Date.now(),
-                expiresAt: new Date(Date.now() + 30 * 24 * 3600 * 1000)
-            }]);
-        });
-
-    ProductGroup.sync({force: true})
-        .then(function () {
-            return ProductGroup.bulkCreate([{
+            ProductGroup.bulkCreate([{
                 name: 'Chemicals',
                 description: 'Every one needs them'
             }]);
+
+            return Product.sync({force: true});
+        })
+        .then(fillSomeData);
+
+    /**
+     * Fill some data into tables
+     * */
+    function fillSomeData () {
+        var unit, product;
+
+        unit = Unit.build({
+            name: 'pcs',
+            description: 'pieces'
         });
+
+        product = Product.build({
+            name: 'Water',
+            description: 'Soo fresh and beautiful',
+            amount: 20,
+            minAmount: 5,
+            arrivedAt: Date.now(),
+            expiresAt: new Date(Date.now() + 30 * 24 * 3600 * 1000)
+        });
+
+        unit.save()
+            .then(function () {
+                return product.save();
+            })
+            .then(function () {
+                product.setUnit(unit);
+
+                return product.save();
+            });
+    }
 };

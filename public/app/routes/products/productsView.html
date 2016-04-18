@@ -7,7 +7,7 @@
         <div class="form-group" ng-class="{ 'has-error' : modalForm.name.$invalid && !modalForm.name.$pristine}">
             <label class="control-label" for="name">Name *</label>
             <input type="text" class="form-control" id="name" name="name"
-                   ng-model="vm.modalSettings.item.name" ng-minlength="10" ng-maxlength="255">
+                   ng-model="vm.modalSettings.item.name" ng-minlength="3" ng-maxlength="255">
             <span class="help-block" ng-show="modalForm.name.$error.minlength">Name is empty.</span>
         </div>
         <div class="form-group">
@@ -15,17 +15,62 @@
             <input type="text" class="form-control" id="description" required
                    ng-model="vm.modalSettings.item.description" ng-maxlength="255">
         </div>
-        <div class="form-group">
-            <label class="control-label" for="arrivedAt">Date Arrived *</label>
-            <input type="date" class="form-control" id="arrivedAt" required
-                   ng-model="vm.modalSettings.item.arrivedAt">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label" for="arrivedAt">Date Arrived *</label>
+                    <input type="date" class="form-control" id="arrivedAt" required
+                           ng-model="vm.modalSettings.item.arrivedAt">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label" for="expiresAt">Date Expires *</label>
+                    <input type="date" class="form-control" id="expiresAt" required
+                           ng-model="vm.modalSettings.item.expiresAt">
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" for="expiresAt">Date Expires *</label>
-            <input type="date" class="form-control" id="expiresAt" required
-                   ng-model="vm.modalSettings.item.expiresAt">
+        <div class="row">
+            <div class="col-sm-6 col-xs-12">
+                <div class="row">
+                    <div class="col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="amount">Amount *</label>
+                            <input type="number" class="form-control" id="amount" required
+                                   ng-model="vm.modalSettings.item.amount">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-6">
+                        <label class="control-label" for="units">Units *</label>
+                        <select class="form-control" id="units" ng-model="vm.modalSettings.item.unit" required
+                                ng-options="unit as unit.name for unit in vm.modalSettings.units()"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="min_amount">Min Amount *</label>
+                            <input type="number" class="form-control" id="min_amount" required
+                                   ng-model="vm.modalSettings.item.minAmount">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-6">
+                        <label class="control-label" for="min_units">&nbsp;</label>
+                        <input class="form-control" id="min_units" required disabled
+                               value="{{ vm.modalSettings.item.unit.name }}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <label class="control-label" for="amount">Product Groups</label>
+                <select class="form-control" multiple ng-model="vm.modalSettings.item.productGroups">
+                    <option ng-repeat="p in vm.modalSettings.productGroups()" value="{{ p.uuid }}">{{ p.name }}</option>
+                </select>
+            </div>
         </div>
     </sh-modal>
+
     <sh-modal settings="vm.modalSettings" ng-if="vm.modalSettings.type === 'remove'">
         <p>Are you sure you want to remove product: <b>{{ vm.modalSettings.item.name }}</b> ?</p>
     </sh-modal>

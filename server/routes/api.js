@@ -11,7 +11,7 @@ module.exports = function (app, express, models) {
     var api = new express.Router(),
         User = models.User,
         userApiCalls = require('./user-api')(User),
-        productApiCalls = require('./product-api')(models.Product),
+        productApiCalls = require('./product-api')(models.Product, models.Unit), // TODO SH maybe change this
         unitApiCalls = require('./unit-api')(models.Unit),
         pGroupApiCalls = require('./product-group-api')(models.ProductGroup);
 
@@ -33,6 +33,8 @@ module.exports = function (app, express, models) {
 
     // Product section
     api.get('/products', productApiCalls.getProducts);
+    api.post('/products', productApiCalls.createProduct);
+    api.put('/products/:id', productApiCalls.updateProduct);
     api.delete('/products/:id', productApiCalls.deleteProduct);
 
     // Units section

@@ -89,13 +89,32 @@
             return units;
         }
 
+        /**
+         * Get unit of measurement from list by id
+         * */
+        function getUnitById (id) {
+            var i;
+
+            for (i = 0; i < units.length; i += 1) {
+                if (units[i].uuid === id) {
+                    return units[i];
+                }
+            }
+
+            return {
+                name: '',
+                description: ''
+            };
+        }
+
         return {
             fetch: fetch,
             create: create,
             remove: remove,
             update: update,
 
-            getUnits: getUnits
+            getUnits: getUnits,
+            getUnitById: getUnitById
         };
     }
 })();
