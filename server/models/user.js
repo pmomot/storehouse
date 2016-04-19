@@ -213,10 +213,10 @@ module.exports = function (sqlz, SQLZ) {
      * @param {String} token - encrypted token with user id and expiresAt time
      * */
     function verifyRestorationToken (token) {
-        var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
+        var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8),
+            uuid = 0;
 
         decrypted = JSON.parse(decrypted);
-
         return User.find({
             where: {
                 uuid: decrypted.uuid
@@ -225,7 +225,8 @@ module.exports = function (sqlz, SQLZ) {
             .then(function (user) {
                 if (user) {
                     if (decrypted.expiresAt - Date.now() >= 0) {
-                        return 'Everything ok!';
+                        uuid = decrypted.uuid;
+                        return uuid
                     } else {
                         throw new Error('Password restoration link has been expired');
                     }

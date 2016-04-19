@@ -28,6 +28,9 @@ app.get('/health', function (req, res) {
     res.end();
 });
 
+
+
+
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
@@ -35,10 +38,21 @@ app.get('/', function (req, res) {
 // TODO SH create password restoration page
 
 app.use('/api', api);
+/*
+app.get('/api/user/restore-password', function (req, res) {
+    console.log(res)
+    if(res.success==true) {
+        res.sendFile(__dirname + '/public/static-pages/changeForgotPassword.html');
+    }
+});*/
+
+
 
 app.listen(env.NODE_PORT || config.port, env.NODE_IP || '0.0.0.0', function () {
     console.log('Application worker ' + process.pid + ' started...'); // eslint-disable-line
 });
+
+
 
 //var AmountType = sequelize.define('amountTypes', {
 //    value: {
