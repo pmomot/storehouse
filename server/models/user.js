@@ -159,7 +159,7 @@ module.exports = function (sqlz, SQLZ) {
             });
     }
 
-    User = sqlz.define('users', columns, {
+    User = sqlz.define('Users', columns, {
         instanceMethods: {
             comparePassword: function (password) {
                 return CryptoJS.AES.decrypt(this.passwordHash, secretKey).toString(CryptoJS.enc.Utf8) === password;

@@ -13,12 +13,12 @@ module.exports = function (Product, Unit) {
     function getProducts (req, res) {
         Product.findAll({
             attributes: {
-                exclude: ['createdAt', 'updatedAt', 'unitUuid']
+                exclude: ['createdAt', 'updatedAt', 'UnitUuid']
 
             },
             include: {
                 model: Unit,
-                as: 'unit',
+                as: 'Unit',
                 attributes: ['uuid']
             }
         })

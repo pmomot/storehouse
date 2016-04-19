@@ -12,15 +12,23 @@ module.exports = function (config) {
         Product = require('./models/product')(sqlz, SQLZ, {
             Unit: Unit,
             ProductGroup: ProductGroup
-        });
+        }),
+        ProductGroupsConnection;
 
-    Unit.hasMany(Product, {as: 'unit'});
+    Unit.hasMany(Product, {as: 'Unit'});
     Product.belongsTo(Unit);
+
+    ProductGroupsConnection = sqlz.define('ProductGroupsConnection', {
+        started: SQLZ.BOOLEAN
+    });
+    Product.belongsToMany(ProductGroup, {through: ProductGroupsConnection});
+    ProductGroup.belongsToMany(Product, {through: ProductGroupsConnection});
 
     return {
         User: User,
         Product: Product,
         Unit: Unit,
-        ProductGroup: ProductGroup
+        ProductGroup: ProductGroup,
+        ProductGroupsConnection: ProductGroupsConnection
     };
 };

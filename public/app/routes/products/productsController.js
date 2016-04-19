@@ -59,13 +59,13 @@
                 item = JSON.parse(JSON.stringify(item));
                 item.arrivedAt = new Date(item.arrivedAt);
                 item.expiresAt = new Date(item.expiresAt);
-                item.unit = vm.unitById(item.unit.uuid);
+                item.unit = vm.unitById(item.Unit.uuid);
             } else {
                 item = {
                     name: '',
                     description: '',
-                    amount: 0,
-                    minAmount: 0,
+                    amount: 1,
+                    minAmount: 1,
                     arrivedAt: new Date(),
                     expiresAt: new Date(),
                     unit: vm.units()[0],

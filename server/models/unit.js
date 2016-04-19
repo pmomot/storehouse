@@ -24,7 +24,7 @@ module.exports = function (sqlz, SQLZ) {
         freezeTableName: true
     };
 
-    Unit = sqlz.define('units', columns, {
+    Unit = sqlz.define('Units', columns, {
         instanceMethods: {},
         classMethods: {}
     }, options);

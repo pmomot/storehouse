@@ -140,7 +140,7 @@ module.exports = function (sqlz, SQLZ, relations) {
             });
     }
 
-    Product = sqlz.define('products', columns, {
+    Product = sqlz.define('Products', columns, {
         instanceMethods: {},
         classMethods: {
             createNew: createNew,

@@ -8,12 +8,12 @@
         .module('StoreHouse.Directives')
         .directive('shModal', modal);
 
-    modal.$inject = ['productService'];
+    modal.$inject = ['$document'];
 
     /**
      * General Modal Directive
      * */
-    function modal () {
+    function modal ($document) {
         return {
             restrict: 'E',
             templateUrl: 'app/directives/modalView.html',
@@ -38,6 +38,13 @@
                 scope.$apply(function close () {
                     scope.settings.type = '';
                 });
+                $document.off('keydown.modal');
+            });
+
+            $document.on('keydown.modal', function (e) {
+                if (e.keyCode === 27) { // Esc
+                    angular.element(element).modal('hide');
+                }
             });
 
             /**

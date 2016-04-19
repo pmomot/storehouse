@@ -24,7 +24,7 @@ module.exports = function (sqlz, SQLZ) {
         freezeTableName: true
     };
 
-    ProductGroup = sqlz.define('product_groups', columns, {
+    ProductGroup = sqlz.define('ProductGroups', columns, {
         instanceMethods: {},
         classMethods: {}
     }, options);

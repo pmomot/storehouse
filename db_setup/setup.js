@@ -7,7 +7,8 @@ module.exports = function (models) {
     var User = models.User,
         Product = models.Product,
         Unit = models.Unit,
-        ProductGroup = models.ProductGroup;
+        ProductGroup = models.ProductGroup,
+        ProductGroupsConnection = models.ProductGroupsConnection;
 
     User.sync({force: true})
         .then(function () {
@@ -21,8 +22,8 @@ module.exports = function (models) {
         })
         .then(function () {
             Unit.bulkCreate([{
-                name: 'bot',
-                description: 'bottles'
+                name: 'pcs',
+                description: 'pieces'
             }, {
                 name: 'kg',
                 description: 'kilograms'
@@ -31,12 +32,10 @@ module.exports = function (models) {
             return ProductGroup.sync({force: true});
         })
         .then(function () {
-            ProductGroup.bulkCreate([{
-                name: 'Chemicals',
-                description: 'Every one needs them'
-            }]);
-
             return Product.sync({force: true});
+        })
+        .then(function () {
+            return ProductGroupsConnection.sync({force: true});
         })
         .then(fillSomeData);
 
@@ -44,11 +43,16 @@ module.exports = function (models) {
      * Fill some data into tables
      * */
     function fillSomeData () {
-        var unit, product;
+        var unit, productGroup, product;
 
         unit = Unit.build({
-            name: 'pcs',
-            description: 'pieces'
+            name: 'bot',
+            description: 'bottles'
+        });
+
+        productGroup = ProductGroup.build({
+            name: 'Food',
+            description: 'Everyone needs it'
         });
 
         product = Product.build({
@@ -62,10 +66,14 @@ module.exports = function (models) {
 
         unit.save()
             .then(function () {
+                return productGroup.save();
+            })
+            .then(function () {
                 return product.save();
             })
             .then(function () {
                 product.setUnit(unit);
+                product.addProductGroup(productGroup);
 
                 return product.save();
             });
