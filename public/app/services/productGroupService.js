@@ -89,13 +89,34 @@
             return groups;
         }
 
+        /**
+         * Get product groups from list by ids
+         * */
+        function getGroupsByIds (groupsList) {
+            var i, id, g, toReturn = [];
+
+            for (i = 0; i < groupsList.length; i += 1) {
+                id = groupsList[i].uuid;
+
+                for (g = 0; g < groups.length; g += 1) {
+                    if (groups[i].uuid === id) {
+                        toReturn.push(groups[i]);
+                        break;
+                    }
+                }
+            }
+
+            return toReturn;
+        }
+
         return {
             fetch: fetch,
             create: create,
             remove: remove,
             update: update,
 
-            getGroups: getGroups
+            getGroups: getGroups,
+            getGroupsByIds: getGroupsByIds
         };
     }
 })();

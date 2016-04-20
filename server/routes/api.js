@@ -11,7 +11,7 @@ module.exports = function (app, express, models) {
     var api = new express.Router(),
         User = models.User,
         userApiCalls = require('./user-api')(User),
-        productApiCalls = require('./product-api')(models.Product, models.Unit), // TODO SH maybe change this
+        productApiCalls = require('./product-api')(models),
         unitApiCalls = require('./unit-api')(models.Unit),
         pGroupApiCalls = require('./product-group-api')(models.ProductGroup);
 

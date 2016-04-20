@@ -3,7 +3,8 @@
  */
 'use strict';
 
-module.exports = function (Product, Unit) {
+module.exports = function (models) {
+    var Product = models.Product;
 
     /**
      * Get products list by query
@@ -14,13 +15,18 @@ module.exports = function (Product, Unit) {
         Product.findAll({
             attributes: {
                 exclude: ['createdAt', 'updatedAt', 'UnitUuid']
-
             },
-            include: {
-                model: Unit,
-                as: 'Unit',
-                attributes: ['uuid']
-            }
+            include: [
+                {
+                    model: models.Unit,
+                    as: 'Unit',
+                    attributes: ['uuid']
+                },
+                {
+                    model: models.ProductGroup,
+                    attributes: ['uuid']
+                }
+            ]
         })
             .then(function (products) {
                 res.send(products);

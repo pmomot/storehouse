@@ -9,7 +9,6 @@ module.exports = function (sqlz, SQLZ, relations) {
         ProductGroup = relations.ProductGroup;
 
     // TODO SH add validation rules
-    // TODO SH do same relation work with groups
 
     columns = {
         uuid: {
@@ -18,10 +17,16 @@ module.exports = function (sqlz, SQLZ, relations) {
             primaryKey: true
         },
         name: {
-            type: SQLZ.STRING
+            type: SQLZ.STRING,
+            validate: {
+                vNotEmpty: vNotEmpty
+            }
         },
         description: {
-            type: SQLZ.STRING
+            type: SQLZ.STRING,
+            validate: {
+                vNotEmpty: vNotEmpty
+            }
         },
         amount: {
             type: SQLZ.INTEGER,
@@ -91,14 +96,10 @@ module.exports = function (sqlz, SQLZ, relations) {
 
         return product.save()
             .then(function () {
-                return Unit.find({
-                    where: {
-                        uuid: p.unit.uuid
-                    }
-                });
+                return product.resetUnit(p.unit.uuid);
             })
-            .then(function (unit) {
-                return product.setUnit(unit);
+            .then(function () {
+                return product.resetProductGroups(p.groups);
             });
     }
 
@@ -107,8 +108,6 @@ module.exports = function (sqlz, SQLZ, relations) {
      * @param {Object} p - product from request body
      * */
     function updateExisting (p) {
-        var pFound;
-
         return Product.find({
             where: {
                 uuid: p.uuid
@@ -127,21 +126,54 @@ module.exports = function (sqlz, SQLZ, relations) {
                 }
             })
             .then(function (product) {
-                pFound = product;
-
-                return Unit.find({
-                    where: {
-                        uuid: p.unit.uuid
-                    }
-                });
+                return product.resetUnit(p.unit.uuid);
             })
-            .then(function (unit) {
-                return pFound.setUnit(unit);
+            .then(function (product) {
+                return product.resetProductGroups(p.groups);
             });
     }
 
+    // instance methods ---------------
+
+    /**
+     * Reset unit method
+     * @param {String} uuid - Unit id
+     * */
+    function resetUnit (uuid) {
+        return Unit.find({
+            where: {
+                uuid: uuid
+            }
+        }).then(function (unit) {
+            return this.setUnit(unit);
+        }.bind(this)); // eslint-disable-line no-invalid-this
+    }
+
+    /**
+     * Reset product groups method
+     * @param {Array} groups - new product groups to set
+     * */
+    function resetProductGroups (groups) {
+        groups = groups.map(function (g) {
+            return g.uuid;
+        });
+
+        return ProductGroup.findAll({
+            where: {
+                uuid: {
+                    $in: groups
+                }
+            }
+        }).then(function (g) {
+            return this.setProductGroups(g);
+        }.bind(this)); // eslint-disable-line no-invalid-this
+    }
+
     Product = sqlz.define('Products', columns, {
-        instanceMethods: {},
+        instanceMethods: {
+            resetUnit: resetUnit,
+            resetProductGroups: resetProductGroups
+        },
         classMethods: {
             createNew: createNew,
             updateExisting: updateExisting

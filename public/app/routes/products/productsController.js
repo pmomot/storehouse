@@ -21,6 +21,7 @@
         vm.units = unitService.getUnits;
         vm.unitById = unitService.getUnitById;
         vm.productGroups = productGroupService.getGroups;
+        vm.productGroupsByIds = productGroupService.getGroupsByIds;
 
         vm.listSettings = {
             addNewLabel: 'Add new product',
@@ -45,8 +46,6 @@
         unitService.fetch(); // TODO SH move this to pre loaded functionality
         productGroupService.fetch(); // TODO SH move this to pre loaded functionality
 
-        // TODO SH do same relation work with groups
-
         /**
          * Show create/update/remove popup for product
          * @param {String} type - popup type
@@ -60,6 +59,7 @@
                 item.arrivedAt = new Date(item.arrivedAt);
                 item.expiresAt = new Date(item.expiresAt);
                 item.unit = vm.unitById(item.Unit.uuid);
+                item.groups = vm.productGroupsByIds(item['ProductGroups']);
             } else {
                 item = {
                     name: '',
@@ -69,7 +69,7 @@
                     arrivedAt: new Date(),
                     expiresAt: new Date(),
                     unit: vm.units()[0],
-                    productGroups: vm.productGroups()[0]
+                    groups: []
                 };
             }
 
