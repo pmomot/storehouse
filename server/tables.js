@@ -6,7 +6,10 @@
 module.exports = function (config) {
     var SQLZ = require('sequelize'),
         sqlz = new SQLZ(config.dbConnection),
-        User = require('./models/user')(sqlz, SQLZ),
+        Locale = require('./models/locale')(sqlz, SQLZ),
+        User = require('./models/user')(sqlz, SQLZ, {
+            Locale: Locale
+        }),
         Unit = require('./models/unit')(sqlz, SQLZ),
         ProductGroup = require('./models/product-group')(sqlz, SQLZ),
         Product = require('./models/product')(sqlz, SQLZ, {
@@ -29,6 +32,7 @@ module.exports = function (config) {
         Product: Product,
         Unit: Unit,
         ProductGroup: ProductGroup,
-        ProductGroupsConnection: ProductGroupsConnection
+        ProductGroupsConnection: ProductGroupsConnection,
+        Locale: Locale
     };
 };

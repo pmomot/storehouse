@@ -14,7 +14,7 @@
      * Accounts processing service
      * */
     function accountService ($q, $window, accountRepository, toastr) {
-        var userInfo = {}, users = [];
+        var userInfo = {}, users = [], locale = {};
 
         if (!$window.localStorage.getItem('token')) {
             $window.localStorage.setItem('token', '');
@@ -33,6 +33,7 @@
                 .then(function (data) {
                     $window.localStorage.setItem('token', data.token);
                     userInfo = data.user;
+                    processLocalization();
 
                     toastr.success(data.message);
                     deferred.resolve(data);
@@ -91,6 +92,7 @@
             accountRepository.loadUserInfo()
                 .then(function (data) {
                     userInfo = data;
+                    processLocalization();
                     deferred.resolve(data);
                 });
 
@@ -141,6 +143,24 @@
             return Object.keys(userInfo).length > 0;
         }
 
+        /**
+        * Get localization object
+        */
+        function getLocalization () {
+            return locale;
+        }
+
+        // helpers
+
+        function processLocalization () {
+            var i, L = userInfo.locale;
+
+            locale = {};
+            for (i = 0; i < L.length; i += 1) {
+                locale[L[i].key] = L[i].value;
+            }
+        }
+
         return {
             // api calls
             login: login,
@@ -154,7 +174,8 @@
             logout: logout,
             getUserInfo: getUserInfo,
             getUsers: getUsers,
-            hasUserInfo: hasUserInfo
+            hasUserInfo: hasUserInfo,
+            getLocalization: getLocalization
         };
     }
 

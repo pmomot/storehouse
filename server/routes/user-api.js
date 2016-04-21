@@ -3,7 +3,8 @@
  */
 'use strict';
 
-module.exports = function (User) {
+module.exports = function (models) {
+    var User = models.User;
 
     /**
      * Sign Up in service
@@ -85,7 +86,10 @@ module.exports = function (User) {
             }
         })
             .then(function (user) {
-                res.send(user.getInfo());
+                return user.getInfo();
+            })
+            .then(function (userInfo) {
+                res.send(userInfo);
             })
             .catch(function (error) {
                 res.send({

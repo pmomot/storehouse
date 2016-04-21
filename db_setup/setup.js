@@ -5,6 +5,7 @@
 
 module.exports = function (models) {
     var User = models.User,
+        Locale = models.Locale,
         Product = models.Product,
         Unit = models.Unit,
         ProductGroup = models.ProductGroup,
@@ -18,6 +19,27 @@ module.exports = function (models) {
                 email: 'root@admin.mail',
                 password: 'rootpass'
             });
+
+            return Locale.sync({force: true});
+        })
+        .then(function () {
+            Locale.bulkCreate([
+                {
+                    key: 'main-title',
+                    description: 'main service title',
+                    en: 'StoreHouse',
+                    ua: 'Склад',
+                    ru: 'Склад'
+                },
+                {
+                    key: 'name',
+                    description: 'word name caption',
+                    en: 'name',
+                    ua: "ім'я",
+                    ru: 'имя'
+                }
+            ]);
+
             return Unit.sync({force: true});
         })
         .then(function () {

@@ -26,6 +26,7 @@
          * */
         function link ($scope) {
             $scope.userInfo = accountService.getUserInfo();
+            $scope.L = accountService.getLocalization;
             $scope.path = $location.path().substr(1).split('#')[0];
             $scope.doNothing = function ($event) {
                 $event.preventDefault();

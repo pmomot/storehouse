@@ -23,8 +23,9 @@ function createToken (user) { // TODO SH check if key expires
     });
 }
 
-module.exports = function (sqlz, SQLZ) {
-    var User, columns, options;
+module.exports = function (sqlz, SQLZ, relations) {
+    var User, columns, options,
+        Locale = relations.Locale;
 
     columns = {
         uuid: {
@@ -101,7 +102,8 @@ module.exports = function (sqlz, SQLZ) {
      * @param {Object} body - user email and pass
      * */
     function logIn (body) {
-        var self = this; // eslint-disable-line no-invalid-this
+        var self = this, // eslint-disable-line no-invalid-this
+            token;
 
         return self.find({
             where: {
@@ -115,17 +117,21 @@ module.exports = function (sqlz, SQLZ) {
                     validPassword = user.comparePassword(body.password);
 
                     if (validPassword) {
+                        token = createToken(user.dataValues);
 
-                        return {
-                            token: createToken(user.dataValues),
-                            user: user.getInfo()
-                        };
+                        return user.getInfo();
                     } else {
                         throw new Error('Invalid Password');
                     }
                 } else {
                     throw new Error('User does not exist');
                 }
+            })
+            .then(function (userInfo) {
+                return {
+                    token: token,
+                    user: userInfo
+                };
             });
     }
 
@@ -165,12 +171,20 @@ module.exports = function (sqlz, SQLZ) {
                 return CryptoJS.AES.decrypt(this.passwordHash, secretKey).toString(CryptoJS.enc.Utf8) === password;
             },
             getInfo: function () {
-                return {
+                var info = {
                     fullName: [this.firstName, this.lastName].join(' '),
                     firstName: this.firstName,
                     lastName: this.lastName,
                     email: this.email
                 };
+
+                return Locale.findAll({
+                    attributes: ['key', ['en', 'value']] // TODO SH change 'ua'
+                }).then(function (locale) {
+                    info.locale = locale;
+
+                    return info;
+                });
             }
         },
         classMethods: {
