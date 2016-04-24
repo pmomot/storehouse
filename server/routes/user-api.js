@@ -102,53 +102,11 @@ module.exports = function (User) {
     function verifyRestorationToken (req, res) {
         var token = req.query.token,
             path = require('path');
-
+           
         if (token) {
             User.verifyRestorationToken(token)
-                .then(function (uuid) {
-                    /*User.find({
-                     where: {
-                     uuid: req.decoded.uuid
-                     }
-                     })*/
-                    var http = require('http'),
-                        fs = require('fs');
-                    var html = 'htmlFileolololol';
-                    //app.get('/api/user/restore-password', function (req, res) {
-                    //console.log('aaaaaaaaaaaaaaaaaaaaaa' + uuid)
-                    fs.sendFile(path.join(__dirname, '../../public', '/static-pages/changeForgotPassword.html'), function () {
-
-                        /* res.writeHead(302, {
-                         'Set-Cookie': 'fake-token="' + uuid + '"'
-                         });
-                         res.end();*/
-                        // http.createServer(function(request, response) {
-                        res.writeHead(302, {
-                            'Set-Cookie': 'fake-token="' + uuid + '"'
-                        });
-                        // response.write('adsfdfasdfa');
-                        res.end();
-
-
-                    });
-                    /*function time() {
-                        res.writeHead(302, {
-                            'Set-Cookie': 'fake-token="' + uuid + '"'
-                        });
-                        res.end();
-                    }
-                    setTimeout(time,1500)*/
-
-
-
-                   // return localStorage.setItem(uuid, uuid);
-                    //res.sendFile(__dirname + "../public/static-pages/changeForgotPassword.html");
-                    //http://localhost:3001/static-pages/changeForgotPassword.html
-                    //});
-                    /*res.send({
-                        success: true,
-                        message: 'Now you can type new password'
-                    });*/
+                .then(function () {
+                    res.sendFile(path.join(__dirname, '../../public', '/static-pages/restorePasswordView.html'));
                 })
                 .catch(function (error) {
                     res.send({
@@ -171,6 +129,11 @@ module.exports = function (User) {
      * */
     function restorePassword (req, res) {
         // TODO SH dev this functionality
+        
+        var newPass = req.headers.data,
+            token = req.headers.token;
+        
+        User.restorePassword(newPass, token)
         res.send({
             message: 'Password has been restored',
             success: true

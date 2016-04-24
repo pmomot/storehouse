@@ -13,12 +13,12 @@
     /**
      * Account Repository
      * */
-    function accountRepository($http, $q) {
+    function accountRepository ($http, $q) {
 
         /**
          * Log in user to portal
          * */
-        function login(params) {
+        function login (params) {
             var deferred = $q.defer();
 
             $http.post('/api/user/log-in', params)
@@ -38,7 +38,7 @@
         /**
          * Create new user
          * */
-        function signUp(params) {
+        function signUp (params) {
             var deferred = $q.defer();
 
             $http.post('/api/user', params)
@@ -60,7 +60,7 @@
          *restore user password
          * */
 
-        function restorePassword(params) {
+        function restorePassword (params) {
             var deferred = $q.defer();
             
             $http.post('/api/user/forgot-password', params)
@@ -80,7 +80,7 @@
         /**
          * Change user password
          * */
-        function changePass(params) {
+        function changePass (params) {
             var deferred = $q.defer();
 
             $http.put('/api/user/change-pass', params)
@@ -116,7 +116,7 @@
         /**
          * Get users list form api
          * */
-        function fetchUsers() {
+        function fetchUsers () {
             var deferred = $q.defer();
 
             $http.get('/api/users')
