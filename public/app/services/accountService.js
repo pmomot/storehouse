@@ -114,6 +114,26 @@
             return deferred.promise;
         }
 
+        /**
+         * Get localization info on app start
+         * */
+        function fetchLocale () {
+            var deferred = $q.defer();
+
+            if (!window.localStorage.getItem('lang')) {
+                window.localStorage.setItem('lang', 'en');
+            }
+
+            accountRepository.fetchLocale(window.localStorage.getItem('lang'))
+                .then(function (data) {
+                    userInfo.locale = data;
+                    processLocalization();
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
         // service calls
         /**
          * Log out of portal
@@ -152,6 +172,9 @@
 
         // helpers
 
+        /**
+         * Convert collection of objects into object
+         * */
         function processLocalization () {
             var i, L = userInfo.locale;
 
@@ -167,6 +190,7 @@
             signUp: signUp,
             loadUserInfo: loadUserInfo,
             fetchUsers: fetchUsers,
+            fetchLocale: fetchLocale,
 
             changePass: changePass,
 

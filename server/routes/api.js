@@ -23,6 +23,7 @@ module.exports = function (app, express, models) {
     // User section
     api.post('/user', userApiCalls.signUp);
     api.post('/user/log-in', userApiCalls.logIn);
+    api.get('/locale/:lang', userApiCalls.getLocale);
 
     api.use(verifyToken);
 

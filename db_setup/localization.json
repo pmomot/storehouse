@@ -1,0 +1,142 @@
+[
+    {
+        "key": "main-title",
+        "description": "main service title",
+        "en": "StoreHouse",
+        "ua": "Склад",
+        "ru": "Склад"
+    },
+    {
+        "key": "name",
+        "description": "word name caption",
+        "en": "name",
+        "ua": "ім'я",
+        "ru": "имя"
+    },
+    {
+        "key": "users",
+        "description": "users menu title",
+        "en": "users",
+        "ua": "користувачі",
+        "ru": "пользователи"
+    },
+    {
+        "key": "products",
+        "description": "products menu title",
+        "en": "products",
+        "ua": "продукти",
+        "ru": "продукты"
+    },
+    {
+        "key": "units",
+        "description": "units menu title",
+        "en": "units of measurement",
+        "ua": "одиниці виміру",
+        "ru": "единицы измерения"
+    },
+    {
+        "key": "product-groups",
+        "description": "product groups menu title",
+        "en": "product groups",
+        "ua": "групи продуктів",
+        "ru": "группы продуктов"
+    },
+    {
+        "key": "change-pass",
+        "description": "change pass menu title",
+        "en": "change pass",
+        "ua": "зміна пароля",
+        "ru": "смена пароля"
+    },
+    {
+        "key": "log-out",
+        "description": "log out menu title",
+        "en": "log out",
+        "ua": "вийти",
+        "ru": "выйти"
+    },
+    {
+        "key": "account-menu",
+        "description": "account-menu menu title",
+        "en": "account menu",
+        "ua": "меню користувача",
+        "ru": "меню пользователя"
+    },
+    {
+        "key": "error-passwords-mismatch",
+        "description": "password and repeat password mismatch",
+        "en": "passwords do not match",
+        "ua": "паролі не співпадають",
+        "ru": "пароли не совпадают"
+    },
+    {
+        "key": "error-password-validation",
+        "description": "length and spaces validation",
+        "en": "password must be at least 7 characters long and not contain spaces",
+        "ua": "пароль повинен бути щонайменше 7 символів у довжину і не містити пробілів",
+        "ru": "пароль должен быть минимум 7 символов в длину и не иметь пробелов"
+    },
+    {
+        "key": "error-email-validation",
+        "description": "email validation error",
+        "en": "email is invalid",
+        "ua": "невалідна електронна пошта",
+        "ru": "невалидная электронная почта"
+    },
+    {
+        "key": "error-first-name-validation",
+        "description": "first name validation error",
+        "en": "first name may contain only letters.",
+        "ua": "ім'я може містити тільки літери",
+        "ru": "имя может состоять только из букв"
+    },
+    {
+        "key": "error-last-name-validation",
+        "description": "last name validation error",
+        "en": "last name may contain only letters.",
+        "ua": "прізвище може містити тільки літери",
+        "ru": "фамилия может состоять только из букв"
+    },
+    {
+        "key": "back",
+        "description": "back button caption",
+        "en": "back",
+        "ua": "назад",
+        "ru": "назад"
+    },
+    {
+        "key": "submit",
+        "description": "submit button caption",
+        "en": "submit",
+        "ua": "відправити",
+        "ru": "отправить"
+    },
+    {
+        "key": "label-current-password",
+        "description": "current password label in form",
+        "en": "current password",
+        "ua": "поточний пароль",
+        "ru": "текущий пароль"
+    },
+    {
+        "key": "label-new-password",
+        "description": "new password label in form",
+        "en": "new password",
+        "ua": "новий пароль",
+        "ru": "новый пароль"
+    },
+    {
+        "key": "label-repeat-password",
+        "description": "repeat password label in form",
+        "en": "repeat new password",
+        "ua": "повтор нового пароля",
+        "ru": "повтор нового пароля"
+    },
+    {
+        "key": "label-password",
+        "description": "current password label in form",
+        "en": "current password",
+        "ua": "поточний пароль",
+        "ru": "текущий пароль"
+    },
+]

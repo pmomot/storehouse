@@ -3,6 +3,9 @@
     padding: 15px;
     margin: 0 auto;
 
+    .user-form-heading {
+        text-transform: capitalize;
+    }
     .user-form-heading,
     .checkbox {
         margin-bottom: 10px;
@@ -26,6 +29,13 @@
         margin-bottom: 10px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+    }
+    a, button {
+        text-transform: capitalize;
+    }
+
+    .control-label:first-letter {
+        text-transform: uppercase;
     }
     .sign-up-label {
         margin-top: 15px;

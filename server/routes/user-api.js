@@ -53,6 +53,29 @@ module.exports = function (models) {
     }
 
     /**
+     * Get localization info
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function getLocale (req, res) {
+        console.log(req.params);
+
+        models.Locale
+            .findAll({
+                attributes: ['key', [req.params['lang'], 'value']]
+            })
+            .then(function (locale) {
+                res.send(locale);
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
+    /**
      * Change user password
      * @param {Object} req - request
      * @param {Object} res - response
@@ -124,6 +147,7 @@ module.exports = function (models) {
     return {
         signUp: signUp,
         logIn: logIn,
+        getLocale: getLocale,
         changePassword: changePassword,
         getUser: getUser,
         getUsers: getUsers

@@ -25,6 +25,7 @@
         };
         vm.sendRequest = sendRequest;
         vm.goBack = goBack;
+        vm.ln = accountService.getLocalization;
 
         /**
          * Send user change password request
@@ -34,7 +35,7 @@
 
             if ((vm.data.newPassword === vm.data.repeatPassword) && (vm.data.newPassword !== '') && (vm.data.repeatPassword !== '')) {
                 if (!REGEX.PASS.test(vm.data.newPassword) || !REGEX.PASS.test(vm.data.repeatPassword)) {
-                    vm.errors.push('New password must be at least 7 characters long and not contain spaces.');
+                    vm.errors.push(vm.ln()['error-password-validation']);
                 } else {
                     accountService.changePass({
                         currentPass: vm.data.currentPassword,
@@ -49,7 +50,7 @@
                         });
                 }
             } else {
-                vm.errors.push('New passwords do not match.');
+                vm.errors.push(vm.ln()['error-passwords-mismatch']);
             }
         }
 

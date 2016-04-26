@@ -76,7 +76,7 @@
         }
 
         /**
-         * Get user data form api
+         * Get user data from api
          * */
         function loadUserInfo () {
             var deferred = $q.defer();
@@ -92,7 +92,7 @@
         }
 
         /**
-         * Get users list form api
+         * Get users list from api
          * */
         function fetchUsers () {
             var deferred = $q.defer();
@@ -107,12 +107,30 @@
             return deferred.promise;
         }
 
+        /**
+         * Get locale info from api
+         * @param {String} lang - language
+         * */
+        function fetchLocale (lang) {
+            var deferred = $q.defer();
+
+            $http.get('/api/locale/' + lang)
+                .then(function (result) {
+                    deferred.resolve(result.data);
+                }, function (errors) {
+                    deferred.reject(errors.data);
+                });
+
+            return deferred.promise;
+        }
+
         return {
             login: login,
             signUp: signUp,
             changePass: changePass,
             loadUserInfo: loadUserInfo,
-            fetchUsers: fetchUsers
+            fetchUsers: fetchUsers,
+            fetchLocale: fetchLocale
         };
     }
 

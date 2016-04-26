@@ -10,9 +10,14 @@
     text-align: center;
 }
 
+.navbar-nav a {
+    text-transform: capitalize;
+}
+
 span.glyphicon {
     cursor: pointer;
 }
+
 table {
     
     td {

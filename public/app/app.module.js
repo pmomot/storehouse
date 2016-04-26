@@ -32,6 +32,8 @@
             // prevent loading any session required page without necessary token
             $rootScope.$on('$routeChangeStart', function (event, next) {
                 if ($window.localStorage.getItem('token') === '') {
+                    accountService.fetchLocale();
+
                     if (next.templateUrl !== 'app/routes/log-in/logInView.html' &&
                         next.templateUrl !== 'app/routes/sign-up/signUpView.html') {
 

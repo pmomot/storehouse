@@ -179,7 +179,7 @@ module.exports = function (sqlz, SQLZ, relations) {
                 };
 
                 return Locale.findAll({
-                    attributes: ['key', ['en', 'value']] // TODO SH change 'ua'
+                    attributes: ['key', ['ua', 'value']] // TODO SH change 'ua'
                 }).then(function (locale) {
                     info.locale = locale;
 

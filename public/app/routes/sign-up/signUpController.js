@@ -20,6 +20,7 @@
         vm.errors = [];
         vm.data = {};
         vm.sendRequest = sendRequest;
+        vm.ln = accountService.getLocalization;
 
         if ($window.localStorage.getItem('token')) { // sign up page can be opened only when not authorized
             $location.path('/');
@@ -33,19 +34,19 @@
             vm.errors = [];
 
             if (!REGEX.NAME.test(vm.data.firstName)) {
-                vm.errors.push('First name may contain only letters.');
+                vm.errors.push(vm.ln()['error-first-name-validation']);
             }
             if (!REGEX.NAME.test(vm.data.lastName)) {
-                vm.errors.push('Last name may contain only letters.');
+                vm.errors.push(vm.ln()['error-last-name-validation']);
             }
             if (!REGEX.EMAIL.test(vm.data.email)) {
-                vm.errors.push('Email is invalid.');
+                vm.errors.push(vm.ln()['error-email-validation']);
             }
             if (!REGEX.PASS.test(vm.data.password)) {
-                vm.errors.push('Password must be at least 7 characters long and not contain spaces.');
+                vm.errors.push(vm.ln()['error-password-validation']);
             }
             if (vm.data.password !== vm.data.passwordConfirm) {
-                vm.errors.push('Passwords do not match.');
+                vm.errors.push(vm.ln()['error-passwords-mismatch']);
             }
 
             if (vm.errors.length === 0) {

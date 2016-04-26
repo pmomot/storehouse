@@ -9,7 +9,8 @@ module.exports = function (models) {
         Product = models.Product,
         Unit = models.Unit,
         ProductGroup = models.ProductGroup,
-        ProductGroupsConnection = models.ProductGroupsConnection;
+        ProductGroupsConnection = models.ProductGroupsConnection,
+        fs = require('fs');
 
     User.sync({force: true})
         .then(function () {
@@ -23,22 +24,9 @@ module.exports = function (models) {
             return Locale.sync({force: true});
         })
         .then(function () {
-            Locale.bulkCreate([
-                {
-                    key: 'main-title',
-                    description: 'main service title',
-                    en: 'StoreHouse',
-                    ua: 'Склад',
-                    ru: 'Склад'
-                },
-                {
-                    key: 'name',
-                    description: 'word name caption',
-                    en: 'name',
-                    ua: "ім'я",
-                    ru: 'имя'
-                }
-            ]);
+            fs.readFile('db_setup/localization.json', function (err, json) {
+                Locale.bulkCreate(JSON.parse(json));
+            });
 
             return Unit.sync({force: true});
         })
