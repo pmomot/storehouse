@@ -34,7 +34,8 @@
         text-transform: capitalize;
     }
 
-    .control-label:first-letter {
+    .control-label:first-letter,
+    .sign-up-label:first-letter {
         text-transform: uppercase;
     }
     .sign-up-label {

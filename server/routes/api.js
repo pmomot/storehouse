@@ -31,6 +31,7 @@ module.exports = function (app, express, models) {
     api.put('/user/change-pass', userApiCalls.changePassword);
     api.get('/users', userApiCalls.getUsers);
     api.get('/user', userApiCalls.getUser);
+    api.get('/user/change-language', userApiCalls.changeLanguage);
 
     // Product section
     api.get('/products', productApiCalls.getProducts);

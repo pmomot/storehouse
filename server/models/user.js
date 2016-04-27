@@ -64,6 +64,10 @@ module.exports = function (sqlz, SQLZ, relations) {
                     }
                 }
             }
+        },
+        lang: {
+            type: SQLZ.STRING,
+            defaultValue: 'en'
         }
     };
 
@@ -165,6 +169,34 @@ module.exports = function (sqlz, SQLZ, relations) {
             });
     }
 
+    /**
+     * Change user's language
+     * */
+    function changeLanguage (id, body) {
+        var lang = body.language;
+
+        User.find({
+            where: {
+                uuid: id
+            }
+        })
+            .then(function (user) {
+                if (config.languages.indexOf(lang) === -1) { // no such language
+                    lang = 'en';
+                }
+                user.lang = lang;
+
+                return user.save();
+            })
+            .then(function (user) {
+                console.log(user); // TODO SH finish development
+
+                return Locale.findAll({
+                    attributes: ['key', [user.lang, 'value']]
+                });
+            });
+    }
+
     User = sqlz.define('Users', columns, {
         instanceMethods: {
             comparePassword: function (password) {
@@ -175,11 +207,12 @@ module.exports = function (sqlz, SQLZ, relations) {
                     fullName: [this.firstName, this.lastName].join(' '),
                     firstName: this.firstName,
                     lastName: this.lastName,
-                    email: this.email
+                    email: this.email,
+                    langs: config.languages
                 };
 
                 return Locale.findAll({
-                    attributes: ['key', ['ua', 'value']] // TODO SH change 'ua'
+                    attributes: ['key', [this.lang, 'value']]
                 }).then(function (locale) {
                     info.locale = locale;
 
@@ -190,7 +223,8 @@ module.exports = function (sqlz, SQLZ, relations) {
         classMethods: {
             signUp: signUp,
             logIn: logIn,
-            changePassword: changePassword
+            changePassword: changePassword,
+            changeLanguage: changeLanguage
         }
     }, options);
 

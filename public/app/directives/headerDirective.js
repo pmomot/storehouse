@@ -28,6 +28,8 @@
             $scope.userInfo = accountService.getUserInfo();
             $scope.ln = accountService.getLocalization;
             $scope.path = $location.path().substr(1).split('#')[0];
+
+            console.log($scope.path);
             $scope.doNothing = function ($event) {
                 $event.preventDefault();
             };

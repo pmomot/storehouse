@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-xs-6">
-                        <label class="control-label" for="units">Units *</label>
+                        <label class="control-label" for="units">{{ vm.ln()['units'] }} *</label>
                         <select class="form-control" id="units" ng-model="vm.modalSettings.item.unit" required
                                 ng-options="unit as unit.name for unit in vm.modalSettings.units()"></select>
                     </div>
@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="col-sm-6 col-xs-12">
-                <label class="control-label" for="amount">Product Groups</label>
+                <label class="control-label" for="amount">{{ vm.ln()['product-groups'] }}</label>
                 <select class="form-control" multiple ng-model="vm.modalSettings.item.groups"
                         ng-options="group as group.name for group in vm.modalSettings.productGroups()">
                 </select>

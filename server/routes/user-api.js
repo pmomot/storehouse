@@ -2,6 +2,7 @@
  * Created by pmomot on 3/30/16.
  */
 'use strict';
+var config = require('../config');
 
 module.exports = function (models) {
     var User = models.User;
@@ -58,11 +59,15 @@ module.exports = function (models) {
      * @param {Object} res - response
      * */
     function getLocale (req, res) {
-        console.log(req.params);
+        var lang = req.params['lang'];
+
+        if (config.languages.indexOf(lang) === -1) { // no such language
+            lang = 'en';
+        }
 
         models.Locale
             .findAll({
-                attributes: ['key', [req.params['lang'], 'value']]
+                attributes: ['key', [lang, 'value']]
             })
             .then(function (locale) {
                 res.send(locale);
@@ -144,12 +149,36 @@ module.exports = function (models) {
             });
     }
 
+    /**
+     * Change user's language
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function changeLanguage (req, res) {
+
+        User.changeLanguage(req.decoded.id, req.body)
+            .then(function (locale) {
+                res.send({
+                    message: 'Language has been changed.',
+                    success: true,
+                    locale: locale
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
     return {
         signUp: signUp,
         logIn: logIn,
         getLocale: getLocale,
         changePassword: changePassword,
         getUser: getUser,
-        getUsers: getUsers
+        getUsers: getUsers,
+        changeLanguage: changeLanguage
     };
 };

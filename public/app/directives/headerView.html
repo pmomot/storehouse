@@ -30,9 +30,9 @@
                     <a href="#" class="dropdown-toggle" ng-click="doNothing($event)" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">{{ ln()['account-menu'] }} <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <!--<li ng-class="{'active': path === 'user'}">-->
-                            <!--<a href="#/user">My Info</a>-->
-                        <!--</li>-->
+                        <li ng-class="{'active': path === 'user/settings'}">
+                            <a href="#/user/settings">test{{ ln()['user-settings'] }}</a>
+                        </li>
                         <li>
                             <a href="#/user/change-pass">{{ ln()['change-pass'] }}</a>
                         </li>

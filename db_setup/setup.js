@@ -12,6 +12,8 @@ module.exports = function (models) {
         ProductGroupsConnection = models.ProductGroupsConnection,
         fs = require('fs');
 
+    // TODO SH add localization to server-side errors
+
     User.sync({force: true})
         .then(function () {
             User.create({

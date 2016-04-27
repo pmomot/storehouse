@@ -10,18 +10,19 @@
         .controller('ProductsController', ProductsController);
 
     ProductsController.$inject = ['productService', 'MODAL_SETTINGS', 'MODAL_BUTTONS',
-        'unitService', 'productGroupService'];
+        'unitService', 'productGroupService', 'accountService'];
 
     /**
      * Products Controller
      * */
-    function ProductsController (productService, MODAL_SETTINGS, MODAL_BUTTONS, unitService, productGroupService) {
+    function ProductsController (productService, MODAL_SETTINGS, MODAL_BUTTONS, unitService, productGroupService, accountService) {
         var vm = this;
 
         vm.units = unitService.getUnits;
         vm.unitById = unitService.getUnitById;
         vm.productGroups = productGroupService.getGroups;
         vm.productGroupsByIds = productGroupService.getGroupsByIds;
+        vm.ln = accountService.getLocalization;
 
         vm.listSettings = {
             addNewLabel: 'Add new product',

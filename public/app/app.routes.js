@@ -32,6 +32,11 @@
                 controller: 'ChangePassController',
                 controllerAs: 'vm'
             })
+            .when('/user/settings', {
+                templateUrl: 'app/routes/user-settings/userSettingsView.html',
+                controller: 'UserSettingsController',
+                controllerAs: 'vm'
+            })
             .when('/users', {
                 templateUrl: 'app/routes/users/usersView.html',
                 controller: 'UsersController',

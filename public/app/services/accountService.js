@@ -178,6 +178,8 @@
         function processLocalization () {
             var i, L = userInfo.locale;
 
+            window.localStorage.setItem('lang', userInfo.lang);
+
             locale = {};
             for (i = 0; i < L.length; i += 1) {
                 locale[L[i].key] = L[i].value;

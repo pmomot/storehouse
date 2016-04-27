@@ -19,6 +19,7 @@
 
         vm.data = {};
         vm.sendRequest = sendRequest;
+        vm.ln = accountService.getLocalization;
 
         /**
          * Send user log in request

@@ -45,8 +45,8 @@
         "key": "change-pass",
         "description": "change pass menu title",
         "en": "change pass",
-        "ua": "зміна пароля",
-        "ru": "смена пароля"
+        "ua": "змінити пароль",
+        "ru": "сменить пароль"
     },
     {
         "key": "log-out",
@@ -134,9 +134,65 @@
     },
     {
         "key": "label-password",
-        "description": "current password label in form",
-        "en": "current password",
-        "ua": "поточний пароль",
-        "ru": "текущий пароль"
+        "description": "password label in form",
+        "en": "password",
+        "ua": "пароль",
+        "ru": "пароль"
     },
+    {
+        "key": "label-confirm-password",
+        "description": "confirm password label in form",
+        "en": "confirm password",
+        "ua": "підтвердження пароля",
+        "ru": "подтверждение пароля"
+    },
+    {
+        "key": "label-email",
+        "description": "email label in form",
+        "en": "email address",
+        "ua": "електронна пошта",
+        "ru": "электронная почта"
+    },
+    {
+        "key": "label-first-name",
+        "description": "first name label in form",
+        "en": "first name",
+        "ua": "ім'я",
+        "ru": "имя"
+    },
+    {
+        "key": "label-last-name",
+        "description": "last name label in form",
+        "en": "last name",
+        "ua": "прізвище",
+        "ru": "фамилия"
+    },
+    {
+        "key": "create-account",
+        "description": "create account form title",
+        "en": "create an account",
+        "ua": "створити аккаунт",
+        "ru": "завести аккаунт"
+    },
+    {
+        "key": "back-to-login",
+        "description": "back to login button on form",
+        "en": "back to login",
+        "ua": "до сторінки входу",
+        "ru": "к странице входа"
+    },
+    {
+        "key": "not-signed-up",
+        "description": "not signed up question on form",
+        "en": "not signed up?",
+        "ua": "не зареєстровані?",
+        "ru": "не зарегистрированы?"
+    },
+    {
+        "key": "sign-in",
+        "description": "sign in form title",
+        "en": "sign in",
+        "ua": "увійти",
+        "ru": "войти"
+    }
 ]
