@@ -47,12 +47,12 @@
                 controller: 'ProductsController',
                 controllerAs: 'vm'
             })
-            .when('/units', {
+            .when('/products/units', {
                 templateUrl: 'app/routes/units/unitsView.html',
                 controller: 'UnitsController',
                 controllerAs: 'vm'
             })
-            .when('/product-groups', {
+            .when('/products/groups', {
                 templateUrl: 'app/routes/product-groups/productGroupsView.html',
                 controller: 'ProductGroupsController',
                 controllerAs: 'vm'

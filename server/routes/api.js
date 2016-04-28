@@ -28,7 +28,6 @@ module.exports = function (app, express, models) {
             .catch(function (err) {
                 res.send(err.message);
             });
-
     });
 
     // User section

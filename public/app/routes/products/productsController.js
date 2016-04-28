@@ -23,6 +23,8 @@
         vm.productGroups = productGroupService.getGroups;
         vm.productGroupsByIds = productGroupService.getGroupsByIds;
         vm.ln = accountService.getLocalization;
+        vm.selectedGroups = productService.getGroups;
+        vm.activeTag = 'Food';
 
         vm.listSettings = {
             addNewLabel: 'Add new product',

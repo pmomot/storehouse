@@ -24,7 +24,7 @@ module.exports = function (models) {
                 },
                 {
                     model: models.ProductGroup,
-                    attributes: ['uuid']
+                    attributes: ['uuid', 'name']
                 }
             ]
         })

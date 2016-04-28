@@ -15,14 +15,20 @@
                 <li ng-class="{'active': path === 'users'}">
                     <a href="#/users">{{ ln()['users'] }}</a>
                 </li>
-                <li ng-class="{'active': path === 'products'}">
-                    <a href="#/products">{{ ln()['products'] }}</a>
-                </li>
-                <li ng-class="{'active': path === 'units'}">
-                    <a href="#/units">{{ ln()['units'] }}</a>
-                </li>
-                <li ng-class="{'active': path === 'product-groups'}">
-                    <a href="#/product-groups">{{ ln()['product-groups'] }}</a>
+                <li class="dropdown" ng-class="{'active': path.indexOf('products') === 0}">
+                    <a href="#" class="dropdown-toggle" ng-click="doNothing($event)" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false">{{ ln()['product-menu'] }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li ng-class="{'active': path === 'products'}">
+                            <a href="#/products">{{ ln()['products'] }}</a>
+                        </li>
+                        <li ng-class="{'active': path === 'products/units'}">
+                            <a href="#/products/units">{{ ln()['units'] }}</a>
+                        </li>
+                        <li ng-class="{'active': path === 'products/groups'}">
+                            <a href="#/products/groups">{{ ln()['product-groups'] }}</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

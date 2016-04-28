@@ -8,13 +8,13 @@
         .module('StoreHouse.Services')
         .factory('productService', productService);
 
-    productService.$inject = ['$q', 'productRepository', 'toastr'];
+    productService.$inject = ['$q', 'productRepository', 'toastr', '_'];
 
     /**
      * Products processing service
      * */
-    function productService ($q, productRepository, toastr) {
-        var products = [];
+    function productService ($q, productRepository, toastr, _) {
+        var products = [], groups = [];
 
         /**
          * Get products list from server
@@ -24,7 +24,7 @@
 
             productRepository.fetch({})
                 .then(function (data) {
-                    products = data;
+                    processProducts(data);
                     deferred.resolve(data);
                 });
 
@@ -88,13 +88,36 @@
             return products;
         }
 
+        /**
+         * Get product groups list
+         * */
+        function getGroups () {
+            return groups;
+        }
+
+        // helpers
+
+        /**
+         * Process products collection
+         * @param {Array} data - list of products
+         * */
+        function processProducts (data) {
+            products = data;
+
+            products.forEach(function (p) {
+                p.groupsNames = _.pluck(p['ProductGroups'], 'name');
+                groups = _.union(groups, p.groupsNames);
+            });
+        }
+
         return {
             fetch: fetch,
             create: create,
             remove: remove,
             update: update,
 
-            getProducts: getProducts
+            getProducts: getProducts,
+            getGroups: getGroups
         };
     }
 })();

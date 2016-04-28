@@ -1,5 +1,12 @@
 <sh-header></sh-header>
 <div class="main-content">
+    <div class="tag-bar">
+        <button type="button" class="btn btn-success"
+                ng-class="{'active': vm.activeTag === 'all'}">{{ vm.ln()['all']}}</button>
+        <button type="button" class="btn btn-success" ng-repeat="g in vm.selectedGroups()"
+                ng-class="{'active': vm.activeTag === g}">{{ g }}</button>
+        <hr/>
+    </div>
     <sh-list settings="vm.listSettings"></sh-list>
 
     <sh-modal settings="vm.modalSettings"

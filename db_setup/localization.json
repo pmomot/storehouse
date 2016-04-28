@@ -70,6 +70,13 @@
         "ru": "меню пользователя"
     },
     {
+        "key": "product-menu",
+        "description": "product-menu menu title",
+        "en": "product menu",
+        "ua": "меню продуктів",
+        "ru": "меню продуктов"
+    },
+    {
         "key": "error-passwords-mismatch",
         "description": "password and repeat password mismatch",
         "en": "passwords do not match",
@@ -208,5 +215,12 @@
         "en": "sign in",
         "ua": "увійти",
         "ru": "войти"
+    },
+    {
+        "key": "all",
+        "description": "all caption",
+        "en": "all",
+        "ua": "всі",
+        "ru": "все"
     }
 ]

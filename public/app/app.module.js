@@ -4,11 +4,18 @@
 'use strict';
 
 (function () {
+    var underscore = angular.module('underscore', []);
+
+    underscore.factory('_', ['$window', function ($window) {
+        return $window._;
+    }]);
+
     angular.module('StoreHouse',
         [
             'ngRoute',
             'ngMessages',
             'toastr',
+            'underscore',
             'StoreHouse.Services',
             'StoreHouse.Repositories',
             'StoreHouse.Directives',
