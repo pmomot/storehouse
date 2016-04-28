@@ -171,13 +171,15 @@ module.exports = function (sqlz, SQLZ, relations) {
 
     /**
      * Change user's language
+     * @param {String} uuid - decoded user id
+     * @param {Object} body - request body
      * */
-    function changeLanguage (id, body) {
+    function changeLanguage (uuid, body) {
         var lang = body.language;
 
-        User.find({
+        return User.find({
             where: {
-                uuid: id
+                uuid: uuid
             }
         })
             .then(function (user) {
@@ -189,7 +191,6 @@ module.exports = function (sqlz, SQLZ, relations) {
                 return user.save();
             })
             .then(function (user) {
-                console.log(user); // TODO SH finish development
 
                 return Locale.findAll({
                     attributes: ['key', [user.lang, 'value']]
@@ -208,6 +209,7 @@ module.exports = function (sqlz, SQLZ, relations) {
                     firstName: this.firstName,
                     lastName: this.lastName,
                     email: this.email,
+                    lang: this.lang,
                     langs: config.languages
                 };
 

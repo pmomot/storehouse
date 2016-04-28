@@ -20,6 +20,17 @@ module.exports = function (app, express, models) {
         res.send('Database reset done');
     });
 
+    api.get('/fill-table/locale', function (req, res) {
+        require('../../db_setup/locale-fill')(models.Locale)
+            .then(function () {
+                res.send('Locale fill done');
+            })
+            .catch(function (err) {
+                res.send(err.message);
+            });
+
+    });
+
     // User section
     api.post('/user', userApiCalls.signUp);
     api.post('/user/log-in', userApiCalls.logIn);
@@ -31,7 +42,7 @@ module.exports = function (app, express, models) {
     api.put('/user/change-pass', userApiCalls.changePassword);
     api.get('/users', userApiCalls.getUsers);
     api.get('/user', userApiCalls.getUser);
-    api.get('/user/change-language', userApiCalls.changeLanguage);
+    api.put('/user/change-language', userApiCalls.changeLanguage);
 
     // Product section
     api.get('/products', productApiCalls.getProducts);

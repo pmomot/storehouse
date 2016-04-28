@@ -49,6 +49,13 @@
         "ru": "сменить пароль"
     },
     {
+        "key": "settings",
+        "description": "user settings menu title",
+        "en": "settings",
+        "ua": "налаштування",
+        "ru": "настройки"
+    },
+    {
         "key": "log-out",
         "description": "log out menu title",
         "en": "log out",
@@ -166,6 +173,13 @@
         "en": "last name",
         "ua": "прізвище",
         "ru": "фамилия"
+    },
+    {
+        "key": "label-change-language",
+        "description": "change language label in form",
+        "en": "change language",
+        "ua": "змінити мову",
+        "ru": "сменить язык"
     },
     {
         "key": "create-account",

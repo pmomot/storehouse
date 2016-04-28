@@ -3,14 +3,15 @@
  */
 'use strict';
 
+var fs = require('fs');
+
 module.exports = function (models) {
     var User = models.User,
         Locale = models.Locale,
         Product = models.Product,
         Unit = models.Unit,
         ProductGroup = models.ProductGroup,
-        ProductGroupsConnection = models.ProductGroupsConnection,
-        fs = require('fs');
+        ProductGroupsConnection = models.ProductGroupsConnection;
 
     // TODO SH add localization to server-side errors
 

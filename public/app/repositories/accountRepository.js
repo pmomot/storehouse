@@ -124,13 +124,35 @@
             return deferred.promise;
         }
 
+        /**
+         * Change user language
+         * @param {String} language - new user language
+         * */
+        function changeLanguage (language) {
+            var deferred = $q.defer();
+
+            $http.put('/api/user/change-language', {language: language})
+                .then(function (result) {
+                    if (result.data.success) {
+                        deferred.resolve(result.data);
+                    } else {
+                        deferred.reject(result.data);
+                    }
+                }, function (errors) {
+                    deferred.reject(errors.data);
+                });
+
+            return deferred.promise;
+        }
+
         return {
             login: login,
             signUp: signUp,
             changePass: changePass,
             loadUserInfo: loadUserInfo,
             fetchUsers: fetchUsers,
-            fetchLocale: fetchLocale
+            fetchLocale: fetchLocale,
+            changeLanguage: changeLanguage
         };
     }
 

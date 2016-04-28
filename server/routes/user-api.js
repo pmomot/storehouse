@@ -156,7 +156,7 @@ module.exports = function (models) {
      * */
     function changeLanguage (req, res) {
 
-        User.changeLanguage(req.decoded.id, req.body)
+        User.changeLanguage(req.decoded.uuid, req.body)
             .then(function (locale) {
                 res.send({
                     message: 'Language has been changed.',

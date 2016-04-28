@@ -33,7 +33,7 @@
                 .then(function (data) {
                     $window.localStorage.setItem('token', data.token);
                     userInfo = data.user;
-                    processLocalization();
+                    processUserInfo();
 
                     toastr.success(data.message);
                     deferred.resolve(data);
@@ -69,10 +69,6 @@
                 .then(function (data) {
                     toastr.success(data.message);
                     deferred.resolve(data);
-                })
-                .catch(function (error) {
-                    toastr.error(error.message);
-                    deferred.reject();
                 });
 
             return deferred.promise;
@@ -92,7 +88,7 @@
             accountRepository.loadUserInfo()
                 .then(function (data) {
                     userInfo = data;
-                    processLocalization();
+                    processUserInfo();
                     deferred.resolve(data);
                 });
 
@@ -127,7 +123,28 @@
             accountRepository.fetchLocale(window.localStorage.getItem('lang'))
                 .then(function (data) {
                     userInfo.locale = data;
-                    processLocalization();
+                    processUserInfo();
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Change user language
+         * @param {String} language - new user language
+         * */
+        function changeLanguage (language) {
+            var deferred = $q.defer();
+
+            accountRepository.changeLanguage(language)
+                .then(function (data) {
+                    toastr.success(data.message);
+
+                    userInfo.lang = language;
+                    userInfo.locale = data.locale;
+                    processUserInfo();
+
                     deferred.resolve(data);
                 });
 
@@ -175,7 +192,7 @@
         /**
          * Convert collection of objects into object
          * */
-        function processLocalization () {
+        function processUserInfo () {
             var i, L = userInfo.locale;
 
             window.localStorage.setItem('lang', userInfo.lang);
@@ -193,6 +210,7 @@
             loadUserInfo: loadUserInfo,
             fetchUsers: fetchUsers,
             fetchLocale: fetchLocale,
+            changeLanguage: changeLanguage,
 
             changePass: changePass,
 

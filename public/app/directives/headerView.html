@@ -26,12 +26,12 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
+                <li class="dropdown" ng-class="{'active': path.indexOf('user/') === 0}">
                     <a href="#" class="dropdown-toggle" ng-click="doNothing($event)" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">{{ ln()['account-menu'] }} <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li ng-class="{'active': path === 'user/settings'}">
-                            <a href="#/user/settings">test{{ ln()['user-settings'] }}</a>
+                            <a href="#/user/settings">{{ ln()['settings'] }}</a>
                         </li>
                         <li>
                             <a href="#/user/change-pass">{{ ln()['change-pass'] }}</a>
