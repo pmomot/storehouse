@@ -24,7 +24,9 @@
         vm.productGroupsByIds = productGroupService.getGroupsByIds;
         vm.ln = accountService.getLocalization;
         vm.selectedGroups = productService.getGroups;
-        vm.activeTag = 'Food';
+        vm.activeTag = 'All';
+
+        vm.filterByTag = filterByTag;
 
         vm.listSettings = {
             addNewLabel: 'Add new product',
@@ -32,7 +34,8 @@
             showPopup: showPopup,
             list: productService.getProducts,
             header: ['Name', 'Description'],
-            fields: ['name', 'description']
+            fields: ['name', 'description'],
+            type: 'products'
         };
 
         vm.modalSettings = angular.extend(MODAL_SETTINGS, {
@@ -99,7 +102,6 @@
                 ajaxParam = vm.modalSettings.item.uuid;
             }
 
-
             productService[type](ajaxParam)
                 .then(function () {
                     if (type === 'remove') {
@@ -107,6 +109,14 @@
                     }
                     angular.element(modalElement).modal('hide');
                 });
+        }
+
+        /**
+        * filter product list by tag
+        * @param {String} tag - tag name (in this case - product group)
+        */
+        function filterByTag (tag) {
+            vm.activeTag = tag;
         }
     }
 

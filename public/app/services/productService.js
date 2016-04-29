@@ -103,6 +103,7 @@
          * */
         function processProducts (data) {
             products = data;
+            groups = [];
 
             products.forEach(function (p) {
                 p.groupsNames = _.pluck(p['ProductGroups'], 'name');

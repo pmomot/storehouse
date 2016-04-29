@@ -20,7 +20,9 @@
             link: link,
             replace: true,
             scope: {
-                settings: '='
+                settings: '=',
+                activeTag: '=',
+                type: '='
             }
         };
 

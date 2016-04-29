@@ -12,15 +12,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="item in settings.list()" data-id="{{ item.uuid }}">
-                <td ng-repeat="f in settings.fields">{{ item[f] }}</td>
-                <td class="center">
-                    <span class="alert alert-info glyphicon glyphicon-edit"
-                          ng-click="settings.showPopup('update', item)"></span>
-                    <span class="alert alert-danger glyphicon glyphicon-remove"
-                          ng-click="settings.showPopup('remove', item)"></span>
-                </td>
-            </tr>
+                <tr sh-list-item ng-repeat="item in settings.list()"
+                settings="settings" active-tag="activeTag" item="item"></tr>
             </tbody>
         </table>
     </div>
