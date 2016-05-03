@@ -133,6 +133,28 @@ module.exports = function (sqlz, SQLZ, relations) {
             });
     }
 
+    /**
+     * Query all products with related fields
+     * */
+    function queryAll () {
+        return Product.findAll({
+            attributes: {
+                exclude: ['createdAt', 'updatedAt', 'UnitUuid']
+            },
+            include: [
+                {
+                    model: Unit,
+                    as: 'Unit',
+                    attributes: ['uuid']
+                },
+                {
+                    model: ProductGroup,
+                    attributes: ['uuid', 'name']
+                }
+            ]
+        });
+    }
+
     // instance methods ---------------
 
     /**
@@ -176,7 +198,8 @@ module.exports = function (sqlz, SQLZ, relations) {
         },
         classMethods: {
             createNew: createNew,
-            updateExisting: updateExisting
+            updateExisting: updateExisting,
+            queryAll: queryAll
         }
     }, options);
 

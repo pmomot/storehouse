@@ -12,22 +12,7 @@ module.exports = function (models) {
      * @param {Object} res - response
      * */
     function getProducts (req, res) {
-        Product.findAll({
-            attributes: {
-                exclude: ['createdAt', 'updatedAt', 'UnitUuid']
-            },
-            include: [
-                {
-                    model: models.Unit,
-                    as: 'Unit',
-                    attributes: ['uuid']
-                },
-                {
-                    model: models.ProductGroup,
-                    attributes: ['uuid', 'name']
-                }
-            ]
-        })
+        Product.queryAll()
             .then(function (products) {
                 res.send(products);
             })
@@ -97,9 +82,13 @@ module.exports = function (models) {
             }
         })
             .then(function () {
+                return Product.queryAll();
+            })
+            .then(function (products) {
                 res.send({
                     message: 'Product deleted',
-                    success: true
+                    success: true,
+                    products: products
                 });
             })
             .catch(function (error) {

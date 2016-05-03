@@ -58,6 +58,8 @@
             productRepository.remove(id)
                 .then(function (data) {
                     toastr.success(data.message);
+                    processProducts(data.products);
+
                     deferred.resolve(data);
                 });
 
@@ -102,13 +104,20 @@
          * @param {Array} data - list of products
          * */
         function processProducts (data) {
+            var tempGroups = ['All'];
+
             products = data;
-            groups = [];
 
             products.forEach(function (p) {
                 p.groupsNames = _.pluck(p['ProductGroups'], 'name');
-                groups = _.union(groups, p.groupsNames);
+                tempGroups = _.union(tempGroups, p.groupsNames);
             });
+
+            if (tempGroups.length > 2) {
+                groups = tempGroups;
+            } else {
+                groups = [];
+            }
         }
 
         return {

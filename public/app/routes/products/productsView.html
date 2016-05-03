@@ -1,10 +1,8 @@
 <sh-header></sh-header>
 <div class="main-content">
-    <div class="tag-bar">
-        <button type="button" class="btn btn-success" ng-click="vm.filterByTag('All')"
-                ng-class="{'active': vm.activeTag === 'All'}">{{ vm.ln()['all']}}</button>
+    <div class="tag-bar" ng-if="vm.selectedGroups().length > 0">
         <button type="button" class="btn btn-success" ng-repeat="g in vm.selectedGroups()"
-                ng-class="{'active': vm.activeTag === g}" ng-click="vm.filterByTag(g)">{{ g }}</button>
+                ng-class="{'active': vm.activeTag === g}" ng-click="vm.filterByTag(g)">{{ g === 'All' ? vm.ln()['all'] : g }}</button>
         <hr/>
     </div>
     <sh-list settings="vm.listSettings" active-tag="vm.activeTag"></sh-list>
