@@ -3,7 +3,8 @@
  */
 'use strict';
 
-module.exports = function (Unit) {
+module.exports = function (models) {
+    var Unit = models.Unit;
 
     /**
      * Get all units list
@@ -32,11 +33,22 @@ module.exports = function (Unit) {
      * */
     function deleteUnit (req, res) {
 
-        Unit.destroy({
+        models.Product.find({
             where: {
-                uuid: req.params.id
+                UnitUuid: req.params.id
             }
         })
+            .then(function (product) {
+                if (product === null) {
+                    return Unit.destroy({
+                        where: {
+                            uuid: req.params.id
+                        }
+                    });
+                } else {
+                    throw new Error('There are some products with this unit of measurement. Please, do something with them before.');
+                }
+            })
             .then(function () {
                 res.send({
                     message: 'Unit of measurement deleted',

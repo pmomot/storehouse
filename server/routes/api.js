@@ -12,7 +12,7 @@ module.exports = function (app, express, models) {
         User = models.User,
         userApiCalls = require('./user-api')(models),
         productApiCalls = require('./product-api')(models),
-        unitApiCalls = require('./unit-api')(models.Unit),
+        unitApiCalls = require('./unit-api')(models),
         pGroupApiCalls = require('./product-group-api')(models.ProductGroup);
 
     api.get('/database-reset', function (req, res) { // TODO SH only for dev needs, remove this on prod
