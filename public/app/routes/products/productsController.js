@@ -24,7 +24,8 @@
         vm.productGroupsByIds = productGroupService.getGroupsByIds;
         vm.ln = accountService.getLocalization;
         vm.selectedGroups = productService.getGroups;
-        vm.activeTag = 'All';
+        vm.activeTag = 'all';
+        vm.lnTags = ['all', 'less-amount', 'soon-expire'];
 
         vm.filterByTag = filterByTag;
 

@@ -1,5 +1,5 @@
 <tr data-id="{{ item.uuid }}"
-    class="{{ className }}">
+    class="{{ className }}" ng-class="{'bg-risk': bgRisk, 'bg-less-risk': bgLessRisk}">
     <td ng-repeat="f in settings.fields">{{ item[f] }}</td>
     <td class="center">
         <span class="alert alert-info glyphicon glyphicon-edit"

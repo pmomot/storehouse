@@ -35,6 +35,7 @@
             type: '',
             title: '',
             size: ''
-        });
+        })
+        .constant('VALID_TIME_TO_EXPIRE', 1000 * 3600 * 24 * 30); // 30 days before product expire
 
 })();

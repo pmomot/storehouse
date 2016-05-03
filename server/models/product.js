@@ -119,6 +119,8 @@ module.exports = function (sqlz, SQLZ, relations) {
                     product.description = p.description;
                     product.amount = p.amount;
                     product.minAmount = p.minAmount;
+                    product.arrivedAt = p.arrivedAt;
+                    product.expiresAt = p.expiresAt;
 
                     return product.save();
                 } else {

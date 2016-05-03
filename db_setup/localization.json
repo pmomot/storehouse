@@ -222,5 +222,19 @@
         "en": "all",
         "ua": "всі",
         "ru": "все"
+    },
+    {
+        "key": "soon-expire",
+        "description": "soon expire tag caption",
+        "en": "soon expire",
+        "ua": "закінчення терміну придатності",
+        "ru": "окончание срока годности"
+    },
+    {
+        "key": "less-amount",
+        "description": "less then needed amount tag caption",
+        "en": "little amount",
+        "ua": "мала кількість",
+        "ru": "малое количество"
     }
 ]

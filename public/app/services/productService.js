@@ -8,12 +8,12 @@
         .module('StoreHouse.Services')
         .factory('productService', productService);
 
-    productService.$inject = ['$q', 'productRepository', 'toastr', '_'];
+    productService.$inject = ['$q', 'productRepository', 'toastr', '_', 'VALID_TIME_TO_EXPIRE'];
 
     /**
      * Products processing service
      * */
-    function productService ($q, productRepository, toastr, _) {
+    function productService ($q, productRepository, toastr, _, VALID_TIME_TO_EXPIRE) {
         var products = [], groups = [];
 
         /**
@@ -104,12 +104,21 @@
          * @param {Array} data - list of products
          * */
         function processProducts (data) {
-            var tempGroups = ['All'];
+            var tempGroups = ['all'];
 
             products = data;
 
             products.forEach(function (p) {
                 p.groupsNames = _.pluck(p['ProductGroups'], 'name');
+
+                if (p['minAmount'] >= p['amount']) {
+                    p.groupsNames.push('less-amount');
+                }
+
+                if (new Date(p['expiresAt']) - new Date() < VALID_TIME_TO_EXPIRE) {
+                    p.groupsNames.push('soon-expire');
+                }
+
                 tempGroups = _.union(tempGroups, p.groupsNames);
             });
 

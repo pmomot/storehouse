@@ -2,7 +2,8 @@
 <div class="main-content">
     <div class="tag-bar" ng-if="vm.selectedGroups().length > 0">
         <button type="button" class="btn btn-success" ng-repeat="g in vm.selectedGroups()"
-                ng-class="{'active': vm.activeTag === g}" ng-click="vm.filterByTag(g)">{{ g === 'All' ? vm.ln()['all'] : g }}</button>
+                ng-class="{'active': vm.activeTag === g}" ng-click="vm.filterByTag(g)"
+                >{{ vm.lnTags.indexOf(g) !== -1 ? vm.ln()[g] : g }}</button>
         <hr/>
     </div>
     <sh-list settings="vm.listSettings" active-tag="vm.activeTag"></sh-list>
@@ -38,7 +39,7 @@
         </div>
         <div class="row">
             <div class="col-sm-6 col-xs-12">
-                <div class="row">
+                <div class="row two-lines">
                     <div class="col-sm-6 col-xs-6">
                         <div class="form-group">
                             <label class="control-label" for="amount">Amount *</label>
@@ -67,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 col-xs-12">
+            <div class="col-sm-6 col-xs-12 two-lines">
                 <label class="control-label" for="amount">{{ vm.ln()['product-groups'] }}</label>
                 <select class="form-control" multiple ng-model="vm.modalSettings.item.groups"
                         ng-options="group as group.name for group in vm.modalSettings.productGroups()">

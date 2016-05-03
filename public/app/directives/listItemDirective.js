@@ -31,16 +31,23 @@
          * */
         function link (scope, el, attrs) {
             scope.className = '';
+            scope.bgRisk = false;
+            scope.bgLessRisk = false;
 
             scope.$watch(attrs.activeTag, function (val) {
                 if (scope.settings.type === 'products') {
-                    if (val === 'All' || scope.item.groupsNames.indexOf(val) !== -1) {
+                    if (val === 'all' || scope.item.groupsNames.indexOf(val) !== -1) {
                         scope.className = '';
                     } else {
                         scope.className = 'hidden';
                     }
                 }
             });
+
+            if (scope.settings.type === 'products') {
+                scope.bgRisk = scope.item.groupsNames.indexOf('less-amount') !== -1;
+                scope.bgLessRisk = scope.item.groupsNames.indexOf('soon-expire') !== -1;
+            }
         }
     }
 })();
