@@ -58,6 +58,7 @@
                 .take(ajaxParams)
                 .then(function () {
                     p.takeAmount = '';
+                    p.reason = '';
                 })
                 .finally(function () {
                     vm.processingRequest = false;
