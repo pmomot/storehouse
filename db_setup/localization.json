@@ -236,5 +236,12 @@
         "en": "little amount",
         "ua": "мала кількість",
         "ru": "малое количество"
+    },
+    {
+        "key": "label-editing-reason",
+        "description": "editing reason label in form",
+        "en": "editing reason",
+        "ua": "причина редагування",
+        "ru": "причина редактирования"
     }
 ]

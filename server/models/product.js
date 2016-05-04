@@ -122,6 +122,8 @@ module.exports = function (sqlz, SQLZ, relations) {
                     product.arrivedAt = p.arrivedAt;
                     product.expiresAt = p.expiresAt;
 
+                    // console.log(p.reason); // TODO SH save to statistix
+
                     return product.save();
                 } else {
                     throw new Error('Product does not exists');

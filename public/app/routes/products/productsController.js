@@ -80,6 +80,10 @@
                 };
             }
 
+            if (type === 'update') {
+                vm.modalSettings.reason = '';
+            }
+
             angular.extend(vm.modalSettings, {
                 type: type,
                 title: 'Product ' + type,
@@ -102,7 +106,7 @@
             if (type === 'remove') {
                 ajaxParam = vm.modalSettings.item.uuid;
             }
-
+            
             productService[type](ajaxParam)
                 .then(function () {
                     if (type === 'remove') {
