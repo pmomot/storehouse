@@ -14,7 +14,7 @@
      * Products processing service
      * */
     function productService ($q, productRepository, toastr, _, VALID_TIME_TO_EXPIRE) {
-        var products = [], groups = [];
+        var products = [], groups = [], lastSearch = [];
 
         /**
          * Get products list from server
@@ -84,6 +84,43 @@
         }
 
         /**
+         * Search products
+         * @param {String} text - search query
+         * */
+        function search (text) {
+            var deferred = $q.defer();
+
+            text = String(text).toLowerCase();
+
+            productRepository.search(text)
+                .then(function (data) {
+                    lastSearch = data.products;
+                    deferred.resolve(data.products);
+                });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Take product from storehouse
+         * @param {Object} params - product id and amount to take
+         * */
+        function take (params) {
+            var deferred = $q.defer();
+
+            productRepository.take(params)
+                .then(function (data) {
+                    var p = _.findWhere(lastSearch, {uuid: data.product.uuid});
+
+                    p.amount = data.product.amount;
+
+                    deferred.resolve(data.product);
+                });
+
+            return deferred.promise;
+        }
+
+        /**
          * Get stored products list
          * */
         function getProducts () {
@@ -95,6 +132,13 @@
          * */
         function getGroups () {
             return groups;
+        }
+
+        /**
+         * Get last product search list
+         * */
+        function getLastSearch () {
+            return lastSearch;
         }
 
         // helpers
@@ -134,9 +178,12 @@
             create: create,
             remove: remove,
             update: update,
+            search: search,
+            take: take,
 
             getProducts: getProducts,
-            getGroups: getGroups
+            getGroups: getGroups,
+            getLastSearch: getLastSearch
         };
     }
 })();

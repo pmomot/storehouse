@@ -8,3 +8,14 @@
     margin: 0 5px 5px 0;
     text-transform: capitalize;
 }
+
+.take-products-list {
+    margin-top: 15px;
+
+    .input-group-addon {
+        width: 60px;
+    }
+    hr {
+        width: 100%;
+    }
+}

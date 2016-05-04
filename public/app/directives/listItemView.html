@@ -1,7 +1,7 @@
 <tr data-id="{{ item.uuid }}"
     class="{{ className }}" ng-class="{'bg-risk': bgRisk, 'bg-less-risk': bgLessRisk}">
-    <td ng-repeat="f in settings.fields">{{ item[f] }}</td>
-    <td class="center">
+    <td class="word-break" ng-repeat="f in settings.fields">{{ item[f] }}</td>
+    <td class="center nowrap">
         <span class="alert alert-info glyphicon glyphicon-edit"
               ng-click="settings.showPopup('update', item)"></span>
         <span class="alert alert-danger glyphicon glyphicon-remove"

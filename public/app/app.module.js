@@ -4,7 +4,10 @@
 'use strict';
 
 (function () {
-    var underscore = angular.module('underscore', []);
+    var underscore = angular.module('underscore', []),
+        runArray;
+
+    runArray = ['$rootScope', '$location', '$window', 'accountService', 'productService', '$anchorScroll', runFunction];
 
     underscore.factory('_', ['$window', function ($window) {
         return $window._;
@@ -34,23 +37,32 @@
                 timeOut: 3000
             });
         })
-        .run(['$rootScope', '$location', '$window', 'accountService', '$anchorScroll', function ($rootScope, $location, $window, accountService) {
+        .run(runArray);
 
-            // prevent loading any session required page without necessary token
-            $rootScope.$on('$routeChangeStart', function (event, next) {
-                if ($window.localStorage.getItem('token') === '') {
-                    accountService.fetchLocale();
+    /**
+     * Function that executes on module run
+     * @param {Object} $rootScope - angular built in, root scope
+     * @param {Object} $location - angular built in service, browser location info
+     * @param {Object} $window - angular built in, window object
+     * @param {Object} accountService - account operations service
+     * */
+    function runFunction ($rootScope, $location, $window, accountService) {
 
-                    if (next.templateUrl !== 'app/routes/log-in/logInView.html' &&
-                        next.templateUrl !== 'app/routes/sign-up/signUpView.html') {
+        // prevent loading any session required page without necessary token
+        $rootScope.$on('$routeChangeStart', function (event, next) {
+            if ($window.localStorage.getItem('token') === '') {
+                accountService.fetchLocale();
 
-                        $location.path('/user/log-in');
-                    }
-                } else if (!accountService.hasUserInfo()) {
-                    accountService.loadUserInfo();
+                if (next.templateUrl !== 'app/routes/log-in/logInView.html' &&
+                    next.templateUrl !== 'app/routes/sign-up/signUpView.html') {
+
+                    $location.path('/user/log-in');
                 }
-            });
-        }]);
+            } else if (!accountService.hasUserInfo()) {
+                accountService.loadUserInfo();
+            }
+        });
+    }
 
     angular.module('StoreHouse.Services', []);
     angular.module('StoreHouse.Repositories', []);

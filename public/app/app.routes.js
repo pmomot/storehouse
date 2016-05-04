@@ -57,6 +57,11 @@
                 controller: 'ProductGroupsController',
                 controllerAs: 'vm'
             })
+            .when('/products/take', {
+                templateUrl: 'app/routes/take/takeView.html',
+                controller: 'TakeController',
+                controllerAs: 'vm'
+            })
             .otherwise({
                 redirectTo: '/products'
             });

@@ -42,6 +42,13 @@
         "ru": "группы продуктов"
     },
     {
+        "key": "products-take",
+        "description": "product take menu title",
+        "en": "take products",
+        "ua": "взяти продукти",
+        "ru": "взять продукты"
+    },
+    {
         "key": "change-pass",
         "description": "change pass menu title",
         "en": "change pass",
@@ -124,6 +131,20 @@
         "en": "submit",
         "ua": "відправити",
         "ru": "отправить"
+    },
+    {
+        "key": "search",
+        "description": "search button caption",
+        "en": "search",
+        "ua": "шукати",
+        "ru": "искать"
+    },
+    {
+        "key": "take",
+        "description": "take button caption",
+        "en": "take",
+        "ua": "взяти",
+        "ru": "взять"
     },
     {
         "key": "label-current-password",
@@ -243,5 +264,19 @@
         "en": "editing reason",
         "ua": "причина редагування",
         "ru": "причина редактирования"
+    },
+    {
+        "key": "label-taking-reason",
+        "description": "taking reason label in form",
+        "en": "taking reason",
+        "ua": "причина взяття",
+        "ru": "причина взятия"
+    },
+    {
+        "key": "label-search-products",
+        "description": "search products label in form",
+        "en": "search products",
+        "ua": "пошук продуктів",
+        "ru": "поиск продуктов"
     }
 ]

@@ -48,6 +48,8 @@ module.exports = function (app, express, models) {
     api.post('/products', productApiCalls.createProduct);
     api.put('/products/:id', productApiCalls.updateProduct);
     api.delete('/products/:id', productApiCalls.deleteProduct);
+    api.get('/products-search', productApiCalls.searchProducts);
+    api.put('/products-take', productApiCalls.takeProduct);
 
     // Units section
     api.get('/units', unitApiCalls.getUnits);

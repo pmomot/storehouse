@@ -99,10 +99,69 @@ module.exports = function (models) {
             });
     }
 
+    /**
+     * Search product by text
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function searchProducts (req, res) {
+        var text = req.query.text;
+
+        if (!text) {
+            text = '';
+        }
+        Product
+            .searchForTake(text)
+            .then(function (products) {
+                res.send({
+                    success: true,
+                    products: products
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
+    /**
+     * Take product from storehouse
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function takeProduct (req, res) {
+        if (typeof req.body.takeAmount !== 'number') {
+            res.send({
+                message: 'Cannot proceed with this amount',
+                success: false
+            });
+            return;
+        }
+
+        Product
+            .findAndTake(req.body)
+            .then(function (product) {
+                res.send({
+                    success: true,
+                    product: product
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
     return {
         getProducts: getProducts,
         createProduct: createProduct,
         updateProduct: updateProduct,
-        deleteProduct: deleteProduct
+        deleteProduct: deleteProduct,
+        searchProducts: searchProducts,
+        takeProduct: takeProduct
     };
 };

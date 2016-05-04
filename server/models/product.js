@@ -159,6 +159,68 @@ module.exports = function (sqlz, SQLZ, relations) {
         });
     }
 
+    /**
+     * Get all products available to take by search query
+     * @params {String} text - search query
+     * */
+    function searchForTake (text) {
+        text = '%' + text + '%';
+
+        return Product.findAll({
+            where: {
+                $or: {
+                    name: {
+                        $iLike: text
+                    },
+                    description: {
+                        $iLike: text
+                    }
+                },
+                amount: {
+                    $gt: 0
+                }
+            },
+            attributes: ['name', 'description', 'uuid', 'amount'],
+            include: [
+                {
+                    model: Unit,
+                    as: 'Unit',
+                    attributes: ['name']
+                }
+            ]
+        });
+    }
+
+    /**
+     * Take some amount of product from storehouse
+     * @params {Object} body - request body
+     * */
+    function findAndTake (body) {
+
+        return Product.find({
+            where: {
+                uuid: body.uuid
+            },
+            attributes: ['name', 'description', 'uuid', 'amount'],
+            include: [
+                {
+                    model: Unit,
+                    as: 'Unit',
+                    attributes: ['name']
+                }
+            ]
+        })
+            .then(function (p) {
+                if (p.amount < body.takeAmount) {
+                    throw new Error('Product amount is not enough');
+                } else {
+                    p.amount -= body.takeAmount;
+                    // console.log(p.reason); // TODO SH save to statistix
+                    return p.save();
+                }
+            });
+    }
+
     // instance methods ---------------
 
     /**
@@ -203,7 +265,9 @@ module.exports = function (sqlz, SQLZ, relations) {
         classMethods: {
             createNew: createNew,
             updateExisting: updateExisting,
-            queryAll: queryAll
+            queryAll: queryAll,
+            searchForTake: searchForTake,
+            findAndTake: findAndTake
         }
     }, options);
 
