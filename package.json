@@ -1,7 +1,7 @@
 {
-  "name": "StoreHouse",
-  "version": "0.0.1",
-  "description": "StoreHouse service",
+  "name": "storehouse",
+  "version": "0.1.0",
+  "description": "storehouse service",
   "private": true,
   "main": "start.js",
   "scripts": {
