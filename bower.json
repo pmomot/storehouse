@@ -1,6 +1,6 @@
 {
-  "name": "StoreHouse",
-  "version": "0.0.1",
+  "name": "storehouse",
+  "version": "0.1.0",
   "homepage": "https://github.com/pmomot/storehouse.git",
   "authors": [
     "Petro Momot pmomot@corevalue.net"
