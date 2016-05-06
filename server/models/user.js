@@ -108,6 +108,10 @@ module.exports = function (sqlz, SQLZ) {
             });
     }
 
+
+
+
+  
     /**
      * Log into system
      * @param {Object} body - user email and pass
@@ -212,34 +216,40 @@ module.exports = function (sqlz, SQLZ) {
      * Verifying token from restore link
      * @param {String} token - encrypted token with user id and expiresAt time
      * */
-    function verifyRestorationToken (token) {
-        var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
-            
-        decrypted = JSON.parse(decrypted);
-
-        return User.find({
-            where: {
-                uuid: decrypted.uuid
-            }
-        })
-            .then(function (user) {
-                if (user) {
-                    if (decrypted.expiresAt - Date.now() >= 0) {
-                        return true;
-                    } else {
-                        throw new Error('Password restoration link has been expired');
-                    }
-                } else {
-                    throw new Error('User does not exist');
+    function verifyRestorationToken(token) {
+        try {
+            var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
+            decrypted = JSON.parse(decrypted);
+            return User.find({
+                where: {
+                    uuid: decrypted.uuid
                 }
-            });
+            })
+                .then(function (user) {
+                    if (user) {
+                        if (decrypted.expiresAt - Date.now() >= 0) {
+                            return true;
+                        } else {
+                            throw new Error('Password restoration link has been expired');
+                        }
+                    } else {
+                        throw new Error('User does not exist');
+                    }
+                })
+                .catch(function (error) {
+                    throw new Error(error);
+                });
+        } catch (err) {
+            console.log(err)
+
+        }
     }
 
     /**
      * Create new (restore) password
      * */
     function restorePassword (pass, token) {
-        // TODO SH to be developed
+
         var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
         
         decrypted = JSON.parse(decrypted);

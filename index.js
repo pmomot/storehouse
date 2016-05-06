@@ -35,7 +35,7 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
-// TODO SH create password restoration page
+
 
 app.use('/api', api);
 
