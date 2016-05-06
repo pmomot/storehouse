@@ -30,6 +30,15 @@ module.exports = function (models) {
      * @param {Object} res - response
      * */
     function createProduct (req, res) {
+
+        if (req.body.amount <= 0) { // removed this from validation rules in Products class, because user can take all
+            res.send({
+                message: 'Validation error: Amount should be more than zero',
+                success: false
+            });
+            return;
+        }
+
         Product
             .createNew(req.body)
             .then(function () {

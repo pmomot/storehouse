@@ -31,14 +31,15 @@ module.exports = function (sqlz, SQLZ, relations) {
         amount: {
             type: SQLZ.INTEGER,
             validate: {
-                moreThanZero: vMoreThanZero
+                beNumber: beNumber
             }
         },
         minAmount: {
             type: SQLZ.INTEGER,
             field: 'min_amount',
             validate: {
-                moreThanZero: vMoreThanZero
+                moreThanZero: vMoreThanZero,
+                beNumber: beNumber
             }
         },
         barCode: {
@@ -62,15 +63,25 @@ module.exports = function (sqlz, SQLZ, relations) {
     // validation ---------------------
 
     /**
+     * Validation for numbers to be numbers
+     * @param {Number} val - new value
+     * */
+    function beNumber (val) {
+        val = Number(val);
+
+        if (isNaN(val)) {
+            throw new Error('Amount must be number');
+        }
+    }
+
+    /**
      * Validation for numbers to be > 0
      * @param {Number} val - new value
      * */
     function vMoreThanZero (val) {
         val = Number(val);
 
-        if (isNaN(val)) {
-            throw new Error('Amount must be number');
-        } else if (val <= 0) {
+        if (val <= 0) {
             throw new Error('Amount should be more than zero');
         }
     }

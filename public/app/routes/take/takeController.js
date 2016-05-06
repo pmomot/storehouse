@@ -20,7 +20,7 @@
         vm.ln = accountService.getLocalization;
 
         vm.processingRequest = false;
-        vm.foundList = productService.getLastSearch();
+        vm.foundList = productService.getLastSearch;
         vm.searchValue = '';
         vm.searchSubmit = searchSubmit;
         vm.takeSubmit = takeSubmit;
@@ -33,9 +33,6 @@
 
             productService
                 .search(vm.searchValue)
-                .then(function (products) {
-                    vm.foundList = products;
-                })
                 .finally(function () {
                     vm.processingRequest = false;
                 });

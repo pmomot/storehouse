@@ -146,6 +146,9 @@
                     processUserInfo();
 
                     deferred.resolve(data);
+                })
+                .catch(function () {
+                    deferred.reject();
                 });
 
             return deferred.promise;

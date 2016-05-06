@@ -96,6 +96,9 @@
                 .then(function (data) {
                     lastSearch = data.products;
                     deferred.resolve(data.products);
+                })
+                .catch(function () {
+                    deferred.reject();
                 });
 
             return deferred.promise;
@@ -110,11 +113,21 @@
 
             productRepository.take(params)
                 .then(function (data) {
-                    var p = _.findWhere(lastSearch, {uuid: data.product.uuid});
+                    var p;
 
-                    p.amount = data.product.amount;
+                    if (data.product.amount === 0) {
+                        lastSearch = _.reject(lastSearch, function (item) {
+                            return item.uuid === data.product.uuid;
+                        });
+                    } else {
+                        p = _.findWhere(lastSearch, {uuid: data.product.uuid});
+                        p.amount = data.product.amount;
+                    }
 
                     deferred.resolve(data.product);
+                })
+                .catch(function () {
+                    deferred.reject();
                 });
 
             return deferred.promise;

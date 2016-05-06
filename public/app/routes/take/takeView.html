@@ -11,7 +11,7 @@
                type="submit" value="{{ vm.ln()['search'] }}" ng-disabled="searchTakeForm.$invalid" />
     </form>
     <div class="take-products-list">
-        <div ng-repeat="p in vm.foundList">
+        <div ng-repeat="p in vm.foundList()">
             <div class="row">
                 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2 word-break"><b>{{ p.name }}</b></div>
                 <div class="col-xs-12 col-sm-4 col-md-5 col-lg-7 word-break">{{ p.description }}</div>
