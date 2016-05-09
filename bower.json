@@ -21,7 +21,8 @@
     "angular-route": "~1.4.7",
     "angular-messages": "~1.5.4",
     "angular-toastr": "~1.7.0",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "bootstrap-languages": "bootstrap-language#*"
   },
   "resolutions": {
     "angular": "~1.5.x"

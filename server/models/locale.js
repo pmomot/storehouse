@@ -21,7 +21,7 @@ module.exports = function (sqlz, SQLZ) {
         en: {
             type: SQLZ.STRING
         },
-        ua: {
+        uk: {
             type: SQLZ.STRING
         },
         ru: {

@@ -122,9 +122,10 @@
 
             accountRepository.fetchLocale(window.localStorage.getItem('lang'))
                 .then(function (data) {
-                    userInfo.locale = data;
+                    userInfo.locale = data.locale;
+                    userInfo.langs = data.langs;
                     processUserInfo();
-                    deferred.resolve(data);
+                    deferred.resolve(data.locale);
                 });
 
             return deferred.promise;
@@ -160,6 +161,11 @@
          * */
         function logout () {
             $window.localStorage.setItem('token', '');
+
+            userInfo = {
+                locale: userInfo.locale,
+                langs: userInfo.langs
+            };
         }
 
         /**

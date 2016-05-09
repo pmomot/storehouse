@@ -31,7 +31,7 @@ module.exports = function (sqlz, SQLZ, relations) {
         amount: {
             type: SQLZ.INTEGER,
             validate: {
-                beNumber: beNumber
+                number: vNumber
             }
         },
         minAmount: {
@@ -39,7 +39,7 @@ module.exports = function (sqlz, SQLZ, relations) {
             field: 'min_amount',
             validate: {
                 moreThanZero: vMoreThanZero,
-                beNumber: beNumber
+                number: vNumber
             }
         },
         barCode: {
@@ -66,7 +66,7 @@ module.exports = function (sqlz, SQLZ, relations) {
      * Validation for numbers to be numbers
      * @param {Number} val - new value
      * */
-    function beNumber (val) {
+    function vNumber (val) {
         val = Number(val);
 
         if (isNaN(val)) {

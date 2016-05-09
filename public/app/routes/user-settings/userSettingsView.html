@@ -1,17 +1,4 @@
 <sh-header></sh-header>
 <div class="main-content">
-    <form role="form" name="userSettingsForm">
-
-        <div class="row">
-            <div class="col-xs-6 col-sm-3 col-lg-2">
-                <div class="form-group">
-                    <label class="control-label" for="changeLanguage">{{ vm.ln()['label-change-language']}}</label>
-                    <select class="form-control" ng-model="vm.userInfo().lang" ng-disabled="vm.processingLangRequest"
-                            ng-options="lang as lang for lang in vm.userInfo().langs" id="changeLanguage">
-                    </select>
-                </div>
-            </div>
-        </div>
-
-    </form>
+    <sh-ln></sh-ln>
 </div>

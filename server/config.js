@@ -20,6 +20,6 @@ if (production) {
     };
 }
 
-config.languages = ['en', 'ua', 'ru'];
+config.languages = ['en', 'uk', 'ru'];
 
 module.exports = config;

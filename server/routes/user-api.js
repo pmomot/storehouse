@@ -70,7 +70,10 @@ module.exports = function (models) {
                 attributes: ['key', [lang, 'value']]
             })
             .then(function (locale) {
-                res.send(locale);
+                res.send({
+                    locale: locale,
+                    langs: config.languages
+                });
             })
             .catch(function (error) {
                 res.send({
