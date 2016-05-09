@@ -108,10 +108,6 @@ module.exports = function (sqlz, SQLZ) {
             });
     }
 
-
-
-
-  
     /**
      * Log into system
      * @param {Object} body - user email and pass
@@ -216,9 +212,12 @@ module.exports = function (sqlz, SQLZ) {
      * Verifying token from restore link
      * @param {String} token - encrypted token with user id and expiresAt time
      * */
-    function verifyRestorationToken(token) {
+    function verifyRestorationToken (token) {
+        var decrypted = '';
+        
         try {
-            var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
+            decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
+              
             decrypted = JSON.parse(decrypted);
             return User.find({
                 where: {
@@ -240,18 +239,19 @@ module.exports = function (sqlz, SQLZ) {
                     throw new Error(error);
                 });
         } catch (err) {
-            console.log(err)
-
+            throw new Error(err);
         }
     }
 
     /**
      * Create new (restore) password
+     * @param {String} - pass
+     * @param {String} - token
      * */
     function restorePassword (pass, token) {
 
         var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
-        
+       
         decrypted = JSON.parse(decrypted);
         return User.find({
             where: {

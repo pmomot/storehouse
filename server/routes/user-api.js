@@ -31,19 +31,12 @@ module.exports = function (User) {
      * @param {Object} res
      * @param {String} message
      * */
-    function errorMethod(res, message) {
+    function errorMethod (res, message) {
         var path = require('path');
-           // ejs = require('ejs');
-       /* app.set('view engine', 'jade');
-        app.get(path.join(__dirname, '../../public', '/static-pages/errorView.html'), function (req, res) {
-            res.render('index', { title: 'Hey', message: 'Hello there!'});
-        });*/
-
-
-        res.sendFile(path.join(__dirname, '../../public', '/static-pages/errorView.html'));
-        //res.send({'mess':message});
-       // res.setHeader("Access-Control-Allow-Headers", "x-access-token, mytoken");
-        res.cookie('err',message)
+        
+        res.render(path.join(__dirname, '../../public', '/static-pages/index.jade'), {
+            message: message.replace(/^[Error: ]+/ig, '')
+        });
     }
 
     /**
@@ -107,8 +100,10 @@ module.exports = function (User) {
                 });
             })
             .catch(function (error) {
-                errorMethod(res,JSON.stringify(error.message))
-
+                res.send({
+                    message: error.message,
+                    success: true
+                });
             });
     }
     
@@ -118,7 +113,6 @@ module.exports = function (User) {
      * @param {Object} res - response
      * */
     function verifyRestorationToken (req, res) {
-        //console.log(req)
         var token = req.query.token,
             path = require('path');
 
@@ -129,36 +123,26 @@ module.exports = function (User) {
                         res.sendFile(path.join(__dirname, '../../public', '/static-pages/restorePasswordView.html'));
                     })
                     .catch(function (error) {
-                         errorMethod(res, JSON.stringify(error.message))
+                        errorMethod(res, error.message);
                     });
-            }
-            catch (err) {
-                console.log(err)
-                errorMethod(res, JSON.stringify({'err':'wrong token'}))
+            } catch (err) {
+                errorMethod(res, 'Wrong token');
             }
 
         } else {
-            res.send({
-                success: false,
-                message: 'No token provided'
-            });
+            errorMethod(res, 'No token provided');
         }
     }
 
     /**
      * Set new password for user
      * @param {Object} req - request
-     * @param {Object} res - response
      * */
-    function restorePassword (req, res) {
+    function restorePassword (req) {
         var newPass = req.headers.data,
             token = req.headers.token;
-        
-        User.restorePassword(newPass, token)
-        res.send({
-            message: 'Password has been restored',
-            success: true
-        });
+       
+        User.restorePassword(newPass, token);
     }
 
     /**
