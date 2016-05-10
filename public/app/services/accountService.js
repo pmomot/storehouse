@@ -14,7 +14,10 @@
      * Accounts processing service
      * */
     function accountService ($q, $window, accountRepository, toastr) {
-        var userInfo = {}, users = [], locale = {};
+        var users = [], locale = {},
+            userInfo = {
+                lang: 'en'
+            };
 
         if (!$window.localStorage.getItem('token')) {
             $window.localStorage.setItem('token', '');
@@ -116,14 +119,15 @@
         function fetchLocale () {
             var deferred = $q.defer();
 
-            if (!window.localStorage.getItem('lang')) {
-                window.localStorage.setItem('lang', 'en');
+            if (!$window.localStorage.getItem('lang')) {
+                $window.localStorage.setItem('lang', 'en');
             }
 
-            accountRepository.fetchLocale(window.localStorage.getItem('lang'))
+            accountRepository.fetchLocale($window.localStorage.getItem('lang'))
                 .then(function (data) {
                     userInfo.locale = data.locale;
                     userInfo.langs = data.langs;
+                    userInfo.lang = $window.localStorage.getItem('lang');
                     processUserInfo();
                     deferred.resolve(data.locale);
                 });
@@ -186,7 +190,7 @@
          * Verify that service has user info saved
          * */
         function hasUserInfo () {
-            return Object.keys(userInfo).length > 0;
+            return Object.keys(userInfo).length > 1;
         }
 
         /**
@@ -204,7 +208,7 @@
         function processUserInfo () {
             var i, L = userInfo.locale;
 
-            window.localStorage.setItem('lang', userInfo.lang);
+            $window.localStorage.setItem('lang', userInfo.lang);
 
             locale = {};
             for (i = 0; i < L.length; i += 1) {

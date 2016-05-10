@@ -31,8 +31,6 @@
             $scope.ln = accountService.getLocalization;
             $scope.userInfo = accountService.getUserInfo;
 
-            console.log($scope.small);
-
             $scope.selectLanguage = selectLanguage;
 
             $scope.processingRequest = false;
@@ -61,7 +59,7 @@
                 $scope.processingRequest = true;
 
                 if (typeof $scope.userInfo().fullName === 'undefined') { // unauthorized user
-                    window.localStorage.setItem('lang', $scope.language);
+                    $window.localStorage.setItem('lang', $scope.language);
 
                     accountService
                         .fetchLocale()

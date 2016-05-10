@@ -1,8 +1,8 @@
-<form role="form" name="lnForm" class="flags-form">
+<form role="form" name="lnForm" class="flags-form" ng-class="{'small': small}">
     <div class="btn-group">
-        <button type="button" class="btn btn-info" ng-class="{'btn-xs': small}"
+        <button type="button" class="btn btn-default" ng-class="{'btn-xs': small}"
                 ng-disabled="processingRequest">{{ ln()['label-change-language']}}</button>
-        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false"
                 ng-disabled="processingRequest" ng-class="{'btn-xs': small}">
             <span class="caret"></span>
