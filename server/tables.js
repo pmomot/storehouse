@@ -16,6 +16,10 @@ module.exports = function (config) {
             Unit: Unit,
             ProductGroup: ProductGroup
         }),
+        ProductStat = require('./models/product-stat')(sqlz, SQLZ, {
+            Product: Product,
+            User: User
+        }),
         ProductGroupsConnection;
 
     Unit.hasMany(Product, {as: 'Unit'});
@@ -27,11 +31,15 @@ module.exports = function (config) {
     Product.belongsToMany(ProductGroup, {through: ProductGroupsConnection});
     ProductGroup.belongsToMany(Product, {through: ProductGroupsConnection});
 
+    Product.hasMany(ProductStat, {as: 'Product'});
+    ProductStat.belongsTo(Product);
+
     return {
         User: User,
         Product: Product,
         Unit: Unit,
         ProductGroup: ProductGroup,
+        ProductStat: ProductStat,
         ProductGroupsConnection: ProductGroupsConnection,
         Locale: Locale
     };

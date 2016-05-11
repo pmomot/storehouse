@@ -62,6 +62,11 @@
                 controller: 'TakeController',
                 controllerAs: 'vm'
             })
+            .when('/stats/:type', {
+                templateUrl: 'app/routes/stats/statsView.html',
+                controller: 'StatisticsController',
+                controllerAs: 'vm'
+            })
             .otherwise({
                 redirectTo: '/products'
             });

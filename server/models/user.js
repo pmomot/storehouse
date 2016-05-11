@@ -67,7 +67,10 @@ module.exports = function (sqlz, SQLZ, relations) {
         },
         lang: {
             type: SQLZ.STRING,
-            defaultValue: 'en'
+            defaultValue: 'en',
+            validate: {
+                isIn: [config.languages]
+            }
         }
     };
 

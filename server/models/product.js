@@ -19,27 +19,53 @@ module.exports = function (sqlz, SQLZ, relations) {
         name: {
             type: SQLZ.STRING,
             validate: {
-                vNotEmpty: vNotEmpty
+                notEmpty: {
+                    msg: 'Name can not be empty'
+                }
             }
         },
         description: {
             type: SQLZ.STRING,
             validate: {
-                vNotEmpty: vNotEmpty
+                notEmpty: {
+                    msg: 'Description can not be empty'
+                }
             }
+        },
+        price: {
+            type: SQLZ.FLOAT,
+            validate: {
+                isFloat: true,
+                min: {
+                    args: [0],
+                    msg: 'Price should be more than zero or equal'
+                }
+            },
+            defaultValue: 0
         },
         amount: {
             type: SQLZ.INTEGER,
             validate: {
-                number: vNumber
+                min: {
+                    args: [0],
+                    msg: 'Amount should be more than zero or equal'
+                },
+                isNumeric: {
+                    msg: 'Amount must be number'
+                }
             }
         },
         minAmount: {
             type: SQLZ.INTEGER,
             field: 'min_amount',
             validate: {
-                moreThanZero: vMoreThanZero,
-                number: vNumber
+                min: {
+                    args: [0],
+                    msg: 'Min amount should be more than zero or equal'
+                },
+                isNumeric: {
+                    msg: 'Min amount must be number'
+                }
             }
         },
         barCode: {
@@ -50,7 +76,7 @@ module.exports = function (sqlz, SQLZ, relations) {
             type: SQLZ.DATE,
             field: 'arrived_at'
         },
-        expiresAt: { // TODO SH maybe store only date, not time
+        expiresAt: {
             type: SQLZ.DATE,
             field: 'expires_at'
         }
@@ -59,42 +85,6 @@ module.exports = function (sqlz, SQLZ, relations) {
     options = {
         freezeTableName: true
     };
-
-    // validation ---------------------
-
-    /**
-     * Validation for numbers to be numbers
-     * @param {Number} val - new value
-     * */
-    function vNumber (val) {
-        val = Number(val);
-
-        if (isNaN(val)) {
-            throw new Error('Amount must be number');
-        }
-    }
-
-    /**
-     * Validation for numbers to be > 0
-     * @param {Number} val - new value
-     * */
-    function vMoreThanZero (val) {
-        val = Number(val);
-
-        if (val <= 0) {
-            throw new Error('Amount should be more than zero');
-        }
-    }
-
-    /**
-     * Validation for not empty values
-     * @param {String} val - new value
-     * */
-    function vNotEmpty (val) {
-        if (String(val).trim().length === 0) {
-            throw new Error('Value can not be empty');
-        }
-    }
 
     // class methods ------------------
 
@@ -119,6 +109,8 @@ module.exports = function (sqlz, SQLZ, relations) {
      * @param {Object} p - product from request body
      * */
     function updateExisting (p) {
+        var savedProduct;
+
         return Product.find({
             where: {
                 uuid: p.uuid
@@ -132,8 +124,7 @@ module.exports = function (sqlz, SQLZ, relations) {
                     product.minAmount = p.minAmount;
                     product.arrivedAt = p.arrivedAt;
                     product.expiresAt = p.expiresAt;
-
-                    // console.log(p.reason); // TODO SH save to statistix
+                    product.price = p.price;
 
                     return product.save();
                 } else {
@@ -141,10 +132,15 @@ module.exports = function (sqlz, SQLZ, relations) {
                 }
             })
             .then(function (product) {
+                savedProduct = product;
+
                 return product.resetUnit(p.unit.uuid);
             })
             .then(function (product) {
                 return product.resetProductGroups(p.groups);
+            })
+            .then(function () {
+                return savedProduct;
             });
     }
 

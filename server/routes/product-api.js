@@ -4,7 +4,8 @@
 'use strict';
 
 module.exports = function (models) {
-    var Product = models.Product;
+    var Product = models.Product,
+        ProductStat = models.ProductStat;
 
     /**
      * Get products list by query
@@ -61,9 +62,19 @@ module.exports = function (models) {
      * @param {Object} res - response
      * */
     function updateProduct (req, res) {
+        var p;
 
         Product
             .updateExisting(req.body)
+            .then(function (product) {
+                p = product;
+
+                return ProductStat.addLine(req.body.reason, 'updated');
+            })
+            .then(function (statLine) {
+                // TODO SH also set user (req.decoded.uuid), move this logic to stat model
+                return statLine.setProduct(p);
+            })
             .then(function () {
                 res.send({
                     message: 'Product updated',

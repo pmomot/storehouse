@@ -33,6 +33,18 @@
                         </li>
                     </ul>
                 </li>
+                <li class="dropdown" ng-class="{'active': path.indexOf('stats') === 0}">
+                    <a href="#" class="dropdown-toggle" ng-click="doNothing($event)" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false">{{ ln()['stats-menu'] }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <!--<li ng-class="{'active': path === 'stats/all'}">-->
+                            <!--<a href="#/stats/all">{{ ln()['all-statistics'] }}</a>-->
+                        <!--</li>-->
+                        <li ng-class="{'active': path === 'stats/general'}">
+                            <a href="#/stats/general">{{ ln()['general-statistics'] }}</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown" ng-class="{'active': path.indexOf('user/') === 0}">

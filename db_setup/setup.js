@@ -11,7 +11,8 @@ module.exports = function (models) {
         Product = models.Product,
         Unit = models.Unit,
         ProductGroup = models.ProductGroup,
-        ProductGroupsConnection = models.ProductGroupsConnection;
+        ProductGroupsConnection = models.ProductGroupsConnection,
+        ProductStat = models.ProductStat;
 
     // TODO SH add localization to server-side errors
 
@@ -50,6 +51,9 @@ module.exports = function (models) {
         .then(function () {
             return ProductGroupsConnection.sync({force: true});
         })
+        .then(function () {
+            return ProductStat.sync({force: true});
+        })
         .then(fillSomeData);
 
     /**
@@ -73,6 +77,7 @@ module.exports = function (models) {
             description: 'Soo fresh and beautiful',
             amount: 20,
             minAmount: 5,
+            price: 5.15,
             arrivedAt: Date.now(),
             expiresAt: new Date(Date.now() + 30 * 24 * 3600 * 1000)
         });

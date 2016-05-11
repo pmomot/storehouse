@@ -73,6 +73,7 @@
                     description: '',
                     amount: 1,
                     minAmount: 1,
+                    price: 1,
                     arrivedAt: new Date(),
                     expiresAt: new Date(),
                     unit: vm.units()[0],
@@ -80,9 +81,7 @@
                 };
             }
 
-            if (type === 'update') {
-                vm.modalSettings.reason = '';
-            }
+            item.reason = '';
 
             angular.extend(vm.modalSettings, {
                 type: type,

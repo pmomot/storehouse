@@ -70,6 +70,20 @@
         "ru": "выйти"
     },
     {
+        "key": "all-statistics",
+        "description": "all statistics menu title",
+        "en": "all statistics",
+        "uk": "вся статистика",
+        "ru": "вся статистика"
+    },
+    {
+        "key": "general-statistics",
+        "description": "all statistics menu title",
+        "en": "general info",
+        "uk": "загальна інформація",
+        "ru": "общая информация"
+    },
+    {
         "key": "account-menu",
         "description": "account-menu menu title",
         "en": "account menu",
@@ -82,6 +96,13 @@
         "en": "product menu",
         "uk": "меню продуктів",
         "ru": "меню продуктов"
+    },
+    {
+        "key": "stats-menu",
+        "description": "stats-menu menu title",
+        "en": "stats menu",
+        "uk": "меню статистики",
+        "ru": "меню статистики"
     },
     {
         "key": "error-passwords-mismatch",
