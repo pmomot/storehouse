@@ -139,9 +139,9 @@ module.exports = function (User) {
      * @param {Object} req - request
      * */
     function restorePassword (req) {
-        var newPass = req.headers.data,
-            token = req.headers.token;
-       
+        var newPass = req.query.pass,
+            token = req.query.token;
+
         User.restorePassword(newPass, token);
     }
 
