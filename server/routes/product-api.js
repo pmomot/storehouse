@@ -62,18 +62,17 @@ module.exports = function (models) {
      * @param {Object} res - response
      * */
     function updateProduct (req, res) {
-        var p;
 
         Product
             .updateExisting(req.body)
             .then(function (product) {
-                p = product;
 
-                return ProductStat.addLine(req.body.reason, 'updated');
-            })
-            .then(function (statLine) {
-                // TODO SH also set user (req.decoded.uuid), move this logic to stat model
-                return statLine.setProduct(p);
+                return ProductStat.addLine({
+                    message: req.body.reason,
+                    action: 'updated',
+                    userId: req.decoded.uuid,
+                    product: product
+                });
             })
             .then(function () {
                 res.send({

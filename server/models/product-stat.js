@@ -4,7 +4,8 @@
 'use strict';
 
 module.exports = function (sqlz, SQLZ, relations) {
-    var ProductStat, columns, options;
+    var ProductStat, columns, options,
+        User = relations.User;
 
     columns = {
         id: {
@@ -35,17 +36,48 @@ module.exports = function (sqlz, SQLZ, relations) {
 
     /**
      * Add statistics line to table
-     * @param {String} message - action message
-     * @param {String} action - action type
+     * @param {Object} params - info to create stat line
+     *                 message - action message
+     *                 action - action type
+     *                 userId - user uuid
+     *                 product - product
      * */
-    function addLine (message, action) {
+    function addLine (params) {
         var statLine = ProductStat.build({
-            action: action,
+            action: params.action,
             time: Date.now(),
-            message: message
+            message: params.message
         });
 
-        return statLine.save();
+        return setRelationFields(statLine, params);
+    }
+
+    /**
+     * Set Product and User relations info
+     * @param {Object} statLine - statistics instance
+     * @param {Object} params - info to create stat line
+     *                 message - action message
+     *                 action - action type
+     *                 userId - user uuid
+     *                 product - product
+     * */
+    function setRelationFields (statLine, params) {
+
+        return statLine.save()
+            .then(function () {
+                return statLine.setProduct(params.product);
+            })
+            .then(function () {
+
+                return User.find({
+                    where: {
+                        uuid: params.userId
+                    }
+                });
+            })
+            .then(function (user) {
+                return statLine.setUser(user);
+            });
     }
 
     ProductStat = sqlz.define('ProductStats', columns, {

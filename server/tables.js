@@ -22,6 +22,7 @@ module.exports = function (config) {
         }),
         ProductGroupsConnection;
 
+    // product relations
     Unit.hasMany(Product, {as: 'Unit'});
     Product.belongsTo(Unit);
 
@@ -31,8 +32,12 @@ module.exports = function (config) {
     Product.belongsToMany(ProductGroup, {through: ProductGroupsConnection});
     ProductGroup.belongsToMany(Product, {through: ProductGroupsConnection});
 
+    // product stats relations
     Product.hasMany(ProductStat, {as: 'Product'});
     ProductStat.belongsTo(Product);
+
+    User.hasMany(ProductStat, {as: 'User'});
+    ProductStat.belongsTo(User);
 
     return {
         User: User,
