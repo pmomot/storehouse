@@ -32,6 +32,11 @@
                 controller: 'ChangePassController',
                 controllerAs: 'vm'
             })
+            .when('/user/settings', {
+                templateUrl: 'app/routes/user-settings/userSettingsView.html',
+                controller: 'UserSettingsController',
+                controllerAs: 'vm'
+            })
             .when('/users', {
                 templateUrl: 'app/routes/users/usersView.html',
                 controller: 'UsersController',
@@ -46,6 +51,26 @@
             .when('/products', {
                 templateUrl: 'app/routes/products/productsView.html',
                 controller: 'ProductsController',
+                controllerAs: 'vm'
+            })
+            .when('/products/units', {
+                templateUrl: 'app/routes/units/unitsView.html',
+                controller: 'UnitsController',
+                controllerAs: 'vm'
+            })
+            .when('/products/groups', {
+                templateUrl: 'app/routes/product-groups/productGroupsView.html',
+                controller: 'ProductGroupsController',
+                controllerAs: 'vm'
+            })
+            .when('/products/take', {
+                templateUrl: 'app/routes/take/takeView.html',
+                controller: 'TakeController',
+                controllerAs: 'vm'
+            })
+            .when('/stats/:type', {
+                templateUrl: 'app/routes/stats/statsView.html',
+                controller: 'StatisticsController',
                 controllerAs: 'vm'
             })
             .otherwise({

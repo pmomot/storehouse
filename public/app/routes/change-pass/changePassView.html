@@ -1,17 +1,20 @@
 <form class="user-form" method="post" ng-submit="vm.sendRequest()">
-    <h2 class="user-form-heading">Change Password</h2>
-    <label for="inputCurrentPass" class="sr-only">Current Password:</label>
-    <input type="password" id="inputCurrentPass" class="form-control" placeholder="Current Password"
+    <h2 class="user-form-heading">{{ vm.ln()['change-pass'] }}</h2>
+    <label for="inputCurrentPass" class="sr-only">{{ vm.ln()['label-current-password'] }}:</label>
+    <input type="password" id="inputCurrentPass" class="form-control"
+           placeholder="{{ vm.ln()['label-current-password'] }}"
            required="" ng-model="vm.data.currentPassword">
-    <label for="inputCurrentPass" class="sr-only">New Password:</label>
-    <input type="password" id="inputNewPass" class="form-control" placeholder="New Password"
+    <label for="inputCurrentPass" class="sr-only">{{ vm.ln()['label-new-password'] }}:</label>
+    <input type="password" id="inputNewPass" class="form-control"
+           placeholder="{{ vm.ln()['label-new-password'] }}"
            required="" ng-model="vm.data.newPassword">
-    <label for="inputCurrentPass" class="sr-only">Repeat New Password:</label>
-    <input type="password" id="inputPass" class="form-control" placeholder="Repeat New Password"
+    <label for="inputCurrentPass" class="sr-only">{{ vm.ln()['label-repeat-password'] }}:</label>
+    <input type="password" id="inputPass" class="form-control"
+           placeholder="{{ vm.ln()['label-repeat-password'] }}"
            required="" ng-model="vm.data.repeatPassword">
     <div class="form-group has-error" ng-show="vm.errors.length > 0">
         <label class="control-label" ng-repeat="error in vm.errors">{{ error }}</label>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-    <div class="sign-up-label"><a href="#" ng-click="vm.goBack($event)">← Back</a></div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">{{ vm.ln()['submit'] }}</button>
+    <div class="sign-up-label"><a href="#" ng-click="vm.goBack($event)">← {{ vm.ln()['back'] }}</a></div>
 </form>

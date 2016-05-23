@@ -35,8 +35,9 @@ function createRestoreToken (user) {
     }), secretKey).toString());
 }
 
-module.exports = function (sqlz, SQLZ) {
-    var User, columns, options;
+module.exports = function (sqlz, SQLZ, relations) {
+    var User, columns, options,
+        Locale = relations.Locale;
 
     columns = {
         uuid: {
@@ -74,6 +75,13 @@ module.exports = function (sqlz, SQLZ) {
                         throw new Error('Please choose a longer password');
                     }
                 }
+            }
+        },
+        lang: {
+            type: SQLZ.STRING,
+            defaultValue: 'en',
+            validate: {
+                isIn: [config.languages]
             }
         }
     };
@@ -113,7 +121,8 @@ module.exports = function (sqlz, SQLZ) {
      * @param {Object} body - user email and pass
      * */
     function logIn (body) {
-        var self = this; // eslint-disable-line no-invalid-this
+        var self = this, // eslint-disable-line no-invalid-this
+            token;
 
         return self.find({
             where: {
@@ -127,17 +136,21 @@ module.exports = function (sqlz, SQLZ) {
                     validPassword = user.comparePassword(body.password);
 
                     if (validPassword) {
+                        token = createToken(user.dataValues);
 
-                        return {
-                            token: createToken(user.dataValues),
-                            user: user.getInfo()
-                        };
+                        return user.getInfo();
                     } else {
                         throw new Error('Invalid Password');
                     }
                 } else {
                     throw new Error('User does not exist');
                 }
+            })
+            .then(function (userInfo) {
+                return {
+                    token: token,
+                    user: userInfo
+                };
             });
     }
 
@@ -214,10 +227,10 @@ module.exports = function (sqlz, SQLZ) {
      * */
     function verifyRestorationToken (token) {
         var decrypted = '';
-        
+
         try {
             decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
-              
+
             decrypted = JSON.parse(decrypted);
             return User.find({
                 where: {
@@ -251,7 +264,7 @@ module.exports = function (sqlz, SQLZ) {
     function restorePassword (pass, token) {
 
         var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
-       
+
         decrypted = JSON.parse(decrypted);
         return User.find({
             where: {
@@ -267,24 +280,64 @@ module.exports = function (sqlz, SQLZ) {
             });
     }
 
-    User = sqlz.define('users', columns, {
+    /**
+     * Change user's language
+     * @param {String} uuid - decoded user id
+     * @param {Object} body - request body
+     * */
+    function changeLanguage (uuid, body) {
+        var lang = body.language;
+
+        return User.find({
+            where: {
+                uuid: uuid
+            }
+        })
+            .then(function (user) {
+                if (config.languages.indexOf(lang) === -1) { // no such language
+                    lang = 'en';
+                }
+                user.lang = lang;
+
+                return user.save();
+            })
+            .then(function (user) {
+
+                return Locale.findAll({
+                    attributes: ['key', [user.lang, 'value']]
+                });
+            });
+    }
+
+    User = sqlz.define('Users', columns, {
         instanceMethods: {
             comparePassword: function (password) {
                 return CryptoJS.AES.decrypt(this.passwordHash, secretKey).toString(CryptoJS.enc.Utf8) === password;
             },
             getInfo: function () {
-                return {
+                var info = {
                     fullName: [this.firstName, this.lastName].join(' '),
                     firstName: this.firstName,
                     lastName: this.lastName,
-                    email: this.email
+                    email: this.email,
+                    lang: this.lang,
+                    langs: config.languages
                 };
+
+                return Locale.findAll({
+                    attributes: ['key', [this.lang, 'value']]
+                }).then(function (locale) {
+                    info.locale = locale;
+
+                    return info;
+                });
             }
         },
         classMethods: {
             signUp: signUp,
             logIn: logIn,
             changePassword: changePassword,
+            changeLanguage: changeLanguage,
             forgotPassword: forgotPassword,
             verifyRestorationToken: verifyRestorationToken,
             restorePassword: restorePassword

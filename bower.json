@@ -1,6 +1,6 @@
 {
-  "name": "StoreHouse",
-  "version": "0.0.1",
+  "name": "storehouse",
+  "version": "0.1.0",
   "homepage": "https://github.com/pmomot/storehouse.git",
   "authors": [
     "Petro Momot pmomot@corevalue.net"
@@ -20,7 +20,9 @@
     "angular-mocks": "~1.4.7",
     "angular-route": "~1.4.7",
     "angular-messages": "~1.5.4",
-    "angular-toastr": "~1.7.0"
+    "angular-toastr": "~1.7.0",
+    "underscore": "~1.8.3",
+    "bootstrap-languages": "bootstrap-language#*"
   },
   "resolutions": {
     "angular": "~1.5.x"

@@ -1,0 +1,21 @@
+<div>
+    <p>
+        <button type="button" class="btn btn-primary"
+                ng-click="settings.showPopup('create')">{{ settings.addNewLabel }}</button>
+    </p>
+    <div class="table-responsive" ng-if="settings.list().length > 0">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th ng-repeat="h in settings.header">{{ h }}</th>
+                <th class="center nowrap">Controls</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr sh-list-item ng-repeat="item in settings.list()"
+                settings="settings" active-tag="activeTag" item="item"></tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-if="settings.list().length === 0">{{ settings.emptyLabel }}</div>
+</div>

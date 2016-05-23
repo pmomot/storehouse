@@ -8,92 +8,88 @@
         .module('StoreHouse.Directives')
         .directive('shModal', modal);
 
-    modal.$inject = ['productService'];
+    modal.$inject = ['$document'];
 
     /**
      * General Modal Directive
      * */
-    function modal () {
+    function modal ($document) {
         return {
             restrict: 'E',
             templateUrl: 'app/directives/modalView.html',
             transclude: true,
             replace: true,
-            scope: true,
-            link: function (scope, element, attrs) {
-                var sizeClass = '';
+            scope: {
+                settings: '='
+            },
+            link: link
+        };
 
-                switch (attrs.size) {
+        /**
+         * Link function
+         * */
+        function link (scope, element) {
+            scope.submit = submit;
+            scope.close = close;
+
+            parseSettings(scope.settings);
+
+            angular.element(element).on('hidden.bs.modal', function () {
+                scope.$apply(function close () {
+                    scope.settings.type = '';
+                });
+                $document.off('keydown.modal');
+            });
+
+            $document.on('keydown.modal', function (e) {
+                if (e.keyCode === 27) { // Esc
+                    angular.element(element).modal('hide');
+                }
+            });
+
+            /**
+             * Parse all settings from parameter to local scope
+             * @param {Object} s - settings
+             * */
+            function parseSettings (s) {
+                var size = '';
+
+                if (typeof s === 'undefined') {
+                    return;
+                }
+
+                scope.title = s.title;
+
+                if (typeof s.buttonsOptions !== 'undefined') {
+                    scope.submitButton = s.buttonsOptions.submitButton || null;
+                    scope.cancelButton = s.buttonsOptions.cancelButton;
+                    scope.callback = s.buttonsOptions.callback;
+                }
+
+                switch (s.size) {
                     case 'large':
-                        sizeClass = 'modal-lg';
+                        size = 'modal-lg';
                         break;
                     case 'small':
-                        sizeClass = 'modal-sm';
+                        size = 'modal-sm';
                         break;
                 }
+                scope.size = size;
 
-                scope.size = getSizeClass;
-                scope.submit = submit;
-                scope.close = close;
+                angular.element(element).modal('show');
+            }
 
-                scope.$watch(attrs.visible, function (value) {
-                    angular.element(element).modal(value === true ? 'show' : 'hide');
-                });
+            /**
+             * Form submit event callback
+             * */
+            function submit () {
+                // TODO SH add validation here
+                // TODO SH on iphone required not working
 
-                scope.$watch(attrs.title, function (value) {
-                    scope.title = value;
-                });
-
-                scope.$watch(attrs.footer, function (value) {
-                    if (typeof value !== 'undefined') {
-                        scope.submitButton = value.submitButton || null;
-                        scope.cancelButton = value.cancelButton;
-                        scope.callback = value.callback;
-                    }
-                });
-
-                scope.$watch(attrs.model, function (value) {
-                    scope.model = value;
-                });
-
-                scope.$watch(attrs.type, function (value) {
-                    scope.type = value;
-                });
-
-                angular.element(element).on('hidden.bs.modal', function () {
-                    scope.$apply(close);
-                });
-
-                /**
-                 * Get up to date modal size class
-                 * */
-                function getSizeClass () {
-                    return sizeClass;
-                }
-
-                /**
-                 * Form submit event callback
-                 * */
-                function submit () {
-                    console.log('submit');
-
-                    // TODO SH add validation here
-                    // TODO SH on iphone required not working
-
-                    close();
-                    if (typeof scope.callback === 'function') {
-                        console.log('run callback');
-                        scope.callback(scope.type);
-                    }
-                }
-
-                /**
-                 * Close popup, do nothing
-                 * */
-                function close () {
-                    scope.$parent.vm.modalShow = false;
+                if (typeof scope.callback === 'function') {
+                    scope.callback(element);
                 }
             }
-        };
+        }
     }
 })();

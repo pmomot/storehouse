@@ -1,0 +1,23 @@
+<sh-header></sh-header>
+<div class="main-content">
+
+    <sh-list settings="vm.listSettings"></sh-list>
+
+    <sh-modal settings="vm.modalSettings"
+              ng-if="vm.modalSettings.type === 'create' || vm.modalSettings.type === 'update'">
+        <div class="form-group">
+            <label class="control-label" for="name">Name *</label>
+            <input type="text" class="form-control" id="name" name="name" required
+                   ng-model="vm.modalSettings.item.name" ng-maxlength="255">
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="description">Description *</label>
+            <input type="text" class="form-control" id="description" required
+                   ng-model="vm.modalSettings.item.description" ng-maxlength="255">
+        </div>
+    </sh-modal>
+
+    <sh-modal settings="vm.modalSettings" ng-if="vm.modalSettings.type === 'remove'">
+        <p>Are you sure you want to remove product group: <b>{{ vm.modalSettings.item.name }}</b> ?</p>
+    </sh-modal>
+</div>

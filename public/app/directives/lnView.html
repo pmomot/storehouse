@@ -1,0 +1,21 @@
+<form role="form" name="lnForm" class="flags-form" ng-class="{'small': small}">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" ng-class="{'btn-xs': small}"
+                ng-disabled="processingRequest">{{ ln()['label-change-language']}}</button>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"
+                ng-disabled="processingRequest" ng-class="{'btn-xs': small}">
+            <span class="caret"></span>
+            <span class="sr-only">{{ ln()['label-change-language']}}</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li ng-repeat="lang in userInfo().langs">
+
+                <a href="#" ng-click="selectLanguage($event, lang)" ng-class="{'icon-ok': language === lang}">
+                    <i ng-class="{'glyphicon glyphicon-ok': language === lang}"></i>
+                    <span class="lang-sm lang-lbl-full" lang="{{ lang }}"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</form>

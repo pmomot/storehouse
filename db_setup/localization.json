@@ -1,0 +1,303 @@
+[
+    {
+        "key": "main-title",
+        "description": "main service title",
+        "en": "StoreHouse",
+        "uk": "Склад",
+        "ru": "Склад"
+    },
+    {
+        "key": "name",
+        "description": "word name caption",
+        "en": "name",
+        "uk": "ім'я",
+        "ru": "имя"
+    },
+    {
+        "key": "users",
+        "description": "users menu title",
+        "en": "users",
+        "uk": "користувачі",
+        "ru": "пользователи"
+    },
+    {
+        "key": "products",
+        "description": "products menu title",
+        "en": "products",
+        "uk": "продукти",
+        "ru": "продукты"
+    },
+    {
+        "key": "units",
+        "description": "units menu title",
+        "en": "units of measurement",
+        "uk": "одиниці виміру",
+        "ru": "единицы измерения"
+    },
+    {
+        "key": "product-groups",
+        "description": "product groups menu title",
+        "en": "product groups",
+        "uk": "групи продуктів",
+        "ru": "группы продуктов"
+    },
+    {
+        "key": "products-take",
+        "description": "product take menu title",
+        "en": "take products",
+        "uk": "взяти продукти",
+        "ru": "взять продукты"
+    },
+    {
+        "key": "change-pass",
+        "description": "change pass menu title",
+        "en": "change pass",
+        "uk": "змінити пароль",
+        "ru": "сменить пароль"
+    },
+    {
+        "key": "settings",
+        "description": "user settings menu title",
+        "en": "settings",
+        "uk": "налаштування",
+        "ru": "настройки"
+    },
+    {
+        "key": "log-out",
+        "description": "log out menu title",
+        "en": "log out",
+        "uk": "вийти",
+        "ru": "выйти"
+    },
+    {
+        "key": "all-statistics",
+        "description": "all statistics menu title",
+        "en": "all statistics",
+        "uk": "вся статистика",
+        "ru": "вся статистика"
+    },
+    {
+        "key": "general-statistics",
+        "description": "all statistics menu title",
+        "en": "general info",
+        "uk": "загальна інформація",
+        "ru": "общая информация"
+    },
+    {
+        "key": "account-menu",
+        "description": "account-menu menu title",
+        "en": "account menu",
+        "uk": "меню користувача",
+        "ru": "меню пользователя"
+    },
+    {
+        "key": "product-menu",
+        "description": "product-menu menu title",
+        "en": "product menu",
+        "uk": "меню продуктів",
+        "ru": "меню продуктов"
+    },
+    {
+        "key": "stats-menu",
+        "description": "stats-menu menu title",
+        "en": "stats menu",
+        "uk": "меню статистики",
+        "ru": "меню статистики"
+    },
+    {
+        "key": "error-passwords-mismatch",
+        "description": "password and repeat password mismatch",
+        "en": "passwords do not match",
+        "uk": "паролі не співпадають",
+        "ru": "пароли не совпадают"
+    },
+    {
+        "key": "error-password-validation",
+        "description": "length and spaces validation",
+        "en": "password must be at least 7 characters long and not contain spaces",
+        "uk": "пароль повинен бути щонайменше 7 символів у довжину і не містити пробілів",
+        "ru": "пароль должен быть минимум 7 символов в длину и не иметь пробелов"
+    },
+    {
+        "key": "error-email-validation",
+        "description": "email validation error",
+        "en": "email is invalid",
+        "uk": "невалідна електронна пошта",
+        "ru": "невалидная электронная почта"
+    },
+    {
+        "key": "error-first-name-validation",
+        "description": "first name validation error",
+        "en": "first name may contain only letters.",
+        "uk": "ім'я може містити тільки літери",
+        "ru": "имя может состоять только из букв"
+    },
+    {
+        "key": "error-last-name-validation",
+        "description": "last name validation error",
+        "en": "last name may contain only letters.",
+        "uk": "прізвище може містити тільки літери",
+        "ru": "фамилия может состоять только из букв"
+    },
+    {
+        "key": "back",
+        "description": "back button caption",
+        "en": "back",
+        "uk": "назад",
+        "ru": "назад"
+    },
+    {
+        "key": "submit",
+        "description": "submit button caption",
+        "en": "submit",
+        "uk": "відправити",
+        "ru": "отправить"
+    },
+    {
+        "key": "search",
+        "description": "search button caption",
+        "en": "search",
+        "uk": "шукати",
+        "ru": "искать"
+    },
+    {
+        "key": "take",
+        "description": "take button caption",
+        "en": "take",
+        "uk": "взяти",
+        "ru": "взять"
+    },
+    {
+        "key": "label-current-password",
+        "description": "current password label in form",
+        "en": "current password",
+        "uk": "поточний пароль",
+        "ru": "текущий пароль"
+    },
+    {
+        "key": "label-new-password",
+        "description": "new password label in form",
+        "en": "new password",
+        "uk": "новий пароль",
+        "ru": "новый пароль"
+    },
+    {
+        "key": "label-repeat-password",
+        "description": "repeat password label in form",
+        "en": "repeat new password",
+        "uk": "повтор нового пароля",
+        "ru": "повтор нового пароля"
+    },
+    {
+        "key": "label-password",
+        "description": "password label in form",
+        "en": "password",
+        "uk": "пароль",
+        "ru": "пароль"
+    },
+    {
+        "key": "label-confirm-password",
+        "description": "confirm password label in form",
+        "en": "confirm password",
+        "uk": "підтвердження пароля",
+        "ru": "подтверждение пароля"
+    },
+    {
+        "key": "label-email",
+        "description": "email label in form",
+        "en": "email address",
+        "uk": "електронна пошта",
+        "ru": "электронная почта"
+    },
+    {
+        "key": "label-first-name",
+        "description": "first name label in form",
+        "en": "first name",
+        "uk": "ім'я",
+        "ru": "имя"
+    },
+    {
+        "key": "label-last-name",
+        "description": "last name label in form",
+        "en": "last name",
+        "uk": "прізвище",
+        "ru": "фамилия"
+    },
+    {
+        "key": "label-change-language",
+        "description": "change language label in form",
+        "en": "change language",
+        "uk": "змінити мову",
+        "ru": "сменить язык"
+    },
+    {
+        "key": "create-account",
+        "description": "create account form title",
+        "en": "create an account",
+        "uk": "створити аккаунт",
+        "ru": "завести аккаунт"
+    },
+    {
+        "key": "back-to-login",
+        "description": "back to login button on form",
+        "en": "back to login",
+        "uk": "до сторінки входу",
+        "ru": "к странице входа"
+    },
+    {
+        "key": "not-signed-up",
+        "description": "not signed up question on form",
+        "en": "not signed up?",
+        "uk": "не зареєстровані?",
+        "ru": "не зарегистрированы?"
+    },
+    {
+        "key": "sign-in",
+        "description": "sign in form title",
+        "en": "sign in",
+        "uk": "увійти",
+        "ru": "войти"
+    },
+    {
+        "key": "all",
+        "description": "all caption",
+        "en": "all",
+        "uk": "всі",
+        "ru": "все"
+    },
+    {
+        "key": "soon-expire",
+        "description": "soon expire tag caption",
+        "en": "soon expire",
+        "uk": "закінчення терміну придатності",
+        "ru": "окончание срока годности"
+    },
+    {
+        "key": "less-amount",
+        "description": "less then needed amount tag caption",
+        "en": "little amount",
+        "uk": "мала кількість",
+        "ru": "малое количество"
+    },
+    {
+        "key": "label-editing-reason",
+        "description": "editing reason label in form",
+        "en": "editing reason",
+        "uk": "причина редагування",
+        "ru": "причина редактирования"
+    },
+    {
+        "key": "label-taking-reason",
+        "description": "taking reason label in form",
+        "en": "taking reason",
+        "uk": "причина взяття",
+        "ru": "причина взятия"
+    },
+    {
+        "key": "label-search-products",
+        "description": "search products label in form",
+        "en": "search products",
+        "uk": "пошук продуктів",
+        "ru": "поиск продуктов"
+    }
+]

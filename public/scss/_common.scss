@@ -1,3 +1,7 @@
+*:focus {
+    outline: none !important;
+}
+
 .main-content {
     padding: 70px 15px;
 }
@@ -6,11 +10,20 @@
     text-align: center;
 }
 
+.navbar-nav a {
+    text-transform: capitalize;
+}
+
+.hidden {
+    display: none;
+}
+
 span.glyphicon {
     cursor: pointer;
 }
+
 table {
-    
+
     td {
         vertical-align: middle !important;
     }
@@ -22,4 +35,18 @@ table {
             margin-left: 15px;
         }
     }
+}
+
+.bg-less-risk {
+    background-color: #FDCA77;
+}
+.bg-risk {
+    background-color: #FF8181;
+}
+
+.word-break {
+    word-break: break-all;
+}
+.nowrap {
+    white-space: nowrap;
 }

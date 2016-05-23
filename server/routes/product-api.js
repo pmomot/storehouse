@@ -3,7 +3,9 @@
  */
 'use strict';
 
-module.exports = function (Product) {
+module.exports = function (models) {
+    var Product = models.Product,
+        ProductStat = models.ProductStat;
 
     /**
      * Get products list by query
@@ -11,11 +13,72 @@ module.exports = function (Product) {
      * @param {Object} res - response
      * */
     function getProducts (req, res) {
-        Product.findAll({
-            attributes: ['uuid', 'name', 'description']
-        })
+        Product.queryAll()
             .then(function (products) {
                 res.send(products);
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
+    /**
+     * Create new product
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function createProduct (req, res) {
+
+        if (req.body.amount <= 0) { // removed this from validation rules in Products class, because user can take all
+            res.send({
+                message: 'Validation error: Amount should be more than zero',
+                success: false
+            });
+            return;
+        }
+
+        Product
+            .createNew(req.body)
+            .then(function () {
+                res.send({
+                    message: 'Product created',
+                    success: true
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
+    /**
+     * Update product
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function updateProduct (req, res) {
+
+        Product
+            .updateExisting(req.body)
+            .then(function (product) {
+
+                return ProductStat.addLine({
+                    message: req.body.reason,
+                    action: 'updated',
+                    userId: req.decoded.uuid,
+                    product: product
+                });
+            })
+            .then(function () {
+                res.send({
+                    message: 'Product updated',
+                    success: true
+                });
             })
             .catch(function (error) {
                 res.send({
@@ -38,9 +101,70 @@ module.exports = function (Product) {
             }
         })
             .then(function () {
+                return Product.queryAll();
+            })
+            .then(function (products) {
                 res.send({
                     message: 'Product deleted',
-                    success: true
+                    success: true,
+                    products: products
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
+    /**
+     * Search product by text
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function searchProducts (req, res) {
+        var text = req.query.text;
+
+        if (!text) {
+            text = '';
+        }
+        Product
+            .searchForTake(text)
+            .then(function (products) {
+                res.send({
+                    success: true,
+                    products: products
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
+    /**
+     * Take product from storehouse
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function takeProduct (req, res) {
+        if (typeof req.body.takeAmount !== 'number') {
+            res.send({
+                message: 'Cannot proceed with this amount',
+                success: false
+            });
+            return;
+        }
+
+        Product
+            .findAndTake(req.body)
+            .then(function (product) {
+                res.send({
+                    success: true,
+                    product: product
                 });
             })
             .catch(function (error) {
@@ -53,6 +177,10 @@ module.exports = function (Product) {
 
     return {
         getProducts: getProducts,
-        deleteProduct: deleteProduct
+        createProduct: createProduct,
+        updateProduct: updateProduct,
+        deleteProduct: deleteProduct,
+        searchProducts: searchProducts,
+        takeProduct: takeProduct
     };
 };

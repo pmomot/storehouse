@@ -14,7 +14,10 @@
      * Accounts processing service
      * */
     function accountService ($q, $window, accountRepository, toastr) {
-        var userInfo = {}, users = [];
+        var users = [], locale = {},
+            userInfo = {
+                lang: 'en'
+            };
 
         if (!$window.localStorage.getItem('token')) {
             $window.localStorage.setItem('token', '');
@@ -33,6 +36,7 @@
                 .then(function (data) {
                     $window.localStorage.setItem('token', data.token);
                     userInfo = data.user;
+                    processUserInfo();
 
                     toastr.success(data.message);
                     deferred.resolve(data);
@@ -68,10 +72,6 @@
                 .then(function (data) {
                     toastr.success(data.message);
                     deferred.resolve(data);
-                })
-                .catch(function (error) {
-                    toastr.error(error.message);
-                    deferred.reject();
                 });
 
             return deferred.promise;
@@ -109,6 +109,7 @@
             accountRepository.loadUserInfo()
                 .then(function (data) {
                     userInfo = data;
+                    processUserInfo();
                     deferred.resolve(data);
                 });
 
@@ -130,12 +131,63 @@
             return deferred.promise;
         }
 
+        /**
+         * Get localization info on app start
+         * */
+        function fetchLocale () {
+            var deferred = $q.defer();
+
+            if (!$window.localStorage.getItem('lang')) {
+                $window.localStorage.setItem('lang', 'en');
+            }
+
+            accountRepository.fetchLocale($window.localStorage.getItem('lang'))
+                .then(function (data) {
+                    userInfo.locale = data.locale;
+                    userInfo.langs = data.langs;
+                    userInfo.lang = $window.localStorage.getItem('lang');
+                    processUserInfo();
+                    deferred.resolve(data.locale);
+                });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Change user language
+         * @param {String} language - new user language
+         * */
+        function changeLanguage (language) {
+            var deferred = $q.defer();
+
+            accountRepository.changeLanguage(language)
+                .then(function (data) {
+                    toastr.success(data.message);
+
+                    userInfo.lang = language;
+                    userInfo.locale = data.locale;
+                    processUserInfo();
+
+                    deferred.resolve(data);
+                })
+                .catch(function () {
+                    deferred.reject();
+                });
+
+            return deferred.promise;
+        }
+
         // service calls
         /**
          * Log out of portal
          * */
         function logout () {
             $window.localStorage.setItem('token', '');
+
+            userInfo = {
+                locale: userInfo.locale,
+                langs: userInfo.langs
+            };
         }
 
         /**
@@ -156,7 +208,30 @@
          * Verify that service has user info saved
          * */
         function hasUserInfo () {
-            return Object.keys(userInfo).length > 0;
+            return Object.keys(userInfo).length > 1;
+        }
+
+        /**
+        * Get localization object
+        */
+        function getLocalization () {
+            return locale;
+        }
+
+        // helpers
+
+        /**
+         * Convert collection of objects into object
+         * */
+        function processUserInfo () {
+            var i, L = userInfo.locale;
+
+            $window.localStorage.setItem('lang', userInfo.lang);
+
+            locale = {};
+            for (i = 0; i < L.length; i += 1) {
+                locale[L[i].key] = L[i].value;
+            }
         }
 
         return {
@@ -165,6 +240,8 @@
             signUp: signUp,
             loadUserInfo: loadUserInfo,
             fetchUsers: fetchUsers,
+            fetchLocale: fetchLocale,
+            changeLanguage: changeLanguage,
 
             restorePassword: restorePassword,
 
@@ -174,7 +251,8 @@
             logout: logout,
             getUserInfo: getUserInfo,
             getUsers: getUsers,
-            hasUserInfo: hasUserInfo
+            hasUserInfo: hasUserInfo,
+            getLocalization: getLocalization
         };
     }
 

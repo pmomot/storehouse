@@ -6,23 +6,35 @@
 var config = require('../config'),
     jsonWebToken = require('jsonwebtoken'),
     secretKey = config.secretKey;
-   
 
 module.exports = function (app, express, models) {
     var api = new express.Router(),
         User = models.User,
-        userApiCalls = require('./user-api')(User),
-        productApiCalls = require('./product-api')(models.Product);
-  
-    api.get('/database-reset', function (req, res) { // TODO only for dev needs, remove this on prod
+        userApiCalls = require('./user-api')(models),
+        productApiCalls = require('./product-api')(models),
+        unitApiCalls = require('./unit-api')(models),
+        pGroupApiCalls = require('./product-group-api')(models.ProductGroup),
+        statsApiCalls = require('./stats-api')(models);
+
+    api.get('/database-reset', function (req, res) { // TODO SH only for dev needs, remove this on prod
         require('../../db_setup/setup')(models);
         res.send('Database reset done');
     });
 
+    api.get('/fill-table/locale', function (req, res) {
+        require('../../db_setup/locale-fill')(models.Locale)
+            .then(function () {
+                res.send('Locale fill done');
+            })
+            .catch(function (err) {
+                res.send(err.message);
+            });
+    });
+
     // User section
-    
     api.post('/user', userApiCalls.signUp);
     api.post('/user/log-in', userApiCalls.logIn);
+    api.get('/locale/:lang', userApiCalls.getLocale);
     api.post('/user/forgot-password', userApiCalls.forgotPassword);
     api.get('/user/restore-password', userApiCalls.verifyRestorationToken);
     api.post('/user/restore-password', userApiCalls.restorePassword);
@@ -33,12 +45,30 @@ module.exports = function (app, express, models) {
     api.put('/user/change-pass', userApiCalls.changePassword);
     api.get('/users', userApiCalls.getUsers);
     api.get('/user', userApiCalls.getUser);
+    api.put('/user/change-language', userApiCalls.changeLanguage);
 
     // Product section
     api.get('/products', productApiCalls.getProducts);
+    api.post('/products', productApiCalls.createProduct);
+    api.put('/products/:id', productApiCalls.updateProduct);
     api.delete('/products/:id', productApiCalls.deleteProduct);
-    
-    // Units of measurement section
+    api.get('/products-search', productApiCalls.searchProducts);
+    api.put('/products-take', productApiCalls.takeProduct);
+
+    // Units section
+    api.get('/units', unitApiCalls.getUnits);
+    api.post('/units', unitApiCalls.createUnit);
+    api.put('/units/:id', unitApiCalls.updateUnit);
+    api.delete('/units/:id', unitApiCalls.deleteUnit);
+
+    // Product groups section
+    api.get('/product-groups', pGroupApiCalls.getProductGroups);
+    api.post('/product-groups', pGroupApiCalls.createProductGroup);
+    api.put('/product-groups/:id', pGroupApiCalls.updateProductGroup);
+    api.delete('/product-groups/:id', pGroupApiCalls.deleteProductGroup);
+
+    // Statistics section
+    api.get('/stats/general', statsApiCalls.getGeneral);
 
     /**
      * Helper for verifying user token

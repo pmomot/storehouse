@@ -9,105 +9,118 @@
         .module('StoreHouse')
         .controller('ProductsController', ProductsController);
 
-    ProductsController.$inject = ['productService'];
+    ProductsController.$inject = ['productService', 'MODAL_SETTINGS', 'MODAL_BUTTONS',
+        'unitService', 'productGroupService', 'accountService'];
 
     /**
      * Products Controller
      * */
-    function ProductsController (productService) {
+    function ProductsController (productService, MODAL_SETTINGS, MODAL_BUTTONS, unitService, productGroupService, accountService) {
         var vm = this;
 
-        vm.products = productService.getProducts;
-        vm.deleteProduct = deleteProduct;
-        vm.showPopup = showPopup;
+        vm.units = unitService.getUnits;
+        vm.unitById = unitService.getUnitById;
+        vm.productGroups = productGroupService.getGroups;
+        vm.productGroupsByIds = productGroupService.getGroupsByIds;
+        vm.ln = accountService.getLocalization;
+        vm.selectedGroups = productService.getGroups;
+        vm.activeTag = 'all';
+        vm.lnTags = ['all', 'less-amount', 'soon-expire'];
 
-        vm.modalItem = {
-            name: '123'
+        vm.filterByTag = filterByTag;
+
+        vm.listSettings = {
+            addNewLabel: 'Add new product',
+            emptyLabel: 'There are no products in storehouse yet :(',
+            showPopup: showPopup,
+            list: productService.getProducts,
+            header: ['Name', 'Description'],
+            fields: ['name', 'description'],
+            type: 'products'
         };
-        vm.modalShow = false;
-        vm.modalTitle = 'Product form';
 
-        productService.fetchProducts();
+        vm.modalSettings = angular.extend(MODAL_SETTINGS, {
+            buttonsOptions: {
+                cancelButton: MODAL_BUTTONS.CANCEL,
+                callback: submitCallback,
+                submitButton: {}
+            },
+            units: vm.units,
+            productGroups: vm.productGroups
+        });
 
-        /**
-         * Send request to delete product
-         * @param {String} id - product uuid
-         * */
-        function deleteProduct (id) {
-            productService
-                .deleteProduct(id)
-                .then(function () {
-                    if (vm.products().length === 1) { // amount doesn't change TODO SH think about this
-                        productService.fetchProducts();
-                    } else {
-                        angular.element('[data-id="' + id + '"').remove();
-                    }
-                });
-        }
+        productService.fetch();
+        unitService.fetch(); // TODO SH move this to pre loaded functionality
+        productGroupService.fetch(); // TODO SH move this to pre loaded functionality
 
         /**
          * Show create/update/remove popup for product
          * @param {String} type - popup type
-         * @param {Object} p - product
+         * @param {Object} item - product
          * */
-        function showPopup (type, p) {
-            var submitButton;
+        function showPopup (type, item) {
+            var submitButton = type === 'remove' ? MODAL_BUTTONS.REMOVE : MODAL_BUTTONS.SUBMIT;
 
-            vm.modalType = type;
-            vm.modalTitle = 'Product ' + type;
-            vm.modalItem = p || {
-                name: '',
-                description: '',
-                amount: 0,
-                minAmount: 0,
-                arrivedAt: new Date(),
-                expiresAt: new Date()
-            };
-
-            if (type === 'remove') {
-                submitButton = {
-                    buttonType: 'submit',
-                    value: 'Yes',
-                    class: 'btn-danger'
-                };
+            if (item) {
+                item = JSON.parse(JSON.stringify(item));
+                item.arrivedAt = new Date(item.arrivedAt);
+                item.expiresAt = new Date(item.expiresAt);
+                item.unit = vm.unitById(item.Unit.uuid);
+                item.groups = vm.productGroupsByIds(item['ProductGroups']);
             } else {
-                submitButton = {
-                    buttonType: 'submit',
-                    value: 'Submit',
-                    class: 'btn-primary'
+                item = {
+                    name: '',
+                    description: '',
+                    amount: 1,
+                    minAmount: 1,
+                    price: 1,
+                    arrivedAt: new Date(),
+                    expiresAt: new Date(),
+                    unit: vm.units()[0],
+                    groups: []
                 };
             }
 
-            vm.modalButtonsOptions = {
-                cancelButton: {
-                    buttonType: 'button',
-                    value: 'Cancel',
-                    class: 'btn-default',
-                    callback: 'close'
-                },
-                submitButton: submitButton,
-                callback: submitCallback
-            };
-            vm.modalShow = true;
+            item.reason = '';
+
+            angular.extend(vm.modalSettings, {
+                type: type,
+                title: 'Product ' + type,
+                item: item,
+                size: type === 'remove' ? 'small' : '',
+                buttonsOptions: angular.extend(vm.modalSettings.buttonsOptions, {
+                    submitButton: submitButton
+                })
+            });
         }
 
         /**
          * Function called from modal in case of submit button click
-         * @param {String} type - action type
+         * @param {Object} modalElement - modal dom el
          * */
-        function submitCallback (type) {
+        function submitCallback (modalElement) {
+            var type = vm.modalSettings.type, // action type
+                ajaxParam = vm.modalSettings.item;
 
-            switch (type) {
-                case 'remove':
-                    deleteProduct(vm.modalItem.uuid);
-                    break;
-                case 'update':
-                    console.log('update', vm.modalItem);
-                    break;
-                case 'create':
-                    console.log('create', vm.modalItem);
-                    break;
+            if (type === 'remove') {
+                ajaxParam = vm.modalSettings.item.uuid;
             }
+            
+            productService[type](ajaxParam)
+                .then(function () {
+                    if (type === 'remove') {
+                        angular.element('[data-id="' + vm.modalSettings.item.uuid + '"').remove();
+                    }
+                    angular.element(modalElement).modal('hide');
+                });
+        }
+
+        /**
+        * filter product list by tag
+        * @param {String} tag - tag name (in this case - product group)
+        */
+        function filterByTag (tag) {
+            vm.activeTag = tag;
         }
     }
 

@@ -23,4 +23,6 @@ if (production) {
 
 config.passwordRestorationTime = 3600 * 1000; // link expires in 1 hour
 
+config.languages = ['en', 'uk', 'ru'];
+
 module.exports = config;

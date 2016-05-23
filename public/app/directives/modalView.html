@@ -1,5 +1,5 @@
 <div class="modal fade">
-    <div class="modal-dialog " ng-class="size()">
+    <div class="modal-dialog " ng-class="size">
         <div class="modal-content">
             <form role="form" ng-submit="submit()" name="modalForm">
                 <div class="modal-header">
@@ -9,10 +9,10 @@
                 <div class="modal-body" ng-transclude></div>
                 <div class="modal-footer">
                     <button type="{{ cancelButton.buttonType }}"
-                            class="btn {{ cancelButton.class }}" ng-click="close()"
+                            class="btn {{ cancelButton.class }}" data-dismiss="modal"
                             >{{ cancelButton.value }}</button>
-                    <input ng-if="submitButton" ng-disabled="modalForm.$invalid" class="btn {{ submitButton.class }}"
-                           type="submit" value="{{ submitButton.value }}"/>
+                    <input id="modal-submit" ng-if="submitButton" class="btn {{ submitButton.class }}"
+                           type="submit" value="{{ submitButton.value }}" ng-disabled="modalForm.$invalid" />
                 </div>
             </form>
         </div>

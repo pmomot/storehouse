@@ -7,6 +7,7 @@
 
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap-languages/languages.min.css"/>
     <link rel="stylesheet" href="css/main.css"/>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -15,6 +16,7 @@
     <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
 
     <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.min.css" />
 
@@ -23,13 +25,22 @@
 
     <script type="text/javascript" src="app/repositories/accountRepository.js"></script>
     <script type="text/javascript" src="app/repositories/productRepository.js"></script>
+    <script type="text/javascript" src="app/repositories/unitRepository.js"></script>
+    <script type="text/javascript" src="app/repositories/productGroupRepository.js"></script>
+    <script type="text/javascript" src="app/repositories/statsRepository.js"></script>
 
     <script type="text/javascript" src="app/services/accountService.js"></script>
     <script type="text/javascript" src="app/services/productService.js"></script>
+    <script type="text/javascript" src="app/services/unitService.js"></script>
+    <script type="text/javascript" src="app/services/productGroupService.js"></script>
+    <script type="text/javascript" src="app/services/statsService.js"></script>
     <script type="text/javascript" src="app/services/httpInterceptor.js"></script>
 
     <script type="text/javascript" src="app/directives/headerDirective.js"></script>
     <script type="text/javascript" src="app/directives/modalDirective.js"></script>
+    <script type="text/javascript" src="app/directives/listDirective.js"></script>
+    <script type="text/javascript" src="app/directives/listItemDirective.js"></script>
+    <script type="text/javascript" src="app/directives/lnDirective.js"></script>
 
     <script type="text/javascript" src="app/constants/main.constants.js"></script>
 
@@ -39,6 +50,11 @@
     <script type="text/javascript" src="app/routes/users/usersController.js"></script>
     <script type="text/javascript" src="app/routes/forgot-password/IForgotController.js"></script>
     <script type="text/javascript" src="app/routes/products/productsController.js"></script>
+    <script type="text/javascript" src="app/routes/units/unitsController.js"></script>
+    <script type="text/javascript" src="app/routes/product-groups/productGroupsController.js"></script>
+    <script type="text/javascript" src="app/routes/user-settings/userSettingsController.js"></script>
+    <script type="text/javascript" src="app/routes/take/takeController.js"></script>
+    <script type="text/javascript" src="app/routes/stats/statsController.js"></script>
 
 </head>
 <body ng-app="StoreHouse">
@@ -51,6 +67,14 @@
     </div>
 
 </div><!-- /.container -->
+
+<div class="spinner" ng-show="processing">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
+</div>
 
 
 </body>

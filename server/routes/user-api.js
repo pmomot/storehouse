@@ -2,7 +2,10 @@
  * Created by pmomot on 3/30/16.
  */
 'use strict';
-module.exports = function (User) {
+var config = require('../config');
+
+module.exports = function (models) {
+    var User = models.User;
 
     /**
      * Sign Up in service
@@ -53,6 +56,36 @@ module.exports = function (User) {
                     success: true,
                     token: params.token,
                     user: params.user
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
+    /**
+     * Get localization info
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function getLocale (req, res) {
+        var lang = req.params['lang'];
+
+        if (config.languages.indexOf(lang) === -1) { // no such language
+            lang = 'en';
+        }
+
+        models.Locale
+            .findAll({
+                attributes: ['key', [lang, 'value']]
+            })
+            .then(function (locale) {
+                res.send({
+                    locale: locale,
+                    langs: config.languages
                 });
             })
             .catch(function (error) {
@@ -157,7 +190,10 @@ module.exports = function (User) {
             }
         })
             .then(function (user) {
-                res.send(user.getInfo());
+                return user.getInfo();
+            })
+            .then(function (userInfo) {
+                res.send(userInfo);
             })
             .catch(function (error) {
                 res.send({
@@ -189,14 +225,39 @@ module.exports = function (User) {
             });
     }
 
+    /**
+     * Change user's language
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function changeLanguage (req, res) {
+
+        User.changeLanguage(req.decoded.uuid, req.body)
+            .then(function (locale) {
+                res.send({
+                    message: 'Language has been changed.',
+                    success: true,
+                    locale: locale
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: false
+                });
+            });
+    }
+
     return {
         signUp: signUp,
         logIn: logIn,
+        getLocale: getLocale,
         changePassword: changePassword,
         forgotPassword: forgotPassword,
         verifyRestorationToken: verifyRestorationToken,
         restorePassword: restorePassword,
         getUser: getUser,
-        getUsers: getUsers
+        getUsers: getUsers,
+        changeLanguage: changeLanguage
     };
 };

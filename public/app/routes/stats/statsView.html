@@ -1,0 +1,17 @@
+<sh-header></sh-header>
+<div class="main-content">
+    <h3 class="text-capitalize">{{ ln()[vm.type + '-statistics'] }}</h3>
+    <hr/>
+    <button type="button" class="btn btn-primary" ng-click="vm.refreshStats()">Refresh statistics</button>
+    <hr/>
+    <div ng-show="vm.type === 'general'">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">Money amount in StoreHouse</div>
+            <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">{{ vm.general().money }}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">Products count</div>
+            <div class="col-xs-12 col-sm-6 col-md-8 col-lg-9">{{ vm.general().productsCount }}</div>
+        </div>
+    </div>
+</div>

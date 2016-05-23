@@ -59,7 +59,6 @@
         /**
          *restore user password
          * */
-
         function restorePassword (params) {
             var deferred = $q.defer();
             
@@ -98,9 +97,9 @@
         }
 
         /**
-         * Get user data form api
+         * Get user data from api
          * */
-        function loadUserInfo() {
+        function loadUserInfo () {
             var deferred = $q.defer();
 
             $http.get('/api/user')
@@ -114,7 +113,7 @@
         }
 
         /**
-         * Get users list form api
+         * Get users list from api
          * */
         function fetchUsers () {
             var deferred = $q.defer();
@@ -129,13 +128,53 @@
             return deferred.promise;
         }
 
+        /**
+         * Get locale info from api
+         * @param {String} lang - language
+         * */
+        function fetchLocale (lang) {
+            var deferred = $q.defer();
+
+            $http.get('/api/locale/' + lang)
+                .then(function (result) {
+                    deferred.resolve(result.data);
+                }, function (errors) {
+                    deferred.reject(errors.data);
+                });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Change user language
+         * @param {String} language - new user language
+         * */
+        function changeLanguage (language) {
+            var deferred = $q.defer();
+
+            $http.put('/api/user/change-language', {language: language})
+                .then(function (result) {
+                    if (result.data.success) {
+                        deferred.resolve(result.data);
+                    } else {
+                        deferred.reject(result.data);
+                    }
+                }, function (errors) {
+                    deferred.reject(errors.data);
+                });
+
+            return deferred.promise;
+        }
+
         return {
             login: login,
             signUp: signUp,
             changePass: changePass,
             loadUserInfo: loadUserInfo,
             fetchUsers: fetchUsers,
-            restorePassword: restorePassword
+            restorePassword: restorePassword,
+            fetchLocale: fetchLocale,
+            changeLanguage: changeLanguage
         };
     }
 

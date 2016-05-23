@@ -1,0 +1,51 @@
+<sh-header></sh-header>
+<div class="main-content">
+    <form role="form" name="searchTakeForm" ng-submit="vm.searchSubmit()" class="form-inline">
+        <div class="form-group">
+            <label class="sr-only" for="searchProduct">{{ vm.ln()['label-search-products'] }}</label>
+            <input type="text" id="searchProduct" class="form-control"
+                   placeholder="{{ vm.ln()['label-search-products'] }}"
+                   ng-model="vm.searchValue" ng-disabled="vm.processingRequest" required/>
+        </div>
+        <input id="searchProductSubmit" class="btn btn-primary"
+               type="submit" value="{{ vm.ln()['search'] }}" ng-disabled="searchTakeForm.$invalid" />
+    </form>
+    <div class="take-products-list">
+        <div ng-repeat="p in vm.foundList()">
+            <div class="row">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2 word-break"><b>{{ p.name }}</b></div>
+                <div class="col-xs-12 col-sm-4 col-md-5 col-lg-7 word-break">{{ p.description }}</div>
+                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+                    <form role="form" name="takeProductForm" ng-submit="vm.takeSubmit(p)">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                                <div class="form-group">
+                                    <label class="sr-only" for="takeProduct{{ p.uuid }}">{{ vm.ln()['take'] }}</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" required
+                                               min="1" max="{{ p.amount }}" id="takeProduct{{ p.uuid }}"
+                                               ng-model="p.takeAmount" ng-disabled="vm.processingRequest" />
+                                        <span class="input-group-addon"> / {{ p.amount }} {{ p.Unit.name }}.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <div class="form-group">
+                                    <input class="btn btn-success" type="submit" value="{{ vm.ln()['take'] }}"
+                                           ng-disabled="takeProductForm.$invalid" />
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <label class="sr-only" for="reason">{{ vm.ln()['label-taking-reason'] }}</label>
+                                <textarea name="reason" id="reason" class="form-control" rows="3"
+                                          ng-disabled="vm.processingRequest"
+                                          ng-model="p.reason" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </div>
+</div>
