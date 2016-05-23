@@ -14,7 +14,7 @@
     /**
      * User Log In Controller
      * */
-    function LogInController ($location, accountService) {
+    function LogInController($location, accountService) {
         var vm = this;
 
         vm.data = {};
@@ -24,7 +24,7 @@
         /**
          * Send user log in request
          * */
-        function sendRequest () {
+        function sendRequest() {
             accountService.login(vm.data.email, vm.data.password)
                 .then(function () {
                     $location.path('/');

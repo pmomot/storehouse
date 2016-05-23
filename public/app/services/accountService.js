@@ -78,6 +78,24 @@
         }
 
         /**
+         * restore user password
+         * */
+        function restorePassword (requestData) {
+            var deferred = $q.defer();
+            accountRepository.restorePassword(requestData)
+                .then(function (data) {
+                    toastr.success(data.message);
+                    deferred.resolve(data);
+                })
+                .catch(function (error) {
+                    toastr.error(error.message);
+                    deferred.reject();
+                });
+
+            return deferred.promise;
+        }
+
+        /**
          * Get user data form api
          * */
         function loadUserInfo () {
@@ -224,6 +242,8 @@
             fetchUsers: fetchUsers,
             fetchLocale: fetchLocale,
             changeLanguage: changeLanguage,
+
+            restorePassword: restorePassword,
 
             changePass: changePass,
 

@@ -30,6 +30,19 @@ module.exports = function (models) {
     }
 
     /**
+     * function for send error message on error view
+     * @param {Object} res
+     * @param {String} message
+     * */
+    function errorMethod (res, message) {
+        var path = require('path');
+        
+        res.render(path.join(__dirname, '../../public', '/static-pages/index.jade'), {
+            message: message.replace(/^[Error: ]+/ig, '')
+        });
+    }
+
+    /**
      * Log into system
      * @param {Object} req - request
      * @param {Object} res - response
@@ -103,6 +116,66 @@ module.exports = function (models) {
                     success: false
                 });
             });
+    }
+
+    /**
+     * Send password restoration link via email
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function forgotPassword (req, res) {
+        User
+            .forgotPassword(req.body, req.protocol + '://' + req.get('host'))
+            .then(function () {
+                res.send({
+                    message: 'Restoration link has been sent',
+                    success: true
+                });
+            })
+            .catch(function (error) {
+                res.send({
+                    message: error.message,
+                    success: true
+                });
+            });
+    }
+    
+    /**
+     * Verifying token from restore link
+     * @param {Object} req - request
+     * @param {Object} res - response
+     * */
+    function verifyRestorationToken (req, res) {
+        var token = req.query.token,
+            path = require('path');
+
+        if (token) {
+            try {
+                User.verifyRestorationToken(token)
+                    .then(function () {
+                        res.sendFile(path.join(__dirname, '../../public', '/static-pages/restorePasswordView.html'));
+                    })
+                    .catch(function (error) {
+                        errorMethod(res, error.message);
+                    });
+            } catch (err) {
+                errorMethod(res, 'Wrong token');
+            }
+
+        } else {
+            errorMethod(res, 'No token provided');
+        }
+    }
+
+    /**
+     * Set new password for user
+     * @param {Object} req - request
+     * */
+    function restorePassword (req) {
+        var newPass = req.query.pass,
+            token = req.query.token;
+
+        User.restorePassword(newPass, token);
     }
 
     /**
@@ -180,6 +253,9 @@ module.exports = function (models) {
         logIn: logIn,
         getLocale: getLocale,
         changePassword: changePassword,
+        forgotPassword: forgotPassword,
+        verifyRestorationToken: verifyRestorationToken,
+        restorePassword: restorePassword,
         getUser: getUser,
         getUsers: getUsers,
         changeLanguage: changeLanguage

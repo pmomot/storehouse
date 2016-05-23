@@ -35,9 +35,12 @@ module.exports = function (app, express, models) {
     api.post('/user', userApiCalls.signUp);
     api.post('/user/log-in', userApiCalls.logIn);
     api.get('/locale/:lang', userApiCalls.getLocale);
+    api.post('/user/forgot-password', userApiCalls.forgotPassword);
+    api.get('/user/restore-password', userApiCalls.verifyRestorationToken);
+    api.post('/user/restore-password', userApiCalls.restorePassword);
 
     api.use(verifyToken);
-
+    
     // User section
     api.put('/user/change-pass', userApiCalls.changePassword);
     api.get('/users', userApiCalls.getUsers);

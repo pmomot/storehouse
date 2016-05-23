@@ -42,6 +42,12 @@
                 controller: 'UsersController',
                 controllerAs: 'vm'
             })
+            .when('/forgot-password', {
+                templateUrl: 'app/routes/forgot-password/IForgotView.html',
+                controller: 'IForgotController',
+                controllerAs: 'vm'
+            })
+            
             .when('/products', {
                 templateUrl: 'app/routes/products/productsView.html',
                 controller: 'ProductsController',

@@ -16,9 +16,12 @@ if (production) {
     config = {
         port: 3001,
         secretKey: 'LoremIpsumDolorSitAmet',
-        dbConnection: 'postgres://postgres:AdminUser1**@localhost:5432/storehouse'
+        dbConnection: 'postgres://postgres:AdminUser1**@localhost:5432/storehouse',
+        transporterNodemail: 'smtps://storehousefoodbox%40gmail.com:ael,jrc123@smtp.gmail.com'
     };
 }
+
+config.passwordRestorationTime = 3600 * 1000; // link expires in 1 hour
 
 config.languages = ['en', 'uk', 'ru'];
 

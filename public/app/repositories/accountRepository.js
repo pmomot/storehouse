@@ -55,6 +55,27 @@
             return deferred.promise;
         }
 
+
+        /**
+         *restore user password
+         * */
+        function restorePassword (params) {
+            var deferred = $q.defer();
+            
+            $http.post('/api/user/forgot-password', params)
+                .then(function (result) {
+                    if (result.data.success) {
+                        deferred.resolve(result.data);
+                    } else {
+                        deferred.reject(result.data);
+                    }
+                }, function (errors) {
+                    deferred.reject(errors.data);
+                });
+
+            return deferred.promise;
+        }
+
         /**
          * Change user password
          * */
@@ -151,6 +172,7 @@
             changePass: changePass,
             loadUserInfo: loadUserInfo,
             fetchUsers: fetchUsers,
+            restorePassword: restorePassword,
             fetchLocale: fetchLocale,
             changeLanguage: changeLanguage
         };

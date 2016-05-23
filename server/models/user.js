@@ -6,7 +6,8 @@
 var CryptoJS = require('crypto-js'),
     config = require('../config'),
     secretKey = config.secretKey,
-    jsonWebToken = require('jsonwebtoken');
+    jsonWebToken = require('jsonwebtoken'),
+    nodemailer = require('nodemailer');
 
 /**
  * Generates token from user params
@@ -21,6 +22,17 @@ function createToken (user) { // TODO SH check if key expires
     }, secretKey, {
         expiresInMinute: 1440
     });
+}
+
+/**
+ * Generate token for user password restoration
+ * @param {Object} user - user info
+* */
+function createRestoreToken (user) {
+    return encodeURIComponent(CryptoJS.AES.encrypt(JSON.stringify({
+        uuid: user.uuid,
+        expiresAt: new Date(Date.now() + config.passwordRestorationTime).getTime()
+    }), secretKey).toString());
 }
 
 module.exports = function (sqlz, SQLZ, relations) {
@@ -158,6 +170,7 @@ module.exports = function (sqlz, SQLZ, relations) {
                 var validPassword;
 
                 if (user) {
+
                     validPassword = user.comparePassword(body.currentPass);
 
                     if (validPassword) {
@@ -169,6 +182,101 @@ module.exports = function (sqlz, SQLZ, relations) {
                 } else {
                     throw new Error('User does not exist');
                 }
+            });
+    }
+
+    /**
+     * Send password restoration link via email
+     * @param {Object} body - request body with user email
+     * @param {String} hostUrl - base url to server
+     * */
+    function forgotPassword (body, hostUrl) {
+        var self = this, // eslint-disable-line no-invalid-this
+            transporter, mailOptions, html;
+
+        return self.find({
+            where: {
+                email: body.email
+            }
+        })
+            .then(function (data) {
+                if (data) {
+                    transporter = nodemailer.createTransport(config.transporterNodemail);
+
+                    html = 'Hi! To restore password, please click <a href="';
+                    html += hostUrl + '/api/user/restore-password?token=' + createRestoreToken(data) + '"';
+                    html += '>this link</a>';
+
+                    mailOptions = {
+                        from: '"foodbox&storehouse"<storehousefoodbox@gmail.com>',
+                        to: '"' + data.email + '"',
+                        subject: 'Store House restore password',
+                        html: html
+                    };
+
+                    return transporter.sendMail(mailOptions, function () {});
+                } else {
+                    throw new Error('Account with this mail does not exist');
+                }
+            });
+    }
+
+    /**
+     * Verifying token from restore link
+     * @param {String} token - encrypted token with user id and expiresAt time
+     * */
+    function verifyRestorationToken (token) {
+        var decrypted = '';
+
+        try {
+            decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
+
+            decrypted = JSON.parse(decrypted);
+            return User.find({
+                where: {
+                    uuid: decrypted.uuid
+                }
+            })
+                .then(function (user) {
+                    if (user) {
+                        if (decrypted.expiresAt - Date.now() >= 0) {
+                            return true;
+                        } else {
+                            throw new Error('Password restoration link has been expired');
+                        }
+                    } else {
+                        throw new Error('User does not exist');
+                    }
+                })
+                .catch(function (error) {
+                    throw new Error(error);
+                });
+        } catch (err) {
+            throw new Error(err);
+        }
+    }
+
+    /**
+     * Create new (restore) password
+     * @param {String} - pass
+     * @param {String} - token
+     * */
+    function restorePassword (pass, token) {
+
+        var decrypted = CryptoJS.AES.decrypt(decodeURIComponent(token), secretKey).toString(CryptoJS.enc.Utf8);
+
+        decrypted = JSON.parse(decrypted);
+        return User.find({
+            where: {
+                uuid: decrypted.uuid
+            }
+        })
+            .then(function (user) {
+                user.password = pass;
+                return user.save();
+            })
+            .catch(function (error) {
+                throw new Error(error);
             });
     }
 
@@ -229,7 +337,10 @@ module.exports = function (sqlz, SQLZ, relations) {
             signUp: signUp,
             logIn: logIn,
             changePassword: changePassword,
-            changeLanguage: changeLanguage
+            changeLanguage: changeLanguage,
+            forgotPassword: forgotPassword,
+            verifyRestorationToken: verifyRestorationToken,
+            restorePassword: restorePassword
         }
     }, options);
 
