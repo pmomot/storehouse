@@ -8,7 +8,7 @@ var config = require('../config'),
     secretKey = config.secretKey;
 
 module.exports = (function (/*app, express, models*/) {
-    var sub = function(app,express,models) {
+  
         var api = new express.Router(),
             User = models.User,
             userApiCalls = require('./user-api')(models),
@@ -60,11 +60,11 @@ module.exports = (function (/*app, express, models*/) {
 
         // Statistics section
         api.get('/stats/general', statsApiCalls.getGeneral);
-        return api;
 
 
-    }
-    var direct = function (app,express,models) {
+
+
+
 
         var api = new express.Router(),
             User = models.User,
@@ -131,9 +131,5 @@ module.exports = (function (/*app, express, models*/) {
         return api;
     }
 
-    return {
-        "sub":sub,
-        "direct":direct
-    }
 
-})();
+});
