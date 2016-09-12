@@ -28,7 +28,7 @@ function createVirtualHost(domainName, method) {
     return vhost(domainName, method)
 };
 
-
+console.log('aasaaaaa')
 var subhost = createVirtualHost("*.localhost", sub);
 var directhost = createVirtualHost("localhost", direct);
 app.use(subhost);
